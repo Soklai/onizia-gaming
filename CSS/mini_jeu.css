@@ -1,0 +1,329 @@
+body {
+  background-color: #E8E4DA;
+  /*background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;*/
+}
+
+.gridTile {
+  display: grid;
+  grid-template-columns: repeat(17, 23px);
+  gap: 0px;
+  justify-content: center;
+}
+
+.tileLevel0 {
+  position: relative;
+  /*z-index: 0;*/
+  
+  width: 23px;
+  height: 23px;
+
+  background-size: 100% 100%;
+}
+
+.tileLevel1 {
+  position: absolute;
+  z-index: 1;
+  
+  box-sizing: border-box; 
+  width: 23px;
+  height: 23px;
+
+  background-size: 100% 100%;  
+}
+
+.tileLevel2 {
+  position: absolute;
+  z-index: 2;
+  
+  box-sizing: border-box; 
+  width: 23px;
+  height: 23px;
+
+  background-size: 100% 100%;  
+}
+
+.tileLevel3 {
+  position: absolute;
+  z-index: 3;
+  
+  box-sizing: border-box; 
+  width: 23px;
+  height: 23px;
+
+  background-size: 100% 100%;
+}
+
+.pathLevel {
+  position: absolute;
+  z-index: 4;
+  
+  /*box-sizing: border-box; */
+  width: 23px;
+  height: 23px;
+
+  background-size: 100% 100%;
+}
+
+.tileDecorationFat{
+  position: absolute;
+  z-index: 5;
+
+  bottom: 0%;
+  left: 50%;
+  
+  width: 46px;
+  height: 46px;
+
+  background-size: 100% 100%;
+  transform: translateX(-50%);
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+}
+
+.tileDecorationLittle{
+  position: absolute;
+  z-index: 5;
+
+  bottom: 25%;
+  left: 50%;
+  
+  width: 23px;
+  height: 23px;
+
+  background-size: 100% 100%;
+  transform: translateX(-50%);
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+}
+
+.tilePlayer{
+  position: absolute;
+  z-index: 10;
+
+  width: 23px;
+  height: 23px;
+
+  background-size: 100% 100%;
+  transform: translateY(-11.5px);
+}
+
+.barreAction{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.buttonAction{
+  height: 40px;
+  background-size: 100% 100%;       /* ou 100% 100% */
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonMove{
+  background-image: url('../IMAGE/ICON/background_button_up.png');  
+}
+
+#buttonMove:active {
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+  }
+
+#buttonEnd{
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+}
+
+#buttonEnd:active{
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+}
+
+.gridHand{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  place-items: center;
+  
+  gap: 5px;
+  margin-top: 10px;
+  
+  width: 100%;
+  height: 30px;
+}
+
+.tileHand{
+  border: 1px black solid;
+  border-radius: 5px;
+  
+  width: 75px;
+  height: 75px;
+
+  background-size: cover;       /* ou 100% 100% */
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+}
+
+.logFight{
+  font-size: 0.8em;
+  text-align: center;
+  
+  margin-top: 5px;
+  padding-top: 5px;
+
+  height: 100px;
+  white-space: pre-line;
+
+  background-image: url('../IMAGE/UI/background_logfight_2.png');
+  background-size: 100% 100%;
+}
+
+.barreInfoPlayer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  height: auto;
+  
+
+  margin-top: 5px;
+  gap: 5px;
+}
+
+#elementInfoPlayerLeft{
+  background-image: url('../IMAGE/UI/background_infoplayer_left.png');
+  background-size: 100% 100%;  
+  
+  width: auto;
+  height: 50px;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+#infoPlayerLeftText {
+  font-size: 0.75em;
+  color: white;
+  margin-left: 20px;
+}
+
+#infoPlayerLeftCharacter{
+  height: 30px;
+  width: 30px;
+  margin-left: 18px;
+  background-image: url('../IMAGE/CHARACTER/character_down.png');
+  background-repeat: none;
+  background-size: 100% 100%;  
+}
+
+#elementInfoPlayerRight{
+  background-image: url('../IMAGE/UI/background_infoplayer_right.png');
+  background-size: 100% 100%;  
+  
+  /*padding: 1px;*/ 
+  width: auto;
+  height: 50px;
+
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+#infoPlayerRightText {
+  font-size: 0.75em;
+  color: white;
+  margin-right: 20px;
+}
+
+#infoPlayerRightCharacter{
+  height: 30px;
+  width: 30px;
+  margin-right: 18px;
+  background-image: url('../IMAGE/CHARACTER/character_down.png');
+  background-repeat: none;
+  background-size: 100% 100%;  
+}
+
+.victoryPlayer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  position: absolute;
+  left: 12.5%;
+  top: 25%;
+
+  z-index: 100;
+  background-image: url('../IMAGE/UI/background_victory.png');
+  background-size: 100% 100%;
+
+  width: 300px;
+  height: 150px;
+}
+
+.barreButtonVictory{
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+#buttonRestart{
+  flex: 1;
+  height: 40px;
+  margin-left: 20px;
+  
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonRestart:active{
+  height: 40px;
+  
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonQuit{
+  flex: 1;
+  height: 40px;
+  margin-right: 20px;
+  
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonQuit:active{
+  height: 40px;
+  
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#textVictory{
+  margin-bottom: 10px;
+  font-size: 2.5em;
+}
