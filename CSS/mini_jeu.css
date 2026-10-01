@@ -212,7 +212,7 @@ body {
 #infoPlayerLeftText {
   font-size: 0.75em;
   color: white;
-  margin-left: 20px;
+  margin-left: 10%;
 }
 
 #infoPlayerLeftCharacter{
@@ -240,7 +240,7 @@ body {
 #infoPlayerRightText {
   font-size: 0.75em;
   color: white;
-  margin-right: 20px;
+  margin-right: 10%;
 }
 
 #infoPlayerRightCharacter{
