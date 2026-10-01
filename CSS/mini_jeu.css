@@ -6,15 +6,14 @@ body {
   background-attachment: fixed;*/
 }
 main {
-  height: 100dvh;          /* Hauteur exacte de l'écran */
-  max-height: 100dvh;      /* Empêche le débordement */
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  justify-content: space-around; /* Répartit l'espace équitablement */
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
+  padding: 5px 0;
   box-sizing: border-box;
-  overflow: hidden;        /* Désactive les barres de défilement */
+  overflow: hidden; /* Empêche tout défilement */
 }
 
 .gridTile {
@@ -22,7 +21,8 @@ main {
   gap: 0px;
   justify-content: center;
 
-  width: 90vw;            /* Prend 90% de la largeur de l'écran */
+  width: 90vw;
+  max-height: 40dvh;/* Prend 90% de la largeur de l'écran */
   aspect-ratio: 1 / 1;    /* Force le conteneur à rester un carré parfait */
   margin: 0 auto;       /* Centre la grille horizontalement */
 
