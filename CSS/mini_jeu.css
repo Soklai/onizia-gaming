@@ -13,7 +13,7 @@ body {
   justify-content: center;
 
   width: 90vw;            /* Prend 90% de la largeur de l'écran */
-  max-width: 1000px;       /* Limite la taille maximale sur très grand écran */
+  max-width: 2000px;       /* Limite la taille maximale sur très grand écran */
   aspect-ratio: 1 / 1;    /* Force le conteneur à rester un carré parfait */
   margin: 0 auto;         /* Centre la grille horizontalement */
 
