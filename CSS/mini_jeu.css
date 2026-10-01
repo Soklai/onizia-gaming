@@ -114,13 +114,16 @@ body {
 .barreAction{
   display: grid;
   grid-template-columns: 1fr 1fr;
+
+  min-height: 100px;
+  width: 90vw;
   
   gap: 5px;
-  margin-top: 5px;
+  margin: 0 auto;
+  margin-top: 20px;
 }
 
-.buttonAction{
-  height: 40px;
+.buttonAction{  
   background-size: 100% 100%;       /* ou 100% 100% */
   background-position: center;  /* Centre l'image dans la case */
   background-repeat: no-repeat; /* Évite que l'image ne se répète */
@@ -129,7 +132,9 @@ body {
 }
 
 #buttonMove{
-  background-image: url('../IMAGE/ICON/background_button_up.png');  
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  font-size: 3em;
 }
 
 #buttonMove:active {
@@ -138,6 +143,8 @@ body {
 
 #buttonEnd{
   background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  font-size: 3em;
 }
 
 #buttonEnd:active{
@@ -146,24 +153,21 @@ body {
 
 .gridHand{
   display: grid;
-  grid-template-columns: auto auto auto;
-  place-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 90vw;
   
-  gap: 5px;
-  margin-top: 10px;
+  margin: 0 auto;
+  margin-top: 30px;
+  gap: 30px;
   
-  width: 100%;
-  height: 30px;
+  min-height: 200px;
 }
 
 .tileHand{
   border: 1px black solid;
   border-radius: 5px;
-  
-  width: 75px;
-  height: 75px;
 
-  background-size: cover;       /* ou 100% 100% */
+  background-size: 100% 100%;       /* ou 100% 100% */
   background-position: center;  /* Centre l'image dans la case */
   background-repeat: no-repeat; /* Évite que l'image ne se répète */
 }
@@ -172,13 +176,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7em;
+  font-size: 3em;
   text-align: center;
   
-  margin-top: 5px;
+  margin-top: 10px;
   padding-top: 5px;
 
-  height: 100px;
+  min-height: 400px;
+  width: 90vw;
+  margin: 0 auto;
+  margin-top: 20px;
   white-space: pre-line;
 
   background-image: url('../IMAGE/UI/background_logfight_2.png');
@@ -189,10 +196,11 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  height: auto;
+  min-height: 150px;
+  width: 90vw;
   
-
-  margin-top: 5px;
+  margin: 0 auto;
+  margin-top: 20px;
   gap: 5px;
 }
 
@@ -200,9 +208,7 @@ body {
   background-image: url('../IMAGE/UI/background_infoplayer_left.png');
   background-size: 100% 100%;  
   
-  /*width: auto;*/
-  /*height: 50px;*/
-  min-height: 40px;
+  min-height: 50px;
 
   display: flex;
   justify-content: left;
@@ -210,7 +216,7 @@ body {
 }
 
 #infoPlayerLeftText {
-  font-size: 0.75em;
+  font-size: 2em;
   color: white;
   margin-left: 15%;
 }
@@ -228,9 +234,7 @@ body {
   background-image: url('../IMAGE/UI/background_infoplayer_right.png');
   background-size: 100% 100%;  
   
-  /*width: auto;*/
-  /*height: 50px;*/
-  min-height: 40px;
+  min-height: 50px;
 
   display: flex;
   justify-content: right;
@@ -238,7 +242,7 @@ body {
 }
 
 #infoPlayerRightText {
-  font-size: 0.75em;
+  font-size: 2em;
   color: white;
   margin-right: 15%;
 }
@@ -330,5 +334,5 @@ body {
 
 #textVictory{
   margin-bottom: 10px;
-  font-size: 2.5em;
+  font-size: 3em;
 }
