@@ -12,7 +12,7 @@ export class GameManager{
     this.ia = new IA(this);
     
     this.player1 = new Player(this, "Soklai", 2, 102, this.map.player1Path, this.map.posTileBasePlayer1, false);
-    this.player2 = new Player(this, "Joueur 2", 2, 186, this.map.player2Path, this.map.posTileBasePlayer2, true);
+    this.player2 = new Player(this, "Joueur 2", 2, 103/*186*/, this.map.player2Path, this.map.posTileBasePlayer2, true);
       
     // Variable   
     this.turnPlayerIndex = 0;
@@ -147,7 +147,7 @@ export class GameManager{
 
   spawnPlayer(playerIndex){
     if(playerIndex === 0){
-      this.player1.getDie() == false;
+      this.player1.setDie(false);
       this.map.gridPlayer[this.player1.getPosTile()].style.backgroundImage = "";
 
       this.player1.setPosPath(2);
@@ -155,10 +155,10 @@ export class GameManager{
       this.player1.characterDirection();
     }
     
-    else{
-      this.player2.getDie() == false;
+    else if(playerIndex === 1){
+      this.player2.setDie(false);
       this.map.gridPlayer[this.player2.getPosTile()].style.backgroundImage = "";
-
+      
       this.player2.setPosPath(2);
       this.player2.setPosTile(186);
       this.player2.characterDirection();

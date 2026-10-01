@@ -67,7 +67,7 @@ export class Player{
   }
 
   setDie(value){
-    this.Die = value;
+    this.die = value;
   }
 
   getPosPath(){
