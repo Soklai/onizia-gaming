@@ -215,8 +215,8 @@ body {
 }
 
 #infoPlayerLeftCharacter{
-  height: 30px;
-  width: 30px;
+  height: 50%;
+  width: 15%;
   margin-left: 10%;
   background-image: url('../IMAGE/CHARACTER/character_down.png');
   background-repeat: none;
@@ -242,8 +242,8 @@ body {
 }
 
 #infoPlayerRightCharacter{
-  height: 30px;
-  width: 30px;
+  height: 50%;
+  width: 15%;
   margin-right: 10%;
   background-image: url('../IMAGE/CHARACTER/character_down.png');
   background-repeat: none;
