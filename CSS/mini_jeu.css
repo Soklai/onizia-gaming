@@ -5,6 +5,17 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;*/
 }
+main {
+  height: 100dvh;          /* Hauteur exacte de l'écran */
+  max-height: 100dvh;      /* Empêche le débordement */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  box-sizing: border-box;
+  overflow: hidden;        /* Désactive les barres de défilement */
+}
 
 .gridTile {
   display: grid;
