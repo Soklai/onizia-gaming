@@ -200,8 +200,9 @@ body {
   background-image: url('../IMAGE/UI/background_infoplayer_left.png');
   background-size: 100% 100%;  
   
-  width: auto;
-  height: 50px;
+  /*width: auto;*/
+  /*height: 50px;*/
+  min-height: 40px;
 
   display: flex;
   justify-content: left;
@@ -227,8 +228,9 @@ body {
   background-image: url('../IMAGE/UI/background_infoplayer_right.png');
   background-size: 100% 100%;  
   
-  width: auto;
-  height: 50px;
+  /*width: auto;*/
+  /*height: 50px;*/
+  min-height: 40px;
 
   display: flex;
   justify-content: right;
