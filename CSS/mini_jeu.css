@@ -274,19 +274,20 @@ main {
 .victoryPlayer{
   display: flex;
   flex-direction: column;
+  place-items: center;
   justify-content: center;
-  align-items: center;
-  
+   
   position: absolute;
-  left: 12.5%;
-  top: 25%;
+  /*left: 0%; */
+  top: 15%;
+  margin: 0 auto;
 
   z-index: 100;
   background-image: url('../IMAGE/UI/background_victory.png');
   background-size: 100% 100%;
 
-  width: 300px;
-  height: 150px;
+  width: 1250px;
+  height: 500px;
 }
 
 .hidden{
@@ -294,15 +295,17 @@ main {
 }
 
 .barreButtonVictory{
-  display: flex;
-  width: 100%;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 80%;
+  
+  min-height: 100px;
+  gap: 30px;
 }
 
-#buttonRestart{
-  flex: 1;
-  height: 40px;
-  margin-left: 20px;
+#buttonRestart{ 
+  height: 100%;
+  font-size: 3em;
   
   background-image: url('../IMAGE/ICON/background_button_up.png');
   background-size: 100% 100%;
@@ -312,9 +315,7 @@ main {
   border: none;
 }
 
-#buttonRestart:active{
-  height: 40px;
-  
+#buttonRestart:active{ 
   background-image: url('../IMAGE/ICON/background_button_down.png');
   background-size: 100% 100%;
   background-position: center;  /* Centre l'image dans la case */
@@ -323,10 +324,9 @@ main {
   border: none;
 }
 
-#buttonQuit{
-  flex: 1;
-  height: 40px;
-  margin-right: 20px;
+#buttonQuit{ 
+  height: 100%;
+  font-size: 3em;
   
   background-image: url('../IMAGE/ICON/background_button_up.png');
   background-size: 100% 100%;
@@ -336,9 +336,7 @@ main {
   border: none;
 }
 
-#buttonQuit:active{
-  height: 40px;
-  
+#buttonQuit:active{  
   background-image: url('../IMAGE/ICON/background_button_down.png');
   background-size: 100% 100%;
   background-position: center;  /* Centre l'image dans la case */
@@ -348,6 +346,6 @@ main {
 }
 
 #textVictory{
-  margin-bottom: 10px;
-  font-size: 3em;
+  margin-bottom: 50px;
+  font-size: 5em;
 }
