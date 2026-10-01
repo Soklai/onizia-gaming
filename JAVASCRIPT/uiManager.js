@@ -125,7 +125,7 @@ export class UIManager{
   }
 
   showVictory(indexPlayer){
-    this.victoryPlayer.hidden = false;
+    this.victoryPlayer.classList.remove("hidden");
     
     if(indexPlayer === 0){
       this.textVictory.textContent = "Winner !";

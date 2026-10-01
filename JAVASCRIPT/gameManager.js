@@ -31,7 +31,7 @@ export class GameManager{
     this.ui.loadEvent();
     this.ui.addTextLogFight(" commence !", this.opponentPlayer.name, "", this.turn);
     this.ui.addPlayersInfo();
-    this.ui.victoryPlayer.hidden = true;
+    this.ui.victoryPlayer.classList.add("hidden");
     
     // Map
     this.map.initializeGrid();
@@ -128,7 +128,7 @@ export class GameManager{
   }
 
   respawnPlayer(){
-    if(this.player1.getDie() === true){alert();
+    if(this.player1.getDie() === true){
       this.currentTurnRespawnPlayer[0] --;
     }
     
