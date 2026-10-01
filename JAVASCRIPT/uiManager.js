@@ -75,7 +75,7 @@ export class UIManager{
   }
   
   // 2. On ajoute le texte brut dans le tableau (sans \n)
-  this.tabTextLogFight.push("(T " + turn + ") "+ caster + ":" + text + target);
+  this.tabTextLogFight.push( caster + ":" + text + target);
   
   // 3. On joint les éléments avec des sauts de ligne pour l'affichage
   this.logFight.textContent = this.tabTextLogFight.join("\n");
