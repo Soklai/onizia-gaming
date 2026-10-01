@@ -12,7 +12,7 @@ export class GameManager{
     this.ia = new IA(this);
     
     this.player1 = new Player(this, "Soklai", 2, 102, this.map.player1Path, this.map.posTileBasePlayer1, false);
-    this.player2 = new Player(this, "Joueur 2", 2, 103/*186*/, this.map.player2Path, this.map.posTileBasePlayer2, true);
+    this.player2 = new Player(this, "Joueur 2", 2, 186, this.map.player2Path, this.map.posTileBasePlayer2, true);
       
     // Variable   
     this.turnPlayerIndex = 0;
