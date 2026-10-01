@@ -227,9 +227,11 @@ main {
 }
 
 #infoPlayerLeftText {
+  width: 50%;
   font-size: 2em;
   color: white;
-  margin-left: 15%;
+  margin-left: 10%;
+  text-align: left;
 }
 
 #infoPlayerLeftCharacter{
@@ -253,9 +255,11 @@ main {
 }
 
 #infoPlayerRightText {
+  width: 50%;
   font-size: 2em;
   color: white;
-  margin-right: 15%;
+  margin-right: 10%;
+  text-align: right;
 }
 
 #infoPlayerRightCharacter{
