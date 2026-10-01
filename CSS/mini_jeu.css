@@ -8,18 +8,26 @@ body {
 
 .gridTile {
   display: grid;
-  grid-template-columns: repeat(17, 23px);
+  /*grid-template-columns: repeat(17, 23px);*/
   gap: 0px;
   justify-content: center;
+
+  width: 90vw;            /* Prend 90% de la largeur de l'écran */
+  max-width: 550px;       /* Limite la taille maximale sur très grand écran */
+  aspect-ratio: 1 / 1;    /* Force le conteneur à rester un carré parfait */
+  margin: 0 auto;         /* Centre la grille horizontalement */
+
+  grid-template-columns: repeat(17, 1fr);
+  grid-template-rows: repeat(17, 1fr);
+
 }
 
 .tileLevel0 {
-  position: relative;
-  /*z-index: 0;*/
-  
-  width: 23px;
-  height: 23px;
-
+  position: relative; 
+  /*width: 23px;
+  height: 23px;*/
+  width: 100%;
+  height: 100%;
   background-size: 100% 100%;
 }
 
@@ -27,9 +35,11 @@ body {
   position: absolute;
   z-index: 1;
   
-  box-sizing: border-box; 
+  /*box-sizing: border-box; 
   width: 23px;
-  height: 23px;
+  height: 23px;*/
+  width: 100%;
+  height: 100%;
 
   background-size: 100% 100%;  
 }
@@ -38,9 +48,11 @@ body {
   position: absolute;
   z-index: 2;
   
-  box-sizing: border-box; 
+  /*box-sizing: border-box; 
   width: 23px;
-  height: 23px;
+  height: 23px;*/
+  width: 100%;
+  height: 100%;
 
   background-size: 100% 100%;  
 }
@@ -49,10 +61,12 @@ body {
   position: absolute;
   z-index: 3;
   
-  box-sizing: border-box; 
+  /*box-sizing: border-box; 
   width: 23px;
-  height: 23px;
+  height: 23px;*/
 
+  width: 100%;
+  height: 100%;
   background-size: 100% 100%;
 }
 
@@ -60,10 +74,11 @@ body {
   position: absolute;
   z-index: 4;
   
-  /*box-sizing: border-box; */
+  /*box-sizing: border-box;
   width: 23px;
-  height: 23px;
-
+  height: 23px;*/
+  width: 100%;
+  height: 100%;
   background-size: 100% 100%;
 }
 
@@ -74,8 +89,10 @@ body {
   bottom: 0%;
   left: 50%;
   
-  width: 46px;
-  height: 46px;
+  /*width: 46px;
+  height: 46px;*/
+  width: 200%;
+  height: 200%;
 
   background-size: 100% 100%;
   transform: translateX(-50%);
@@ -92,8 +109,10 @@ body {
   bottom: 25%;
   left: 50%;
   
-  width: 23px;
-  height: 23px;
+  /*width: 23px;
+  height: 23px;*/
+  width: 100%;
+  height: 100%;
 
   background-size: 100% 100%;
   transform: translateX(-50%);
@@ -267,6 +286,10 @@ body {
 
   width: 300px;
   height: 150px;
+}
+
+.hidden{
+  display: none;
 }
 
 .barreButtonVictory{
