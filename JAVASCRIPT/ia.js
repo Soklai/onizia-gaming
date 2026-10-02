@@ -10,7 +10,7 @@ export class IA{
 
       // Partie 1 Appel le modele d'ia
       //this.modelIAFullMove();
-      this.modelIAEasy();
+      //this.modelIAEasy();
 
       // Partie 2 Appel la fin de tour de l'ia
       this.game.ui.addTextLogFight(" Passe sont tour ", this.game.currentPlayer.getName(), "", this.game.turn);                 

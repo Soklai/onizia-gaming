@@ -34,8 +34,8 @@ export class UIManager{
   loadEvent(){
     this.buttonMove.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){ this.game.player1.move(1); } } );
     this.buttonEnd.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){ this.game.endTurnPlayer(); } });
-    this.buttonRestart.addEventListener("click", () => { if( this.game.player1.getDie() === true || this.game.player2.getDie() === true ){ window.location.reload() }});
-    this.buttonQuit.addEventListener("click", () => { if( this.game.player1.getDie() === true || this.game.player2.getDie() === true ){ window.location.replace("index.html"); }});
+    this.buttonRestart.addEventListener("click", () => { window.location.reload() });
+    this.buttonQuit.addEventListener("click", () => { window.location.replace("index.html"); });
     
     
     this.tileHandSlot0.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.player1.useCard(0); } });

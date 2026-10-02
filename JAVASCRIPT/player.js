@@ -258,6 +258,8 @@ export class Player{
         // Mettre a jour la nouvelle position du joueur
         this.movePosDirection(direction);
         this.characterDirection();
+        this.game.victoryPlayer(this.getPosTile());
+    
       }
     }
   }
