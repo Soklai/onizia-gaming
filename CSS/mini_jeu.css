@@ -1,34 +1,56 @@
 body {
-  background-color: #E8E4DA;
-  /*background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;*/
-}
-main {
   height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around; /* Répartit l'espace équitablement */
-  align-items: center;
-  padding: 5px 0;
+  padding: 0px;
+  margin: 0px;
+  
   box-sizing: border-box;
   overflow: hidden; /* Empêche tout défilement */
   touch-action: none;
+
+  /*background-color: #D38E3E;
+  background-size: 100% 100%;*/
 }
 
+/* DEBUG */
+#debugWindow{  
+  position: absolute;
+  left: 0%;
+  top: 0%;
+
+  display:none;
+  
+  z-index: 1000;
+  
+  height: auto;
+  width: auto;
+  
+  font-size: 2em;
+  background-color: white;
+}
+
+#debugButton{
+  height: 60px;
+  width: 80px;
+}
+
+#debugText{
+  height: auto;
+  width: auto;
+}
+
+/* Grid */
 .gridTile {
   display: grid;
   gap: 0px;
   justify-content: center;
 
-  width: 90vw;
-  max-height: 40dvh;/* Prend 90% de la largeur de l'écran */
+  width: 60dvh;
+  height: 50dvh;/* Prend 90% de la largeur de l'écran */
   aspect-ratio: 1 / 1;    /* Force le conteneur à rester un carré parfait */
-  margin: 0 auto;       /* Centre la grille horizontalement */
+  /*margin: 0 auto;*/
 
-  grid-template-columns: repeat(17, 1fr);
-  grid-template-rows: repeat(17, 1fr);
+  grid-template-columns: repeat(19, 1fr);
+  grid-template-rows: repeat(19, 1fr);
 
 }
 
@@ -123,16 +145,116 @@ main {
   transform: translateY(-50%);
 }
 
+/* Interface */
+
+#UIWindow{
+  display: grid;
+  grid-template-columns: 1;
+  align-content: start;
+  place-items: center;
+  
+  background-image: url('../IMAGE/UI/background_ui.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  
+  width: 60dvh;
+  height: 55dvh;
+}
+
+.barreInfoPlayer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  
+  width: 80%;
+  
+  gap: 0px;
+  margin-top: 10%;
+}
+
+#barreInfoPlayerLeft{
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: left;
+  align-items: center;
+}
+
+#barreInfoPlayerRight{
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: right;
+  align-items: center;  
+}
+
+#infoPlayerLeftText {
+  width: 100%;
+  height: 50px;
+  
+  font-size: 2em;
+  color: black;
+  margin-left: 10%;
+  
+  text-align: left;
+  justify-content: center;
+}
+
+#infoPlayerLeftCharacter{  
+  height: 65px;
+  width: 65px;
+  margin-left: 10%;
+  background-image: url('../IMAGE/CHARACTER/character_down.png');
+  background-repeat: none;
+  background-size: 100% 100%;  
+}
+
+#infoPlayerRightText {
+  width: 100%;
+  height: 50px;
+  
+  font-size: 2em;
+  color: black;
+  margin-right: 10%;
+  text-align: right;
+}
+
+#infoPlayerRightCharacter{
+  height: 65px;
+  width: 65px;
+  margin-right: 10%;
+  background-image: url('../IMAGE/CHARACTER/character_down.png');
+  background-repeat: none;
+  background-size: 100% 100%;  
+}
+
+.logFight{  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  font-size: 2em;
+  text-align: center;
+
+  width: 80%;
+  height: 250px;
+  white-space: pre-line;
+
+  border: 1px black solid;
+  margin-top: 20px;
+}
+
 .barreAction{
+  position: relative;
+  
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  min-height: 100px;
-  width: 90vw;
+  width: 80%;
+  height: 80px;
   
-  gap: 5px;
-  margin: 0 auto;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 40px;
 }
 
 .buttonAction{  
@@ -164,15 +286,17 @@ main {
 }
 
 .gridHand{
+  position: relative;
+  
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  width: 90vw;
+  width: 45dvh;
   
   margin: 0 auto;
-  margin-top: 30px;
   gap: 30px;
   
-  min-height: 200px;
+  min-height: 150px;
+  margin-top: 40px;
 }
 
 .tileHand{
@@ -184,94 +308,6 @@ main {
   background-repeat: no-repeat; /* Évite que l'image ne se répète */
 }
 
-.logFight{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3em;
-  text-align: center;
-  
-  margin-top: 10px;
-  padding-top: 5px;
-
-  min-height: 400px;
-  width: 90vw;
-  margin: 0 auto;
-  margin-top: 20px;
-  white-space: pre-line;
-
-  background-image: url('../IMAGE/UI/background_logfight_2.png');
-  background-size: 100% 100%;
-}
-
-.barreInfoPlayer{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  min-height: 150px;
-  width: 90vw;
-  
-  margin: 0 auto;
-  margin-top: 20px;
-  gap: 5px;
-}
-
-#elementInfoPlayerLeft{
-  background-image: url('../IMAGE/UI/background_infoplayer_left.png');
-  background-size: 100% 100%;  
-  
-  min-height: 50px;
-
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-
-#infoPlayerLeftText {
-  width: 50%;
-  font-size: 2em;
-  color: white;
-  margin-left: 10%;
-  text-align: left;
-}
-
-#infoPlayerLeftCharacter{
-  height: 50%;
-  width: 15%;
-  margin-left: 10%;
-  background-image: url('../IMAGE/CHARACTER/character_down.png');
-  background-repeat: none;
-  background-size: 100% 100%;  
-}
-
-#elementInfoPlayerRight{
-  background-image: url('../IMAGE/UI/background_infoplayer_right.png');
-  background-size: 100% 100%;  
-  
-  min-height: 50px;
-
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-
-#infoPlayerRightText {
-  width: 50%;
-  font-size: 2em;
-  color: white;
-  margin-right: 10%;
-  text-align: right;
-}
-
-#infoPlayerRightCharacter{
-  height: 50%;
-  width: 15%;
-  margin-right: 10%;
-  background-image: url('../IMAGE/CHARACTER/character_down.png');
-  background-repeat: none;
-  background-size: 100% 100%;  
-}
-
 .victoryPlayer{
   display: flex;
   flex-direction: column;
@@ -279,7 +315,7 @@ main {
   justify-content: center;
    
   position: absolute;
-  /*left: 0%; */
+  left: 25%;
   top: 15%;
   margin: 0 auto;
 
