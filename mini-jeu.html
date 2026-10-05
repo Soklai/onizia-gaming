@@ -5,29 +5,19 @@
     <meta charset="utf-8">
     <link href="CSS/mini_jeu.css" rel="stylesheet">
     
-    <!--<script src="JAVASCRIPT/map.js" defer></script> 
-    <script src="JAVASCRIPT/path.js" defer></script> 
-    <script src="JAVASCRIPT/spell.js" defer></script> 
-    <script src="JAVASCRIPT/player.js" defer></script> 
-    <script src="JAVASCRIPT/IA.js" defer></script>
-    <script src="JAVASCRIPT/UIManager.js" defer></script>
-    <script src="JAVASCRIPT/gameManager.js" defer></script> -->
-    <script type="module" src="JAVASCRIPT/main.js"></script>
+        <script type="module" src="JAVASCRIPT/main.js"></script>
 
-    <Title> Onijeu></Title>
+    <Title>Onizia Gaming></Title>
     
   </head>
+  
 
   <body>
-    <header>
-      
-    </header>
 
-    <nav>
-      
-    </nav>
-
-    <main>
+      <div id="debugWindow">
+        <div id="debugText">DEBUG WINDOW</div>
+        <button id="debugButton">Debug</button>
+      </div>
 
       <div id="victoryPlayer" class="victoryPlayer">
         <div id="textVictory"></div>
@@ -41,17 +31,19 @@
 
       <div id="gridTile" class="gridTile"></div>
 
-      <div class="barreInfoPlayer"> 
-        <div id="elementInfoPlayerLeft">
-          <div id="infoPlayerLeftCharacter"></div>
-          <div id="infoPlayerLeftText"></div> 
-        </div>
+      <div id="UIWindow">
 
-        <div id="elementInfoPlayerRight">
-          <div id="infoPlayerRightText"></div> 
-          <div id="infoPlayerRightCharacter"></div>
-        </div>    
-      </div>
+        <div class="barreInfoPlayer">
+          <div id="barreInfoPlayerLeft">
+            <div id="infoPlayerLeftCharacter"></div>
+            <div id="infoPlayerLeftText"></div>     
+          </div>
+           
+          <div id="barreInfoPlayerRight">
+            <div id="infoPlayerRightText"></div> 
+            <div id="infoPlayerRightCharacter"></div>                 
+          </div>
+        </div>
 
       <div id="logFight" class="logFight"></div>
 
@@ -67,14 +59,8 @@
         <!--<div id="tileHandSlot3" class="tileHand"></div>
         <div id="tileHandSlot4" class="tileHand"></div> -->
       </div>
-
+        
+    </div>
       
-      
-    </main>
-
-    <footer>
-      
-    </footer>
-    
   </body>
 </html>
