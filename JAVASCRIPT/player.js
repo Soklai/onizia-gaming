@@ -232,11 +232,11 @@ export class Player{
       
       // Mettre a jour la variable PM
       this.removePm(1);
-
+      
       // Met a jour le UI
       this.game.ui.updatePlayersInfo();
       this.characterDirection();
-
+      
       this.game.victoryPlayer(this.getPosTile());
     }  
   }
@@ -259,7 +259,6 @@ export class Player{
         this.movePosDirection(direction);
         this.characterDirection();
         this.game.victoryPlayer(this.getPosTile());
-    
       }
     }
   }
@@ -267,17 +266,17 @@ export class Player{
   characterDirection(){
     let nextPosition = this.getPosTileDirection(1);
     
-    let nextPositionTop = this.getPosTile() - 17;
-    nextPositionTop = Math.max(0, nextPositionTop);
+    let nextPositionTop = this.getPosTile() - 19;
+    nextPositionTop = Math.min(this.game.map.gridPathLevel.length, nextPositionTop);
     
-    let nextPositionDown = this.getPosTile() + 17;
+    let nextPositionDown = this.getPosTile() + 19;
     nextPositionDown = Math.min(this.game.map.gridPathLevel.length, nextPositionDown);
     
     let nextPositionLeft = this.getPosTile() - 1;
-    nextPositionLeft = Math.max(0, nextPositionLeft);
+    nextPositionLeft = Math.min(this.game.map.gridPathLevel.length, nextPositionLeft);
     
     let nextPositionRight = this.getPosTile() + 1;
-    nextPositionRight = Math.max(0, nextPositionRight);
+    nextPositionRight = Math.min(this.game.map.gridPathLevel.length, nextPositionRight);
     
     switch(nextPosition){
       case nextPositionTop:

@@ -11,8 +11,8 @@ export class GameManager{
     this.ui = new UIManager(this);
     this.ia = new IA(this);
     
-    this.player1 = new Player(this, "Soklai", 2, 102, this.map.player1Path, this.map.posTileBasePlayer1, false);
-    this.player2 = new Player(this, "Joueur 2", 2, 186, this.map.player2Path, this.map.posTileBasePlayer2, true);
+    this.player1 = new Player(this, "Soklai", 1, 134, this.map.player1Path, this.map.posTileBasePlayer1, false);
+    this.player2 = new Player(this, "Joueur 2", 1, 226, this.map.player2Path, this.map.posTileBasePlayer2, true);
       
     // Variable   
     this.turnPlayerIndex = 0;
@@ -26,7 +26,7 @@ export class GameManager{
     this.currentTurnRespawnPlayer = [2, 2];
   }
 
-  loadGame(){ // Les pré requis pour charger la partie
+  loadGame(){ // Les pré requis pour charger la partie    
     // UI
     this.ui.loadEvent();
     this.ui.addTextLogFight(" commence !", this.opponentPlayer.name, "", this.turn);
@@ -115,7 +115,7 @@ export class GameManager{
   }
 
   victoryPlayer(positionTilePlayer){
-    if(positionTilePlayer === 144){
+    if(positionTilePlayer === 180){
       if(this.currentPlayer === this.player1){
         this.ui.showVictory(0);
       }
@@ -150,8 +150,8 @@ export class GameManager{
       this.player1.setDie(false);
       this.map.gridPlayer[this.player1.getPosTile()].style.backgroundImage = "";
 
-      this.player1.setPosPath(2);
-      this.player1.setPosTile(102);
+      this.player1.setPosPath(1);
+      this.player1.setPosTile(134);
       this.player1.characterDirection();
     }
     
@@ -159,8 +159,8 @@ export class GameManager{
       this.player2.setDie(false);
       this.map.gridPlayer[this.player2.getPosTile()].style.backgroundImage = "";
       
-      this.player2.setPosPath(2);
-      this.player2.setPosTile(186);
+      this.player2.setPosPath(1);
+      this.player2.setPosTile(226);
       this.player2.characterDirection();
     }    
   }

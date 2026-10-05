@@ -2,6 +2,10 @@ export class UIManager{
   constructor(gameManagerInstance){
     // Instance
     this.game = gameManagerInstance;
+
+    // Debug window
+    this.debugText = document.getElementById("debugText");
+    this.debugButton = document.getElementById("debugButton");
     
     // Information players
     this.infoPlayer1 = document.getElementById("infoPlayerLeftText");
@@ -36,6 +40,9 @@ export class UIManager{
     this.buttonEnd.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){ this.game.endTurnPlayer(); } });
     this.buttonRestart.addEventListener("click", () => { window.location.reload() });
     this.buttonQuit.addEventListener("click", () => { window.location.replace("index.html"); });
+
+    // Debug
+    this.debugButton.addEventListener("click", () => { this.testDebugButton(); });
     
     
     this.tileHandSlot0.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.player1.useCard(0); } });
@@ -45,9 +52,17 @@ export class UIManager{
     //this.tileHandSlot4.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.currentPlayer.useCard(4); } });     
   }
 
+  showDebugText(value){
+    this.debugText.textContent = value;
+  }
+
+  testDebugButton(){
+    this.game.allPlayer[1].dieGoToBase(1);
+  }
+
   addPlayersInfo(){
-    this.infoPlayer1.textContent = this.game.player1.getName() + " | " + this.game.player1.getPm() + " pm";
-    this.infoPlayer2.textContent = this.game.player2.getName() + " | " + this.game.player2.getPm() + " pm";
+    this.infoPlayer1.textContent = this.game.player1.getName() + ": " + this.game.player1.getPm() + " pm";
+    this.infoPlayer2.textContent = this.game.player2.getName() + ": " + this.game.player2.getPm() + " pm";
   }
 
   updatePlayersInfo() {
