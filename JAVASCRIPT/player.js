@@ -2,7 +2,7 @@ import { Spell } from './spell.js';
 
 export class Player{
   
-  constructor(gameInstance, name, posPath, posTile, path, posTileBase, playerIA){
+  constructor(gameInstance, name, posPath, posTile, path, playerIA, character){
     // Instance
     this.game = gameInstance;
     this.map = this.game.map;
@@ -21,18 +21,31 @@ export class Player{
     this.deck = [Spell.attackSlow, Spell.buffSpeed, Spell.attackAttract, Spell.attackRepulse, Spell.buffAppuie];
     
     this.path = path;
-    this.posTileBase = posTileBase;
     
-    this.slotBase = [false, false, false, false];
     this.limitCardHand = 3;
     this.playerIA = playerIA;
     this.turnFinish = true;
 
     this.buff = [];
     this.deBuff = [];
+
+    this.posX = 0; 
+    this.posY = 0;
+
+    this.isWalking = false;
+    this.nodePath = [];
+    this.spellQueue = [];
+    this.forceMove = 0;
+    
+    this.character = character;
+    this.timer;
+    this.sizeCharacterHeight = 128;
+    this.sizeCharacterWidth = 64;
+    this.posCharacter;
+  
   }
 
-  // Partie Getter Setter
+  // Getter Setter
   
   getName(){
     return this.name;
@@ -110,9 +123,9 @@ export class Player{
     return this.deck;
   }
 
-  addCardDeck(index){
-    this.deck.push(this.hand[index]);
-  }
+  addCardDeck(card) {
+    this.deck.push(card);
+}
 
   removeCardDeck(index){
     this.deck.splice(index, 1);
@@ -185,27 +198,45 @@ export class Player{
       this.removeCardDeck(randomIndex);
     }
     
-    if (this.getPlayerIA() === false ) { this.game.ui.updateDeckUI(); }
+    if (this.playerIA === false ) { this.game.ui.updateHand(); }
   }
   
-  useCard(index){
+  async useCard(index){
     const spell = this.getHand()[index];
-    let echecSpell = spell.cast(this.game.currentPlayer, this.game.opponentPlayer, this.game);
+    let echecSpell = await spell.cast(this.game.currentPlayer, this.game.opponentPlayer, this.game);
     
     if(echecSpell === false){
-      this.game.ui.addTextLogFight(" lance [" + spell.name + "]", this.game.currentPlayer.getName(), "", this.game.turn);
+      this.game.ui.addTextLogFight(" lance [" + spell.name + "]", this.game.currentPlayer.getName(), "");
       this.game.ui.updatePlayersInfo();
+
+      this.spellQueue.splice(0, 1);
       this.deleteCard(index);
+
+      return false;
+    }
+    else{
+      this.game.ui.addTextLogFight(" echec du sort [" + spell.name + "]", this.game.currentPlayer.getName(), "");
+      this.game.ui.updatePlayersInfo();
+
+      this.spellQueue.splice(0, 1);
+      this.deleteCard(index);
+
+      return true;
     }
   }
   
-  deleteCard(index){
+  deleteCard(index) {
+    const card = this.hand[index];
+    
+    if (card) {
+      this.addCardDeck(card);      // Ajoute le vrai objet Spell dans le deck
+      this.removeCardHand(index);   // Supprime de la main
+    }
   
-    this.addCardDeck(index);
-    this.removeCardHand(index);
-  
-    if (this.getPlayerIA() === false ) { this.game.ui.updateDeckUI(); }
-  }  
+    if (this.getPlayerIA() === false) { 
+      this.game.ui.updateHand(); 
+    }
+  }
 
   //Partie autre
   
@@ -213,93 +244,119 @@ export class Player{
     return Math.floor(Math.random() * this.deck.length);
   }
 
-  move(direction){
-  
-    if(this.getPm() > 0){
-      let newPosPath = this.getPosPath() + direction;
-      let newPosTile = this.getPath()[newPosPath];
-      let tile = this.game.map.gridPlayer[this.getPosTile()];
-      let indexPlayer = this.game.isTilePlayer(this.getPosTileDirection(direction));
-      
-      // Sur la case suivante, vérifier si il y a un joueur
-      if(indexPlayer != null) { this.game.allPlayer[indexPlayer].dieGoToBase(indexPlayer); }    
-      
-      // Colorier l'anciènne case dans ça couleur d'origine    
-      tile.style.backgroundImage = "";
-      
-      // Mettre a jour la nouvelle position du joueur
-      this.movePosDirection(direction);
-      
-      // Mettre a jour la variable PM
-      this.removePm(1);
-      
-      // Met a jour le UI
-      this.game.ui.updatePlayersInfo();
-      this.characterDirection();
-      
-      this.game.victoryPlayer(this.getPosTile());
-    }  
-  }
-
-  spellMove(direction, force){  
-    for( let i=0; i < force; i++){
-      if(this.getPosPath() + direction > 0 ){
-        let newPosPath = this.getPosPath() + direction;
-        let newPosTile = this.getPath()[newPosPath];
-        let tile = this.game.map.gridPlayer[this.getPosTile()];
-        let indexPlayer = this.game.isTilePlayer(this.getPosTileDirection(direction));
-        
-        // Sur la case suivante, vérifier si il y a un joueur
-        if(indexPlayer != null) { this.game.allPlayer[indexPlayer].dieGoToBase(); }
-        
-        // Colorier l'anciènne case dans ça couleur d'origine    
-        tile.style.backgroundImage = "";
-        
-        // Mettre a jour la nouvelle position du joueur
-        this.movePosDirection(direction);
-        this.characterDirection();
-        this.game.victoryPlayer(this.getPosTile());
+  addNodePath(direction){
+    if(this.nodePath.length < this.getPm()){
+      if(this.nodePath.length === 0){
+        this.nodePath.push(this.getPosTileDirection(direction)); }
+      else{
+        this.nodePath.push( this.getPosTileDirection(direction + this.nodePath.length) );
       }
     }
   }
 
-  characterDirection(){
-    let nextPosition = this.getPosTileDirection(1);
-    
-    let nextPositionTop = this.getPosTile() - 19;
-    nextPositionTop = Math.min(this.game.map.gridPathLevel.length, nextPositionTop);
-    
-    let nextPositionDown = this.getPosTile() + 19;
-    nextPositionDown = Math.min(this.game.map.gridPathLevel.length, nextPositionDown);
-    
-    let nextPositionLeft = this.getPosTile() - 1;
-    nextPositionLeft = Math.min(this.game.map.gridPathLevel.length, nextPositionLeft);
-    
-    let nextPositionRight = this.getPosTile() + 1;
-    nextPositionRight = Math.min(this.game.map.gridPathLevel.length, nextPositionRight);
-    
-    switch(nextPosition){
-      case nextPositionTop:
-        this.game.map.gridPlayer[this.getPosTile()].style.backgroundImage = "url('IMAGE/CHARACTER/character_top.png')";
-        break;
+  addSpellQueue(index){
+    this.spellQueue.push(index);
+  }
 
-      case nextPositionDown:
-        this.game.map.gridPlayer[this.getPosTile()].style.backgroundImage = "url('IMAGE/CHARACTER/character_down.png')";
-        break;
+  async useSpellQueue(){
+    this.useCard(this.spellQueue[0]);
+    
+    await this.wait(1000); 
+  }
 
-      case nextPositionLeft:
-        this.game.map.gridPlayer[this.getPosTile()].style.backgroundImage = "url('IMAGE/CHARACTER/character_left.png')";
-        break;
+  async wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-      case nextPositionRight:
-        this.game.map.gridPlayer[this.getPosTile()].style.backgroundImage = "url('IMAGE/CHARACTER/character_right.png')";
-        break;
+  async move(direction){
+    // On repète move via forceMove
+    for(let i = 0; i < this.forceMove; i++){
+      // On check si il reste des PM
+      if(this.getPm() > 0 && this.isWalking === false){
+        this.isWalking = true;
+      
+        let newPosPath = this.getPosPath() + direction;
+        let newPosTile = this.getPath()[newPosPath];
+        let tile = this.game.map.gridPlayer[this.getPosTile()];
+        let indexPlayer = this.game.isTilePlayer(this.getPosTileDirection(direction));
+      
+        // Sur la case suivante, vérifier si il y a un joueur
+        if(indexPlayer != null) { this.game.diePlayerGoToBase(indexPlayer); }    
+      
+        // Met a jour la nouvelle position du joueur
+        await this.moveAnimation(direction);
+
+        this.posPath = this.getPosPathDirection(direction);
+        this.removePm(1);
+
+        this.game.ui.updatePlayersInfo();
+        this.game.victoryPlayer(this.getPosTile());
+
+        this.character.style.zIndex = 99 + this.getPosTile();
+        this.isWalking = false;   
+      }  
+    }
+    // Une fois finis on reset l'animation
+    this.character.classList.remove(`is-walking`);
+    this.forceMove = 0;
+  }
+
+  async spellMove(direction, force){
+    for(let i = 0; i < force; i++){
+      if(this.getPosPath() + direction >= 0){
+        let newPosPath = this.getPosPath() + direction;
+        let newPosTile = this.getPath()[newPosPath];
+        let tile = this.game.map.gridPlayer[this.getPosTile()];
+        let indexPlayer = this.game.isTilePlayer(this.getPosTileDirection(direction));
+          
+        if(indexPlayer != null) { this.game.diePlayerGoToBase(indexPlayer); }    
+        
+        await this.spellMoveAnimation(direction);
+  
+        this.game.ui.updatePlayersInfo();
+        this.game.victoryPlayer(this.getPosTile());   
+      }
+      this.character.style.zIndex = 99 + this.getPosTile();
+      this.character.classList.remove(`is-walking`);
     }
   }
+  
+  async spellMoveAnimation(direction) {
+    this.characterDirection(direction);
+    this.character.classList.add(`is-walking`);
+
+    this.goPos(this.getPosTileDirection(direction));
+    this.posPath = this.getPosPathDirection(direction);
+      
+    await this.wait(400);
+  }
+
+  async wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  characterDirection(direction) {
+    let dir = ``;
+    const currentTile = this.getPosTile();
+    const nextTile = this.getPosTileDirection(direction);
+
+    this.character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`);
+
+    if (currentTile - 19 === nextTile)  dir = 'up';
+    if (currentTile + 19 === nextTile)  dir = 'down';
+    if (currentTile - 1 === nextTile)  dir = 'left';
+    if (currentTile + 1 === nextTile)  dir = 'right';
+
+    this.character.classList.add(`dir-${dir}`);
+  }
+
+  async moveAnimation(direction) {
+    this.characterDirection(direction);
+    this.character.classList.add(`is-walking`);
+
+    this.goPos(this.getPosTileDirection(direction));
     
-  movePosDirection(direction){
-    this.setPosPath( (this.getPosPath() + direction) );
-    this.setPosTile( this.getPath()[this.getPosPath()] );
+    await this.wait(400);  
   }
 
   getPosPathDirection(direction){
@@ -316,38 +373,41 @@ export class Player{
     return this.getPath[this.getPosPath()];
   }
 
-  dieGoToBase(index){
-  
-    // On déclare que le joueur est mort
-    this.die = true;
-    this.game.currentTurnRespawnPlayer[index] = 3;
-      
-    // On remet la couleur d'origine
-    this.game.map.gridPlayer[this.getPosTile()].style.backgroundImage = "";
-    
-    // Partie 3 On déplace le joueur,
-    // Colorie la case d'arriver a la couleur du joueur,
-    // Sauvegarde la couleur de la case de la base cible
-    this.goSlotBase(index);
-
+  getPosXY(posTile){
+    return this.game.map.gridTileLevel0[posTile].getBoundingClientRect();
   }
 
-  goSlotBase(index){
-  // Partie 1 Trouver un slot disponible dans la base
-    for( let i = 0; i < 4; i++){
-      if (this.slotBase[i] === false ) {
-        
-        // Remplir le slot par true
-        this.slotBase[i] = true;
-        
-        // Met a jour la position du joueur Path & Tile
-        this.setPosTile(this.getPosTileBase()[i]);
-        
-        if(index === 0){ this.game.map.gridPlayer[this.getPosTile()].style.backgroundImage = this.getBackgroundImage(2);}
-        else{ this.game.map.gridPlayer[this.getPosTile()].style.backgroundImage = this.getBackgroundImage(0); }
-        
-        break;
-      }
+  goPos(posTile){
+    //const targetTileIndex = this.getPosTileDirection(direction);
+    const grid = this.game.map.gridTile.getBoundingClientRect();
+    const tile = this.getPosXY(posTile); 
+    
+    // Calcul de la position CIBLE centrée sur la tuile
+    const targetX = (tile.left - grid.left) + (tile.width / 2) - (this.sizeCharacterWidth / 2);
+    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this.sizeCharacterHeight / 2);
+  
+    // Déterminer la direction ('up', 'down', 'left', ou 'right')
+    //const dir = this.characterDirection(1);
+  
+    // Déplacement CSS
+    this.character.style.left = `${targetX}px`;
+    this.character.style.top = `${targetY}px`;
+    this.setPosTile(posTile);
+  }
+
+  getPosXYDirection(dir){
+    const newTileDir = this.getPosTileDirection(dir);
+    const newPos = newTileDir.getBoundingClientRect();
+    return newPos;   
+  }
+
+  getSpellIndexByName(name){
+    const hand = this.getHand();
+    
+    for(let i = 0; i < hand.length; i++){
+      if(hand[i].name === name) { return i; }
     }
-  } 
+    
+    return null;
+  }
 }

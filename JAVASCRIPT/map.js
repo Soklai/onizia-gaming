@@ -130,13 +130,13 @@ export class Map {
     this.maxTileGrid = 361;
     
     // Player 1 Map
-    this.posTileBasePlayer1 = [59, 60, 61, 62];
+    this.posSlotBasePlayer1 = [59, 60, 61, 62];
     
     // Player 2 Map
-    this.posTileBasePlayer2 = [298, 299, 300, 301];
+    this.posSlotBasePlayer2 = [298, 299, 300, 301];
     
     // Partie All
-    this.posTileBase = [this.posTileBasePlayer1, this.posTileBasePlayer2 ];
+    this.allPosSlotBasePlayer = [this.posSlotBasePlayer1, this.posSlotBasePlayer2 ];
     this.allPosWall = [134, 140, 26, 30, 144, 150, 226, 220, 334, 330, 216, 210];
     
     // Player Path
@@ -209,17 +209,17 @@ export class Map {
       this.gridTileLevel0[i].style.backgroundImage = this.backgroundUrl[this.backgroundIndexLevel0[i]];
     } 
 
-    // Grid 1 Escalier
+    // Grid Sol +1
     for( let i= 0; i < this.gridTileLevel1.length; i++){
       this.gridTileLevel1[i].style.backgroundImage = this.backgroundUrl[this.backgroundIndexLevel1[i]];
     }
     
-    // Grid 2
+    // Grid Sol +2
     for( let i= 0; i < this.gridTileLevel2.length; i++){
       this.gridTileLevel2[i].style.backgroundImage = this.backgroundUrl[this.backgroundIndexLevel2[i]];
     }
     
-    // Grid 3
+    // Grid Sol +3
     for( let i= 0; i < this.gridTileLevel3.length; i++){
       this.gridTileLevel3[i].style.backgroundImage = this.backgroundUrl[this.backgroundIndexLevel3[i]];
       //this.gridTileLevel3[i].textContent = i;

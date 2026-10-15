@@ -1,48 +1,49 @@
 export class IA{
   constructor(gameInstance){
     this.game = gameInstance;
-    
+    this.isEndTurn = false;
+    this.phase = "";
   }
 
-  turnPlayerIA(){  
-    //Partie 0 Verifie si l'ia est morte
-    if(this.game.currentPlayer.getDie() === false /*&& player2.getTurnFinish() === false*/){
-
-      // Partie 1 Appel le modele d'ia
-      //this.modelIAFullMove();
-      this.modelIAEasy();
-      
-      // Partie 2 Appel la fin de tour de l'ia
-      this.game.ui.addTextLogFight(" Passe sont tour ", this.game.currentPlayer.getName(), "", this.game.turn);                 
-    } 
-    
-    this.game.endTurnPlayer();
+  async turnPlayerIA() {
+    if (this.game.currentPlayer.getDie() === false) {
+      await this.modelIAEasy();
+      this.game.endTurnPlayer();
+    }
+    else {
+      this.game.endTurnPlayer();
+    }         
+  }
+  
+  async modelIAEasy(){
+    await this.spellPrioCast();
+    await this.move(1, true);
   }
 
-  spellPriorityCast() {
-    let isAppuie = false;
+  async spellPrioCast(){
+    let isAppuie = true;
     let posCaster = this.game.currentPlayer.getPosTile();
     let posTargetAttract = this.game.opponentPlayer.getPosTileDirection(-2);
+
+    this.game.currentPlayer.spellQueue.length = 0;
     
-    // Si le sort Célérité existe dans la main on le joue en priorité de 1
-    const indexSpellSpeed = this.getSpellIndexByName("Célérité");  
-    if(indexSpellSpeed != null){ this.game.currentPlayer.useCard(indexSpellSpeed); }
-  
-    // Si le sort Attraction existe dans la main on le joue en priorité de 2
-    const indexSpellAttract = this.getSpellIndexByName("Attraction"); 
-    if(indexSpellAttract != null && posTargetAttract !== posCaster){ this.game.currentPlayer.useCard(indexSpellAttract)}
-  
-    // Si le sort Appuie existe on le joue avant et après un mouvement en priorité de 3
-    const indexSpellAppuie = this.getSpellIndexByName("Appuie");
+    // Before Appuie
+    const indexSpellSpeed = this.game.currentPlayer.getSpellIndexByName("Célérité"); 
+    if(indexSpellSpeed != null){ await this.game.currentPlayer.useCard(indexSpellSpeed); }
     
-    if(indexSpellAppuie != null){
-      while(0 < this.game.currentPlayer.getPm()){
-        
-        if(isAppuie === false) { this.game.currentPlayer.useCard(indexSpellAppuie); isAppuie = true; }
-        this.game.currentPlayer.move(1);
-        if(isAppuie === false) { this.game.currentPlayer.useCard(indexSpellAppuie); isAppuie = true; }
-      }    
-    }        
+    const indexSpellAttract = this.game.currentPlayer.getSpellIndexByName("Attraction"); 
+    if(indexSpellAttract != null && this.game.opponentPlayer.getDie() === false && posTargetAttract !== posCaster){ await this.game.currentPlayer.useCard(indexSpellAttract); }
+
+    const indexSpellAppuie = this.game.currentPlayer.getSpellIndexByName("Appuie");
+    if(indexSpellAppuie != null){ await this.game.currentPlayer.useCard(indexSpellAppuie); }
+    
+    // After Appuie
+    const indexSpellRal = this.game.currentPlayer.getSpellIndexByName("Ralentissement"); 
+    if(indexSpellRal != null){ await this.game.currentPlayer.useCard(indexSpellRal); }
+
+    const indexSpellRepul = this.game.currentPlayer.getSpellIndexByName("Répulsion"); 
+    if(indexSpellRepul != null){ await this.game.currentPlayer.useCard(indexSpellRepul); }
+  
   }
 
   spellOrderCast() {
@@ -71,54 +72,20 @@ export class IA{
   }
 }
 
-  modelIAEasy(){
-    // Si le joueur opposer est encore vivant on autorise les sorts d'attack
-    if(this.game.opponentPlayer.getDie() === false){
-      // Lance certain sort en priorité en fonction de l'ia
-      this.spellPriorityCast();
-
-      // Utilise les sorts restant par ordre logique buff => debuff => move
-      this.spellOrderCast();
-    }
-    else{
-      let isAppuie = false;
-      
-      // Si le sort Célérité existe dans la main on le joue en priorité de 1
-      const indexSpellSpeed = this.getSpellIndexByName("Célérité");
-
-      // Si le sort Appuie existe on le joue avant et après un mouvement en priorité de 3
-      const indexSpellAppuie = this.getSpellIndexByName("Appuie"); 
-
-      if(indexSpellAppuie != null){
-        while(0 < this.game.currentPlayer.getPm()){
-        
-          if(isAppuie === false) { this.game.currentPlayer.useCard(indexSpellAppuie); isAppuie = true; }
-          this.game.currentPlayer.move(1);
-          if(isAppuie === false) { this.game.currentPlayer.useCard(indexSpellAppuie); isAppuie = true; }
-        }    
-      }  
-    }
+  modelIAFullMove(){
+    this.move(1, true);
+  }
+ 
+  async move(dir, repeat) {   
+    if(repeat === true){ this.game.currentPlayer.forceMove = this.game.currentPlayer.getPm()}      
+    else { this.game.currentPlayer.forceMove = 1; }
     
-  
-    // Fait avancer le joueur si il reste des PM
-    while(0 < this.game.currentPlayer.getPm()){
-      this.game.currentPlayer.move(1);
-    }    
+    await this.game.currentPlayer.move(dir);
   }
 
-  modelIAFullMove() {
-    while(0 < this.game.currentPlayer.getPm()){
-      this.game.currentPlayer.move(1);
-    }
-  }
-
-  getSpellIndexByName(spellName) {
-    const hand = this.game.currentPlayer.getHand();
-    
-    // .findIndex() cherche l'élément dont le nom correspond exactement à spellName
-    const index = hand.findIndex(spell => spell?.name === spellName);
-  
-    // Renvoie l'index si le sort est trouvé, sinon null
-    return index !== -1 ? index : null;
+  async wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
+
+

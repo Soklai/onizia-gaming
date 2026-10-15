@@ -27,7 +27,7 @@ export class Spell {
     -2,
     0,
     "-pm",
-    (caster, target, spell) => { 
+    async (caster, target, spell) => { 
       if(target.getDie() === false){
         target.removePm(2);
         target.addDeBuff(spell.effect);
@@ -47,7 +47,7 @@ export class Spell {
     2,
     0,
     "+pm",
-    (caster, target, spell) => { caster.addPm(2); caster.addBuff(spell.effect); return false; } );
+    async (caster, target, spell) => { caster.addPm(2); caster.addBuff(spell.effect); return false; } );
   
   static attackAttract = new Spell(
     "Attraction",
@@ -57,9 +57,9 @@ export class Spell {
     2,
     -1,
     "",
-    (caster, target, spell) => {
+    async (caster, target, spell) => {
       if(target.getDie() === false){
-        target.spellMove(-1, spell.force);
+        await target.spellMove(-1, spell.force);
         return false;
       }
       else{
@@ -75,9 +75,9 @@ export class Spell {
     2,
     1,
     "",
-    (caster, target, spell) => {
+    async (caster, target, spell) => {
       if(target.getDie() === false){
-        target.spellMove(1, spell.force);
+        await target.spellMove(1, spell.force);
         return false; 
       }
       else{
@@ -93,11 +93,11 @@ export class Spell {
     5,
     1,
     "",
-    (caster, target, spell) => 
+    async (caster, target, spell) => 
       {
         for( let i=0; i < caster.game.map.allPosWall.length; i++){
           if(caster.getPosTile() === caster.game.map.allPosWall[i]){
-            caster.spellMove(1, spell.force); 
+            await caster.spellMove(1, spell.force); 
             return false;
           }
         }

@@ -3,28 +3,33 @@ export class UIManager{
     // Instance
     this.game = gameManagerInstance;
 
-    // Debug window
+    // Element Debug window
+    this.debugWindow = document.getElementById("debugWindow");
     this.debugText = document.getElementById("debugText");
     this.debugButton = document.getElementById("debugButton");
+
+    // Character
+    this.character0 = document.getElementById("character0");
+    this.character1 = document.getElementById("character1");
     
-    // Information players
+    // Element Information players
     this.infoPlayer1 = document.getElementById("infoPlayerLeftText");
     this.infoPlayer2 = document.getElementById("infoPlayerRightText");
 
-    // Button
+    // Element Button
     this.buttonMove = document.getElementById("buttonMove");
     this.buttonEnd = document.getElementById("buttonEnd");
     this.buttonRestart = document.getElementById("buttonRestart");
     this.buttonQuit = document.getElementById("buttonQuit");
     
-    // Tile hand slot
+    // Element Tile hand slot
     this.tileHandSlot0 = document.getElementById("tileHandSlot0");
     this.tileHandSlot1 = document.getElementById("tileHandSlot1");
     this.tileHandSlot2 = document.getElementById("tileHandSlot2");
     //this.tileHandSlot3 = document.getElementById("tileHandSlot3");
     //this.tileHandSlot4 = document.getElementById("tileHandSlot4");
 
-    // Victory
+    // Element Victory
     this.victoryPlayer = document.getElementById("victoryPlayer");
     this.textVictory = document.getElementById("textVictory");
     
@@ -35,15 +40,22 @@ export class UIManager{
     this.numberLineLog = 0;
   }
 
+  // Load all event
   loadEvent(){
-    this.buttonMove.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){ this.game.player1.move(1); } } );
+    this.buttonMove.addEventListener("click", () => { 
+      if(this.game.player1.getTurnFinish() === false &&
+        this.game.player1.forceMove < this.game.player1.getPm()){
+        this.game.player1.forceMove++;
+        if(this.game.player1.isWalking === false){ this.game.player1.move(1, 1);}
+      } 
+    } );
+    
     this.buttonEnd.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){ this.game.endTurnPlayer(); } });
     this.buttonRestart.addEventListener("click", () => { window.location.reload() });
     this.buttonQuit.addEventListener("click", () => { window.location.replace("index.html"); });
 
     // Debug
     this.debugButton.addEventListener("click", () => { this.testDebugButton(); });
-    
     
     this.tileHandSlot0.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.player1.useCard(0); } });
     this.tileHandSlot1.addEventListener("click", () => { if(this.game.player1.getTurnFinish()=== false){this.game.player1.useCard(1); } });
@@ -52,18 +64,20 @@ export class UIManager{
     //this.tileHandSlot4.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.currentPlayer.useCard(4); } });     
   }
 
+  // Debug window
   showDebugText(value){
     this.debugText.textContent = value;
-  }
+  } // Show text variable debug
 
   testDebugButton(){
-    this.game.allPlayer[1].dieGoToBase(1);
-  }
+    // function
+  } // Test function debug
 
+  // Player info
   addPlayersInfo(){
     this.infoPlayer1.textContent = this.game.player1.getName() + ": " + this.game.player1.getPm() + " pm";
     this.infoPlayer2.textContent = this.game.player2.getName() + ": " + this.game.player2.getPm() + " pm";
-  }
+  } // Add info player
 
   updatePlayersInfo() {
   // .join(" | ") rassemble les textes avec le séparateur
@@ -80,9 +94,10 @@ export class UIManager{
   this.infoPlayer2.textContent = this.game.player2.getName() + ": " + this.game.player2.getPm() + " pm";
 
   
-}
-
-  addTextLogFight(text, caster, target, turn) {
+  } // Update info player
+  
+  // Log Fight
+  addTextLogFight(text, caster, target) {
   
   // 1. Si on a atteint le max, on retire l'élément le plus ancien (index 0)
   if (this.tabTextLogFight.length >= this.maxLineLog) {
@@ -94,51 +109,31 @@ export class UIManager{
   
   // 3. On joint les éléments avec des sauts de ligne pour l'affichage
   this.logFight.textContent = this.tabTextLogFight.join("\n");
-}
+} // Add line text log fight
 
   removeLineTextLogFight(index){
     this.tabTextLogFight.splice(index, 1);
+  } // Remove index line text l9g fight
+
+  updateHand() {
+    const hand = this.game.player1.getHand(); // On garde player1
+    const slots = [this.tileHandSlot0, this.tileHandSlot1, this.tileHandSlot2];
+
+    for (let i = 0; i < slots.length; i++) {
+      const card = hand[i];
+
+        if (card && card.icone) {
+          slots[i].style.backgroundImage = card.icone;
+          slots[i].hidden = false;
+        }
+        else {
+          slots[i].hidden = true;
+          slots[i].style.backgroundImage = "none";
+        }
+      }
   }
 
-  updateDeckUI(){ 
-    // Slot 0
-    if(this.game.player1.getHand()[0] != null) {
-      //this.tileHandSlot0.textContent = this.game.player1.getHand()[0].name;
-      this.tileHandSlot0.style.backgroundImage = this.game.player1.getHand()[0].icone;
-      this.tileHandSlot0.hidden = false;
-    }
-    else{
-      this.tileHandSlot0.textContent = "";
-      this.tileHandSlot0.hidden = true;
-      
-    }
-    
-    // Slot 1
-    if(this.game.player1.getHand()[1] != null) {
-      //this.tileHandSlot1.textContent = this.game.player1.getHand()[1].name;
-      this.tileHandSlot1.style.backgroundImage = this.game.player1.getHand()[1].icone;
-      
-      this.tileHandSlot1.hidden = false;
-    }
-    else{
-      this.tileHandSlot1.textContent = "";
-      this.tileHandSlot1.hidden = true;
-      
-    }
-    
-    // Slot 2
-    if(this.game.player1.getHand()[2] != null) {
-      //this.tileHandSlot2.textContent = this.game.player1.getHand()[2].name;
-      this.tileHandSlot2.style.backgroundImage = this.game.player1.getHand()[2].icone;
-      this.tileHandSlot2.hidden = false;
-    }
-    else{
-      this.tileHandSlot2.textContent = "";
-      this.tileHandSlot2.hidden = true;
-      
-    }
-  }
-
+  // Victory / Game over
   showVictory(indexPlayer){
     this.victoryPlayer.classList.remove("hidden");
     
@@ -150,5 +145,5 @@ export class UIManager{
       this.textVictory.textContent = "Game over !";
       
     }
-  }
+  } // Show window Victory / Game over
 }
