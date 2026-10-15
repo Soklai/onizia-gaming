@@ -1,0 +1,239 @@
+#UIWindow{
+  display: grid;
+  grid-template-columns: 1;
+  align-content: start;
+  place-items: center;
+  
+  background-image: url('../IMAGE/UI/background_ui.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  
+  width: 60dvh;
+  height: 55dvh;
+}
+
+.barreInfoPlayer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  
+  width: 80%;
+  
+  gap: 0px;
+  margin-top: 10%;
+}
+
+#barreInfoPlayerLeft{
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: left;
+  align-items: center;
+}
+
+#barreInfoPlayerRight{
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: right;
+  align-items: center;  
+}
+
+#infoPlayerLeftText {
+  width: 100%;
+  height: 50px;
+  
+  font-size: 2em;
+  color: black;
+  margin-left: 10%;
+  
+  text-align: left;
+  justify-content: center;
+}
+
+#infoPlayerLeftCharacter{  
+  height: 65px;
+  width: 65px;
+  margin-left: 10%;
+  background-image: url('../IMAGE/CHARACTER/character_down.png');
+  background-repeat: none;
+  background-size: 100% 100%;  
+}
+
+#infoPlayerRightText {
+  width: 100%;
+  height: 50px;
+  
+  font-size: 2em;
+  color: black;
+  margin-right: 10%;
+  text-align: right;
+}
+
+#infoPlayerRightCharacter{
+  height: 65px;
+  width: 65px;
+  margin-right: 10%;
+  background-image: url('../IMAGE/CHARACTER/character_down.png');
+  background-repeat: none;
+  background-size: 100% 100%;  
+}
+
+.logFight{  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  font-size: 2em;
+  text-align: center;
+
+  width: 80%;
+  height: 250px;
+  white-space: pre-line;
+
+  border: 1px black solid;
+  margin-top: 20px;
+}
+
+.barreAction{
+  position: relative;
+  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  width: 80%;
+  height: 80px;
+  
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.buttonAction{  
+  background-size: 100% 100%;       /* ou 100% 100% */
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonMove{
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  font-size: 3em;
+}
+
+#buttonMove:active {
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+  }
+
+#buttonEnd{
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  font-size: 3em;
+}
+
+#buttonEnd:active{
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+}
+
+.gridHand{
+  position: relative;
+  
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 45dvh;
+  
+  margin: 0 auto;
+  gap: 30px;
+  
+  min-height: 150px;
+  margin-top: 40px;
+}
+
+.tileHand{
+  border: 1px black solid;
+  border-radius: 5px;
+
+  background-size: 100% 100%;       /* ou 100% 100% */
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+}
+
+.victoryPlayer{
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  justify-content: center;
+   
+  position: absolute;
+  left: 25%;
+  top: 15%;
+  margin: 0 auto;
+
+  z-index: 9999;
+  background-image: url('../IMAGE/UI/background_victory.png');
+  background-size: 100% 100%;
+
+  width: 60%;
+  height: 20%;
+}
+
+.hidden{
+  display: none;
+}
+
+.barreButtonVictory{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 80%;
+  
+  min-height: 100px;
+  gap: 30px;
+}
+
+#buttonRestart{ 
+  height: 100%;
+  font-size: 3em;
+  
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonRestart:active{ 
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonQuit{ 
+  height: 100%;
+  font-size: 3em;
+  
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#buttonQuit:active{  
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+  background-size: 100% 100%;
+  background-position: center;  /* Centre l'image dans la case */
+  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-color: transparent;
+  border: none;
+}
+
+#textVictory{
+  margin-bottom: 50px;
+  font-size: 5em;
+}

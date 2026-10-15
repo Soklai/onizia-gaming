@@ -1,0 +1,37 @@
+.character {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+
+  top: 50px;
+  left: 50px;
+
+  z-index: 1000;
+  
+  background-image: url('../IMAGE/CHARACTER/character_walk.png');
+  background-repeat: no-repeat; 
+  /* On initialise la position sans fixer l'axe Y */
+  background-position-x: 0px;
+  
+  transform: scale(1.25);
+  transform-origin: bottom center;
+  
+  image-rendering: pixelated;
+  transition: left 0.4s linear, top 0.4s linear;
+}
+
+/* 1. Décalage Y par direction (associé à l'ID #character pour être prioritaire) */
+.character.dir-up    { background-position-y: 0px; }
+.character.dir-left  { background-position-y: -64px; }
+.character.dir-down  { background-position-y: -128px; }
+.character.dir-right { background-position-y: -192px; }
+
+/* 2. Animation de marche (ajustée à 0.4s pour coller au déplacement) */
+.character.is-walking {
+  animation: walk-animation 0.4s steps(8) infinite;
+}
+
+@keyframes walk-animation {
+  from { background-position-x: 0px; }
+  to   { background-position-x: -512px; } /* 8 frames * 64px = 512px */
+}
