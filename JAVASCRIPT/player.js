@@ -203,7 +203,7 @@ export class Player{
   }
   
   async useCard(index){
-    if(this.isCast === false){
+    if(this.isCast === false && this.isWalking === false){
       
       this.isCast = true;
       const spell = this.getHand()[index];
@@ -279,7 +279,7 @@ export class Player{
     // On repète move via forceMove
     for(let i = 0; i < this.forceMove; i++){
       // On check si il reste des PM
-      if(this.getPm() > 0 && this.isWalking === false){
+      if(this.getPm() > 0 && this.isWalking === false && this.isCast === false){
         this.isWalking = true;
       
         let newPosPath = this.getPosPath() + direction;
