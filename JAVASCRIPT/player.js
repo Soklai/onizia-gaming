@@ -33,6 +33,7 @@ export class Player{
     this.posY = 0;
 
     this.isWalking = false;
+    this.isCast = false;
     this.nodePath = [];
     this.spellQueue = [];
     this.forceMove = 0;
@@ -202,26 +203,32 @@ export class Player{
   }
   
   async useCard(index){
-    const spell = this.getHand()[index];
-    let echecSpell = await spell.cast(this.game.currentPlayer, this.game.opponentPlayer, this.game);
+    if(this.isCast === false){
+      
+      this.isCast = true;
+      const spell = this.getHand()[index];
+      let echecSpell = await spell.cast(this.game.currentPlayer, this.game.opponentPlayer, this.game);
     
-    if(echecSpell === false){
-      this.game.ui.addTextLogFight(" lance [" + spell.name + "]", this.game.currentPlayer.getName(), "");
-      this.game.ui.updatePlayersInfo();
+      if(echecSpell === false){
+        this.game.ui.addTextLogFight(" lance [" + spell.name + "]", this.game.currentPlayer.getName(), "");
+        this.game.ui.updatePlayersInfo();
 
-      this.spellQueue.splice(0, 1);
-      this.deleteCard(index);
+        this.spellQueue.splice(0, 1);
+        this.deleteCard(index);
+        this.isCast = false;
 
-      return false;
-    }
-    else{
-      this.game.ui.addTextLogFight(" echec du sort [" + spell.name + "]", this.game.currentPlayer.getName(), "");
-      this.game.ui.updatePlayersInfo();
+        return false;
+      }
+      else{
+        this.game.ui.addTextLogFight(" echec du sort [" + spell.name + "]", this.game.currentPlayer.getName(), "");
+        this.game.ui.updatePlayersInfo();
 
-      this.spellQueue.splice(0, 1);
-      this.deleteCard(index);
-
-      return true;
+        this.spellQueue.splice(0, 1);
+        this.deleteCard(index);
+        this.isCast = false;
+        
+        return true;
+      }      
     }
   }
   

@@ -57,11 +57,11 @@ export class UIManager{
     // Debug
     this.debugButton.addEventListener("click", () => { this.testDebugButton(); });
     
-    this.tileHandSlot0.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.player1.useCard(0); } });
-    this.tileHandSlot1.addEventListener("click", () => { if(this.game.player1.getTurnFinish()=== false){this.game.player1.useCard(1); } });
-    this.tileHandSlot2.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.player1.useCard(2); } });
-    //this.tileHandSlot3.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.currentPlayer.useCard(3); } });
-    //this.tileHandSlot4.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){this.game.currentPlayer.useCard(4); } });     
+    this.tileHandSlot0.addEventListener("click", async () => { if(this.game.player1.getTurnFinish() === false && this.game.player1.isCast === false){await this.game.player1.useCard(0); } });
+    this.tileHandSlot1.addEventListener("click", async () => { if(this.game.player1.getTurnFinish()=== false && this.game.player1.isCast === false){await this.game.player1.useCard(1); } });
+    this.tileHandSlot2.addEventListener("click", async () => { if(this.game.player1.getTurnFinish() === false && this.game.player1.isCast === false){await this.game.player1.useCard(2); } });
+    //this.tileHandSlot3.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){await this.game.currentPlayer.useCard(3); } });
+    //this.tileHandSlot4.addEventListener("click", () => { if(this.game.player1.getTurnFinish() === false){await this.game.currentPlayer.useCard(4); } });     
   }
 
   // Debug window
