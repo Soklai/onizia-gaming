@@ -44,14 +44,14 @@
   height: 64px;
   z-index: 1000;
 
-  top: 128px;
+  top: 64px;
   left: 0%;
   
   background-repeat: no-repeat; 
-  background-position: 0px 0px;
+  background-position: 0px 0px; 
   
-  transform: scale(5);
-  transform-origin: bottom center;
+  transform: scale(3);
+  transform-origin: bottom center; 
   
   image-rendering: pixelated;
   overflow: hidden;
