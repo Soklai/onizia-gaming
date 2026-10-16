@@ -35,3 +35,35 @@
   from { background-position-x: 0px; }
   to   { background-position-x: -512px; } /* 8 frames * 64px = 512px */
 }
+
+.animEffect {
+  display: none;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  z-index: 1000;
+
+  top: 128px;
+  left: 0%;
+  
+  background-repeat: no-repeat; 
+  background-position: 0px 0px;
+  
+  transform: scale(5);
+  transform-origin: bottom center;
+  image-rendering: pixelated;
+}
+
+.animEffect.is-spell {
+  animation: spell-animation 0.6s steps(4) infinite;
+}
+
+@keyframes spell-animation {
+  0% { 
+    background-position: 0px 0px; 
+  }
+  100% { 
+    /* On décale uniquement sur la hauteur pour parcourir les 4 lignes (-256px) */
+    background-position: 0px -256px; 
+  }
+}
