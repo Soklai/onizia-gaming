@@ -39,6 +39,7 @@
 .animEffect {
   display: none;
   position: absolute;
+  
   width: 64px;
   height: 64px;
   z-index: 1000;
@@ -51,7 +52,9 @@
   
   transform: scale(5);
   transform-origin: bottom center;
+  
   image-rendering: pixelated;
+  overflow: hidden;
 }
 
 .animEffect.is-spell {
