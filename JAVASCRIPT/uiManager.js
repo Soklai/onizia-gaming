@@ -11,7 +11,11 @@ export class UIManager{
     // Character
     this.character0 = document.getElementById("character0");
     this.character1 = document.getElementById("character1");
-    
+
+    // Spell
+    this.animEffect0 = document.getElementById("animEffect0");
+    this.animEffect1 = document.getElementById("animEffect1");
+     
     // Element Information players
     this.infoPlayer1 = document.getElementById("infoPlayerLeftText");
     this.infoPlayer2 = document.getElementById("infoPlayerRightText");
@@ -70,7 +74,7 @@ export class UIManager{
   } // Show text variable debug
 
   testDebugButton(){
-    // function
+    this.game.player1.spellAnimation();
   } // Test function debug
 
   // Player info

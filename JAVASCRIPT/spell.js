@@ -1,13 +1,14 @@
 export class Spell {
-  constructor(name, description, icone, type, force, direction, effect, attack){
+  constructor(name, description, icone, animation, targetAnim, force, direction, effect, attack){
     this.name = name;
     this.description = description;
     this.icone = icone;
-    this.type = type;
+    this.animation = animation;
+    this.targetAnim = targetAnim;
     this.force = force;
     this.direction = direction;
     this.effect = effect;
-    this.attack = attack;    
+    this.attack = attack;
   }
 
   cast(caster, target){
@@ -23,14 +24,18 @@ export class Spell {
     "Ralentissement",
     "Retire 2 point de mouvement a la cible pendant 1 tour.",
     "url('IMAGE/SPELL/background_spell_ralentissement.jpg')",
-    "debuff",
+    "url('IMAGE/SPELL/slow_effect.png')",
+    "Opponent",
     -2,
     0,
     "-pm",
     async (caster, target, spell) => { 
       if(target.getDie() === false){
         target.removePm(2);
-        target.addDeBuff(spell.effect);
+        await caster.spellAnimation(spell);
+        //target.addDeBuff(spell.effect);
+
+        
         return false;
       }
       else{
@@ -43,22 +48,31 @@ export class Spell {
     "Célérité",
     "Ajoute 2 point de mouvement a la cible pendant 1 tour.",
     "url('IMAGE/SPELL/background_spell_celerite.jpg')",
-    "buff",
+    "url('IMAGE/SPELL/haste_effect.png')",
+    "Current",
     2,
     0,
     "+pm",
-    async (caster, target, spell) => { caster.addPm(2); caster.addBuff(spell.effect); return false; } );
+    async (caster, target, spell) => { 
+      caster.addPm(2);
+      caster.addBuff(spell.effect);
+
+      await caster.spellAnimation(spell);
+      return false;
+    } );
   
   static attackAttract = new Spell(
     "Attraction",
     "La cible recule de 2 cases.",
     "url('IMAGE/SPELL/background_spell_attraction.jpg')",
-    "move",
+    "url('IMAGE/SPELL/fear_effect.png')",
+    "Opponent",
     2,
     -1,
     "",
     async (caster, target, spell) => {
       if(target.getDie() === false){
+        caster.spellAnimation(spell);
         await target.spellMove(-1, spell.force);
         return false;
       }
@@ -71,12 +85,14 @@ export class Spell {
     "Répulsion",
     "Avance la cible de 2 cases.",
     "url('IMAGE/SPELL/background_spell_repulsion.jpg')",
-    "move",
+    "url('IMAGE/SPELL/shock_effect.png')",
+    "Opponent",
     2,
     1,
     "",
     async (caster, target, spell) => {
       if(target.getDie() === false){
+        caster.spellAnimation(spell);
         await target.spellMove(1, spell.force);
         return false; 
       }
@@ -89,7 +105,8 @@ export class Spell {
     "Appuie",
     "S'appuie contre un mur ou un joueur pour avancer de 5 cases.",
     "url('IMAGE/SPELL/background_spell_appuie.jpg')",
-    "move",
+    "url('IMAGE/SPELL/haste_effect.png')",
+    "Current",
     5,
     1,
     "",
@@ -97,6 +114,7 @@ export class Spell {
       {
         for( let i=0; i < caster.game.map.allPosWall.length; i++){
           if(caster.getPosTile() === caster.game.map.allPosWall[i]){
+            caster.spellAnimation(spell);
             await caster.spellMove(1, spell.force); 
             return false;
           }

@@ -2,7 +2,7 @@ import { Spell } from './spell.js';
 
 export class Player{
   
-  constructor(gameInstance, name, posPath, posTile, path, playerIA, character){
+  constructor(gameInstance, name, posPath, posTile, path, playerIA, character, animEffect){
     // Instance
     this.game = gameInstance;
     this.map = this.game.map;
@@ -39,6 +39,7 @@ export class Player{
     this.forceMove = 0;
     
     this.character = character;
+    this.animEffect = animEffect;
     this.timer;
     this.sizeCharacterHeight = 128;
     this.sizeCharacterWidth = 64;
@@ -208,7 +209,7 @@ export class Player{
       this.isCast = true;
       const spell = this.getHand()[index];
       let echecSpell = await spell.cast(this.game.currentPlayer, this.game.opponentPlayer, this.game);
-    
+      
       if(echecSpell === false){
         this.game.ui.addTextLogFight(" lance [" + spell.name + "]", this.game.currentPlayer.getName(), "");
         this.game.ui.updatePlayersInfo();
@@ -338,6 +339,28 @@ export class Player{
     await this.wait(400);
   }
 
+  async spellAnimation(spell){
+    let targetAnim;
+    
+    if(spell.targetAnim === "Current"){
+      targetAnim = this.animEffect;
+      //this.goPosElem(this.game.currentPlayer.getPosTile(), this.game.ui.spellAnim);
+    }
+    else{
+      targetAnim = this.game.opponentPlayer.animEffect;
+      //this.goPosElem(this.game.opponentPlayer.getPosTile(), this.game.ui.spellAnim);
+    }
+    
+    targetAnim.style.backgroundImage = spell.animation; 
+    targetAnim.style.display = "block";
+    
+    targetAnim.classList.add(`is-spell`);
+    await this.wait(1600);
+    
+    targetAnim.classList.remove(`is-spell`);
+    targetAnim.style.display = "none";            
+  }
+
   async wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -393,13 +416,23 @@ export class Player{
     const targetX = (tile.left - grid.left) + (tile.width / 2) - (this.sizeCharacterWidth / 2);
     const targetY = (tile.top - grid.top) + (tile.height / 2) - (this.sizeCharacterHeight / 2);
   
-    // Déterminer la direction ('up', 'down', 'left', ou 'right')
-    //const dir = this.characterDirection(1);
-  
     // Déplacement CSS
     this.character.style.left = `${targetX}px`;
     this.character.style.top = `${targetY}px`;
     this.setPosTile(posTile);
+  }
+
+  goPosElem(posTile, element){
+    const grid = this.game.map.gridTile.getBoundingClientRect();
+    const tile = this.getPosXY(posTile); 
+    
+    // Calcul de la position CIBLE centrée sur la tuile
+    const targetX = (tile.left - grid.left) + (tile.width / 2) - (64 / 2);
+    const targetY = (tile.top - grid.top) + (tile.height / 2) - (64 / 2);
+    
+    // Déplacement CSS
+    element.style.left = `${targetX}px`;
+    element.style.top = `${targetY + 128}px`;
   }
 
   getPosXYDirection(dir){

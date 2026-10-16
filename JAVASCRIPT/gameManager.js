@@ -22,8 +22,8 @@ export class GameManager{
     this.ia = new IA(this);
 
     // Instance last
-    this.player1 = new Player(this, "Soklai", this.startPosPathAllPlayer[0], this.startPosTileAllPlayer[0], this.map.player1Path, false, this.ui.character0);
-    this.player2 = new Player(this, "Joueur 2", this.startPosPathAllPlayer[1], this.startPosTileAllPlayer[1], this.map.player2Path, true, this.ui.character1);
+    this.player1 = new Player(this, "Soklai", this.startPosPathAllPlayer[0], this.startPosTileAllPlayer[0], this.map.player1Path, false, this.ui.character0, this.ui.animEffect0);
+    this.player2 = new Player(this, "Joueur 2", this.startPosPathAllPlayer[1], this.startPosTileAllPlayer[1], this.map.player2Path, true, this.ui.character1, this.ui.animEffect1);
 
     // Variable last    
     this.allPlayer = [this.player1, this.player2];
