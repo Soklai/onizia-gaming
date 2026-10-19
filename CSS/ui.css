@@ -1,81 +1,76 @@
-#UIWindow{
-  display: grid;
-  grid-template-columns: 1;
-  align-content: start;
-  place-items: center;
+#UIWindow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly; /* Répartit l'espace verticalement sans tout écraser */
   
   background-image: url('../IMAGE/UI/background_ui.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   
-  width: 60dvh;
-  height: 55dvh;
+  width: 95%;
+  max-width: 100%;
+  height: 50dvh;
+  /*max-height: 50dvh;*/
+  
+  margin: 0;
+  padding: 7% 6%; /* Sécurité pour ne pas coller aux bords du bois */
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .barreInfoPlayer{
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: center;
-  
-  width: 80%;
-  
-  gap: 0px;
-  margin-top: 10%;
+  width: 90%;
+  gap: 10px;
+  margin-top: 0;
 }
 
 #barreInfoPlayerLeft{
   width: 100%;
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: left;
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
+  gap: 8px;
 }
 
 #barreInfoPlayerRight{
   width: 100%;
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: right;
+  display: flex;
+  justify-content: flex-end;
   align-items: center;  
+  gap: 8px;
 }
 
 #infoPlayerLeftText {
-  width: 100%;
-  height: 50px;
-  
-  font-size: 2em;
+  font-size: clamp(12px, 2.5vw, 20px); /* S'adapte dynamiquement à l'écran */
   color: black;
-  margin-left: 10%;
-  
   text-align: left;
-  justify-content: center;
+  margin: 0;
 }
 
 #infoPlayerLeftCharacter{  
-  height: 65px;
-  width: 65px;
-  margin-left: 10%;
+  width: clamp(35px, 8vw, 55px);
+  height: clamp(35px, 8vw, 55px);
   background-image: url('../IMAGE/CHARACTER/character_down.png');
-  background-repeat: none;
+  background-repeat: no-repeat;
   background-size: 100% 100%;  
 }
 
 #infoPlayerRightText {
-  width: 100%;
-  height: 50px;
-  
-  font-size: 2em;
+  font-size: clamp(12px, 2.5vw, 20px);
   color: black;
-  margin-right: 10%;
   text-align: right;
+  margin: 0;
 }
 
 #infoPlayerRightCharacter{
-  height: 65px;
-  width: 65px;
-  margin-right: 10%;
+  width: clamp(35px, 8vw, 55px);
+  height: clamp(35px, 8vw, 55px);
   background-image: url('../IMAGE/CHARACTER/character_down.png');
-  background-repeat: none;
+  background-repeat: no-repeat;
   background-size: 100% 100%;  
 }
 
@@ -84,52 +79,54 @@
   align-items: center;
   justify-content: center;
   
-  font-size: 2em;
+  font-size: clamp(11px, 2vw, 16px);
   text-align: center;
 
-  width: 80%;
-  height: 250px;
+  width: 90%;
+  /* Utilisation d'une hauteur relative max au lieu de 250px fixes */
+  height: 12dvh; 
+  max-height: 140px; 
+  
   white-space: pre-line;
-
   border: 1px black solid;
-  margin-top: 20px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.4); /* Légère opacité pour la lisibilité */
+  margin: 0;
+  padding: 4px;
+  box-sizing: border-box;
 }
 
 .barreAction{
   position: relative;
-  
   display: grid;
   grid-template-columns: 1fr 1fr;
-
-  width: 80%;
-  height: 80px;
-  
-  gap: 10px;
-  margin-top: 40px;
+  width: 90%;
+  height: 45px; /* Hauteur fixe raisonnable pour des boutons tactiles */
+  gap: 15px;
+  margin: 0;
 }
 
 .buttonAction{  
-  background-size: 100% 100%;       /* ou 100% 100% */
-  background-position: center;  /* Centre l'image dans la case */
-  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
   background-color: transparent;
   border: none;
+  font-size: clamp(14px, 3vw, 22px); /* Évite le texte géant en 3em */
+  color: #fff; /* Ajuste si ton texte est noir */
+  cursor: pointer;
 }
 
 #buttonMove{
   background-image: url('../IMAGE/ICON/background_button_up.png');
-  background-size: 100% 100%;
-  font-size: 3em;
 }
 
 #buttonMove:active {
   background-image: url('../IMAGE/ICON/background_button_down.png');
-  }
+}
 
 #buttonEnd{
   background-image: url('../IMAGE/ICON/background_button_up.png');
-  background-size: 100% 100%;
-  font-size: 3em;
 }
 
 #buttonEnd:active{
@@ -138,25 +135,28 @@
 
 .gridHand{
   position: relative;
-  
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  width: 45dvh;
-  
+  width: 90%;
+  max-width: 350px; /* On réduit légèrement la largeur maximale globale */
   margin: 0 auto;
-  gap: 30px;
+  gap: 10px;        /* On réduit l'espace entre les cartes */
   
-  min-height: 150px;
-  margin-top: 40px;
+  /* On fixe une hauteur maximale stricte pour l'ensemble des sorts */
+  max-height: 50px; 
 }
 
 .tileHand{
   border: 1px black solid;
   border-radius: 5px;
-
-  background-size: 100% 100%;       /* ou 100% 100% */
-  background-position: center;  /* Centre l'image dans la case */
-  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  aspect-ratio: 1 / 1; /* Garde le format carré */
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Empêche les tuiles de dépasser de la hauteur max allouée */
+  max-height: 50px; 
+  width: 100%;
 }
 
 .victoryPlayer{
@@ -166,74 +166,49 @@
   justify-content: center;
    
   position: absolute;
-  left: 25%;
-  top: 15%;
-  margin: 0 auto;
+  left: 10%;
+  top: 25%;
+  width: 80%;
+  height: 50%;
 
   z-index: 9999;
   background-image: url('../IMAGE/UI/background_victory.png');
   background-size: 100% 100%;
-
-  width: 60%;
-  height: 20%;
+  box-sizing: border-box;
+  padding: 20px;
 }
 
 .hidden{
-  display: none;
+  display: none !important;
 }
 
 .barreButtonVictory{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  width: 80%;
-  
-  min-height: 100px;
-  gap: 30px;
+  width: 100%;
+  gap: 15px;
+  height: 45px;
 }
 
-#buttonRestart{ 
+#buttonRestart, #buttonQuit{ 
+  width: 100%;
   height: 100%;
-  font-size: 3em;
-  
+  font-size: clamp(12px, 2.5vw, 18px);
   background-image: url('../IMAGE/ICON/background_button_up.png');
   background-size: 100% 100%;
-  background-position: center;  /* Centre l'image dans la case */
-  background-repeat: no-repeat; /* Évite que l'image ne se répète */
+  background-position: center;
+  background-repeat: no-repeat;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
-#buttonRestart:active{ 
+#buttonRestart:active, #buttonQuit:active{ 
   background-image: url('../IMAGE/ICON/background_button_down.png');
-  background-size: 100% 100%;
-  background-position: center;  /* Centre l'image dans la case */
-  background-repeat: no-repeat; /* Évite que l'image ne se répète */
-  background-color: transparent;
-  border: none;
-}
-
-#buttonQuit{ 
-  height: 100%;
-  font-size: 3em;
-  
-  background-image: url('../IMAGE/ICON/background_button_up.png');
-  background-size: 100% 100%;
-  background-position: center;  /* Centre l'image dans la case */
-  background-repeat: no-repeat; /* Évite que l'image ne se répète */
-  background-color: transparent;
-  border: none;
-}
-
-#buttonQuit:active{  
-  background-image: url('../IMAGE/ICON/background_button_down.png');
-  background-size: 100% 100%;
-  background-position: center;  /* Centre l'image dans la case */
-  background-repeat: no-repeat; /* Évite que l'image ne se répète */
-  background-color: transparent;
-  border: none;
 }
 
 #textVictory{
-  margin-bottom: 50px;
-  font-size: 5em;
+  margin-bottom: 20px;
+  font-size: clamp(20px, 5vw, 36px);
+  text-align: center;
 }

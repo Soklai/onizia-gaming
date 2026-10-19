@@ -3,9 +3,6 @@
   width: 64px;
   height: 64px;
 
-  top: 50px;
-  left: 50px;
-
   z-index: 1000;
   
   background-image: url('../IMAGE/CHARACTER/character_walk.png');
@@ -13,8 +10,8 @@
   /* On initialise la position sans fixer l'axe Y */
   background-position-x: 0px;
   
-  transform: scale(1.25);
-  transform-origin: bottom center;
+  transform: scale(0.5);
+  transform-origin: center 10%;
   
   image-rendering: pixelated;
   transition: left 0.4s linear, top 0.4s linear;
