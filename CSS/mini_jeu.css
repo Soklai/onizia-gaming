@@ -10,7 +10,7 @@ html, body {
   width: 100vw; /* 100% de la largeur de l'écran */
   height: 100dvh; /* 100% de la hauteur de l'écran */
 
-  max-width: 550px; /* Taille maxi en largeur */
+  /*max-width: 550px;*/ /* Taille maxi en largeur */
   max-height: 2000px; /* Taille maxi en hauteur */
   
   overflow: hidden; /* Empêche la page de scroller et de créer des marges parasites */
