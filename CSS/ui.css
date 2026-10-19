@@ -137,13 +137,11 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  width: 90%;
-  max-width: 350px; /* On réduit légèrement la largeur maximale globale */
+
   margin: 0 auto;
-  gap: 10px;        /* On réduit l'espace entre les cartes */
-  
-  /* On fixe une hauteur maximale stricte pour l'ensemble des sorts */
-  max-height: 50px; 
+  gap: 10px;
+
+  height: 75px;
 }
 
 .tileHand{
@@ -154,8 +152,7 @@
   background-position: center;
   background-repeat: no-repeat;
   
-  /* Empêche les tuiles de dépasser de la hauteur max allouée */
-  max-height: 50px; 
+  height: 100%;
   width: 100%;
 }
 
