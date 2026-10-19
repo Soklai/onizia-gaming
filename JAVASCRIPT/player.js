@@ -41,7 +41,7 @@ export class Player{
     this.character = character;
     this.animEffect = animEffect;
     this.timer;
-    this.sizeCharacterHeight = 128;
+    this.sizeCharacterHeight = 64;
     this.sizeCharacterWidth = 64;
     this.posCharacter;
   
@@ -408,14 +408,13 @@ export class Player{
   }
 
   goPos(posTile){
-    //const targetTileIndex = this.getPosTileDirection(direction);
     const grid = this.game.map.gridTile.getBoundingClientRect();
     const tile = this.getPosXY(posTile); 
     
     // Calcul de la position CIBLE centrée sur la tuile
     const targetX = (tile.left - grid.left) + (tile.width / 2) - (this.sizeCharacterWidth / 2);
     const targetY = (tile.top - grid.top) + (tile.height / 2) - (this.sizeCharacterHeight / 2);
-  
+    
     // Déplacement CSS
     this.character.style.left = `${targetX}px`;
     this.character.style.top = `${targetY}px`;
