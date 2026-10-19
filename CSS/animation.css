@@ -10,9 +10,6 @@
   /* On initialise la position sans fixer l'axe Y */
   background-position-x: 0px;
   
-  transform: scale(0.5);
-  transform-origin: center 10%;
-  
   image-rendering: pixelated;
   transition: left 0.4s linear, top 0.4s linear;
 }
