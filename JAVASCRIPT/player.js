@@ -413,7 +413,7 @@ export class Player{
     
     // Calcul de la position CIBLE centrée sur la tuile
     const targetX = (tile.left - grid.left) + (tile.width / 2) - (this.sizeCharacterWidth / 2);
-    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this.sizeCharacterHeight / 2);
+    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this.sizeCharacterHeight / 2) - 25;
     
     // Déplacement CSS
     this.character.style.left = `${targetX}px`;
