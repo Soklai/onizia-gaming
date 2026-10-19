@@ -4,10 +4,10 @@
     padding: 0;
   
     width: 95%;
-    /* max-width: 550px; */
+    max-width: 2000px;
     height: 50dvh;
   
-    /* max-height: 2000px; */
+    max-height: 2000px;
     aspect-ratio: 1 / 1;
     box-sizing: border-box;
     flex-shrink: 0;
