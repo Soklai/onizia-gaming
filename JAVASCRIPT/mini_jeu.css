@@ -1,0 +1,57 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  /* Display */
+  display: flex; /* Rend les éléments fléxibles */
+  flex-direction: column; /* Empile en colonne tout les éléments */
+
+  /* Alignement */
+  justify-content: space-between; /* Centre verticalement tout les éléments enfants avec un espace entre chaque */
+  align-items: center; /* Aligne horizontalement tout les élements enfants */
+
+  /* Size */
+  width: 100vw; /* 100% de la largeur de l'écran */
+  height: 100dvh; /* 100% de la hauteur de l'écran */
+  /*max-width: 550px;*/ /* Taille maxi en largeur */
+  max-height: 2000px; /* Taille maxi en hauteur */
+
+  /* Espace */
+  margin: 0 auto; /* Zéro marge & Centrage des éléments au milieu */
+  padding: 0; /* Zéro espace autour */
+
+  /* Other */  
+  overflow: hidden; /* Cache les parties d'élements qui dépasse du parent */
+  background-color: #222; /* Fond noir  */
+  touch-action: manipulation; /* Empêche les mouvements de zoom, etc.. */
+
+  position: relative; /* Point de référencement pour les éléments enfants */
+}
+
+/* DEBUG */
+#debugWindow{  
+  position: absolute;
+  left: 0%;
+  top: 0%;
+
+  display:none;
+  
+  z-index: 1000;
+  
+  height: auto;
+  width: auto;
+  
+  font-size: 2em;
+  background-color: white;
+}
+
+#debugButton{
+  height: 60px;
+  width: 80px;
+}
+
+#debugText{
+  height: auto;
+  width: auto;
+}

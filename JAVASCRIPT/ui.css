@@ -1,0 +1,303 @@
+.containerUI {
+  /* Display */
+  display: flex; /* Les éléments sont fléxible */
+  flex-direction: column; /* Les éléments sont empilé en colonne verticale */
+  
+  /* Alignement */
+  align-items: center; /* Aligne les éléments verticalement */
+  justify-content: space-evenly; /* Répartie équitablement l'espace entre chaque élément horizontalement */
+
+  /* Background */
+  background-image: url('../IMAGE/UI/background_ui.png'); /* Url de la localisation de l'image */
+  background-size: 100% 100%; /* étire a 100% en largeur et en hauteur  */
+  background-repeat: no-repeat; /* Bloque la répétition de l'image */
+
+  /* Size */
+  width: 95%; /* Taille de la largeur */
+  max-width: 100%; /* Taille max de la largeur */
+  height: 50dvh; /* Taille max de la hauteur */
+
+  /* Espace */
+  margin: 0; /* Zéro marge */
+  padding: 10%; /* Ajoute de l'espace autour des éléments enfants */
+
+  /* Others */
+  box-sizing: border-box; /* Rend la taille fixe contre les éléments intérieur */
+  flex-shrink: 0; /* 0= Rend la taille fixe contre les éléments extérieur */
+}
+
+.containerInfoPlayer{
+  /* Display */
+  display: flex; /* Rend les éléments enfants fléxibles et aligné horizontalement */
+
+  /* Alignement */
+  justify-content: center; /* Aligne au centre les éléments enfants verticalement */
+
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+
+  /* Espace */
+  gap: 10px; /* Espace entre les éléments enfants */
+}
+
+.containerInfoPlayerLeft{
+  /* Display */
+ display: flex; /* Rend les éléments fléxible et aligné horizontalement */
+
+  /* Alignement */
+  justify-content: flex-start; /* Colle tout les éléments a gauche */
+  align-items: center; /* Aligne au centre verticalement */
+
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+  
+  /* Espace */
+  gap: 8px; /* Espace entre les éléments enfants */
+}
+
+.containerInfoPlayerRight{
+  /* Display */
+  display: flex; /* Rend les éléments fléxibles et aligné horizontalement */
+
+  /* Alignement */
+  justify-content: flex-end; /* Colle tout les éléments enfants a droite */
+  align-items: center; /* Aligne au centre verticalement */
+
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+  
+  /* Espace */  
+  gap: 8px; /* Espace entre les éléments enfants */
+}
+
+#infoPlayerLeftText{ /* JS */
+  /* Text */
+  font-size: clamp(22px, 4vw, 30px); /* Taille du texte (mini, normal, max) */
+  text-align: left; /* Aligne le texte a gauche */
+  color: black; /* Le texte de couleur noir */
+  
+  /* Espace */
+  margin: 0; /* Zéro marge */
+}
+
+.infoPlayerLeftCharacter{ /* JS */
+  /* Size */
+  width: clamp(35px, 8vw, 55px); /* La taille de la largeur (mini, normal, maxi) */
+  height: clamp(35px, 8vw, 55px); /* La taille de la hauteur (mini, normal, maxi) */
+
+  /* Background */
+  background-image: url('../IMAGE/CHARACTER/character_down.png'); /* La localisation de l'image */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+  background-size: 100% 100%; /* Étire la taille de l'image a 100% */  
+}
+
+#infoPlayerRightText{ /* JS */
+  /* Text */
+  font-size: clamp(22px, 4vw, 30px); /* Taille du texte (mini, normal, maxi) */
+  color: black; /* couleur du texte */
+  text-align: right; /* Aligne le texte sur la droite */
+
+  /* Espace */
+  margin: 0; /* Zéro marge */
+}
+
+.infoPlayerRightCharacter{
+  /* Size */
+  width: clamp(35px, 8vw, 55px); /* La taille en largeur (mini, normal, maxi) */
+  height: clamp(35px, 8vw, 55px); /* La taille en hauteur (mini, normal, maxi) */
+
+  /* Background */
+  background-image: url('../IMAGE/CHARACTER/character_down.png'); /* Localisation de l'image */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+  background-size: 100% 100%; /* Étire l'image a 100% */ 
+}
+
+#logFight{ /* JS */
+  /* Display */
+  display: flex; /* Rend fléxible les élements enfants et aligne horizontalement */
+
+  /* Alignement */
+  align-items: center; /* Aligne horizontalement au centre les éléments enfants */
+  justify-content: center; /* Aligne verticalement au centre les éléments enfants */
+
+  /* Text */
+  font-size: clamp(18px, 4vw, 25px); /* Taille du texte (mini, normal, maxi) */
+  text-align: center; /* Aligne le texte au centre */
+
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+  height: clamp(13dvh, 13dvh, 280px); /* Taile de la hauteur */
+
+  /* Espace */
+  margin: 0; /* Zéro marge */
+  padding: 4px; /* Espace a l'intérieur */
+
+  /* Border */
+  border: 1px black solid; /* Taille, Couleur, Type de la bordure */
+  border-radius: 4px; /* Taille de l'épaisseur arrondie de la bordure */
+
+  /* Background */
+  background: rgba(255, 255, 255, 0.4); /* Couleur du background + oppacité */ 
+
+  /* Others */
+  white-space: pre-line; /* Permet d'afficher les saut de ligne */
+}
+
+.contenairAction{
+  /* Display */
+  display: flex; /* Rend les éléments fléxible et aligne horizontalement */
+  
+  /* Alignement */
+  justify-content: center;
+
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+  height: clamp(5dvh, 5dvh, 5dvh); /* Taille de la hauteur */
+
+  /* Espace */
+  gap: 20px; /* Espace entre les éléments */
+}
+
+.buttonAction{
+  /* Size */
+  height: 100%; /* Taille de la hauteur */
+  width: 100%; /* Taile de la largeur */
+  
+  /* Background */
+  background-size: 100% 100%; /* Taille de l'image */
+  background-position: center; /* Position de l'image */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+  background-color: transparent; /* La couleur de fond est transparente */
+  border: none; /* Supprime les bordures */
+  
+  /* Text */
+  font-size: clamp(20px, 4vw, 35px); /* Taille du texte */
+  color: #000000; /* Couleur du texte */
+
+  /* Others */
+  cursor: pointer; /* Transforme le curseur en pointeur */
+}
+
+#buttonMove{
+  /* Background */
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+}
+
+#buttonMove:active{
+  /* background */
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+}
+
+#buttonEnd{
+  /* Background */
+  background-image: url('../IMAGE/ICON/background_button_up.png');
+}
+
+#buttonEnd:active{
+  /* Background */
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+}
+
+.contenairHand{
+  /* Display */
+  display: flex; /* Rend les éléments fléxibles et aligne horizontalement */
+
+  /* Alignement */
+  justify-content: space-evenly; /* espace équitablement les éléments entre eux */
+  align-items: center; /* aligne au centre verticalement */
+  
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+  height: 150px; /* Taille de la hauteur */
+}
+
+.tileHand{
+  /* Display */
+  aspect-ratio: 1 / 1; /* Force le format carré */
+  
+  /* Border */
+  border: 1px black solid; /* L'épaisseur, la couleur et le type de la bordure */
+  border-radius: 5px; /* L'épaisseur arrondie de la bordure */
+
+  /* Background */
+  background-size: 100% 100%; /* Taille de l'image */
+  background-position: center; /* Position de l'image */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+  
+  /* Size */
+  height: 100%; /* Taille de la hauteur */
+}
+
+.contenairVictoryPlayer{
+  /* Display */
+  display: none; /* Rend les éléments fléxibles et aligné horizontalement */
+  flex-direction: column; /* Empile les éléments verticalement */
+
+  /* Alignement */
+  place-items: center; /* Centre et aligne horizontalement les éléments */
+  justify-content: center; /* Centre et aligne verticalement les éléments */
+
+  /* Position */
+  position: absolute; /* */
+  top: 18%; /* Position a partir du top */
+
+  /* Size */
+  width: 90%; /* Taille de la largeur */
+  height: 17%; /* Taille de la hauteur */
+
+  /* Background */
+  background-image: url('../IMAGE/UI/background_victory.png'); /* Localisation de l'image */
+  background-size: 100% 100%; /* Taille de l'image */
+
+  /* Espace */
+  padding: 20px; /* Marge intérieur */
+
+  /* Others */
+  z-index: 9999; /* Niveau de supperposition */
+}
+
+.contenairButtonVictory{
+  /* Display */
+  display: flex; /* Rend les éléments fléxible et aligne horizontalement */
+
+  /* Size */
+  width: 70%; /* Taille en largeur */ 
+  height: clamp(4dvh, 4dvh, 4dvh); /* Taille en hauteur */
+
+  /* Espace */
+  gap: 20px; /* Espace entre les éléments */
+
+  /* Others */
+  z-index: 9999; /* Niveau de supperposition */
+}
+
+#buttonRestart, #buttonQuit{
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+  height: 100%; /* Taille de la hauteur */
+
+  /* Background */
+  background-image: url('../IMAGE/ICON/background_button_up.png'); /* Localisation de l'image */
+  background-size: 100% 100%; /* Taille de l'image */
+  background-position: center; /* Position de l'image */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+  background-color: transparent; /* Rend transparent le fond */
+  
+  /* Others */
+  font-size: clamp(20px, 4vw, 35px); /* Taille du texte */
+  border: none; /* Bordure non apparrente */
+  cursor: pointer; /* transforme le curseur en pointeur */
+}
+
+#buttonRestart:active, #buttonQuit:active{ 
+  background-image: url('../IMAGE/ICON/background_button_down.png');
+}
+
+#textVictory{
+  /* Espace */
+  margin-bottom: 30px; /* La taille de la marge en partant du bas */
+
+  /* Text */
+  font-size: clamp(30px, 5vw, 50px); /* Taille du texte */
+  text-align: center; /* Alignement du texte */
+}
