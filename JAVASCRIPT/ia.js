@@ -1,55 +1,61 @@
 export class IA{
-  constructor(gameInstance){
-    this.game = gameInstance;
-    this.isEndTurn = false;
-    this.phase = "";
+  constructor(GameInstance){
+    // Instance
+    this._game = GameInstance;
+    
+    // Variable
+    this._isEndTurn = false;
+    this._phase = "";
   }
 
+  // Getter Setter local
+
+  // Getter Externe
+  get player1(){ return this._game.player1; }
+  get player2() { return this._game.player2; }
+  get currentPlayer() { return this._game.currentPlayer; }
+  get opponentPlayer() { return this._game.opponentPlayer; }
+
   async turnPlayerIA() {
-    if (this.game.currentPlayer.getDie() === false) {
+    if (this.currentPlayer.die === false) {
       await this.modelIAEasy();
-      this.game.endTurnPlayer();
     }
-    else {
-      this.game.endTurnPlayer();
-    }         
+    
+    this._game.endTurnPlayer();     
   }
   
-  async modelIAEasy(){
-    await this.spellPrioCast();
+  async modelIAEasy(){ 
+    await this.spellPrioCast(); 
     await this.move(1, true);
   }
 
   async spellPrioCast(){
     let isAppuie = true;
-    let posCaster = this.game.currentPlayer.getPosTile();
-    let posTargetAttract = this.game.opponentPlayer.getPosTileDirection(-2);
-
-    this.game.currentPlayer.spellQueue.length = 0;
+    let posCaster = this.currentPlayer.posTile;
+    let posTargetAttract = this.opponentPlayer.getPosTileDirection(-2);
+    
+    //this.currentPlayer.spellQueue.length = 0;
     
     // Before Appuie
-    const indexSpellSpeed = this.game.currentPlayer.getSpellIndexByName("Célérité"); 
-    if(indexSpellSpeed != null){ await this.game.currentPlayer.useCard(indexSpellSpeed); }
+    const indexSpellSpeed = this.currentPlayer.getSpellIndexByName("Célérité");
+    if(indexSpellSpeed != null){ await this.currentPlayer.useCard(indexSpellSpeed); }
     
-    const indexSpellAttract = this.game.currentPlayer.getSpellIndexByName("Attraction"); 
-    if(indexSpellAttract != null && this.game.opponentPlayer.getDie() === false && posTargetAttract !== posCaster){ await this.game.currentPlayer.useCard(indexSpellAttract); }
+    const indexSpellAttract = this.currentPlayer.getSpellIndexByName("Attraction"); 
+    if(indexSpellAttract != null && this.opponentPlayer.die === false && posTargetAttract !== posCaster){ await this.currentPlayer.useCard(indexSpellAttract); }
 
-    const indexSpellAppuie = this.game.currentPlayer.getSpellIndexByName("Appuie");
-    if(indexSpellAppuie != null){ await this.game.currentPlayer.useCard(indexSpellAppuie); }
+    const indexSpellAppuie = this.currentPlayer.getSpellIndexByName("Appuie"); 
+    if(indexSpellAppuie != null){ await this.currentPlayer.useCard(indexSpellAppuie); }
     
     // After Appuie
-    const indexSpellRal = this.game.currentPlayer.getSpellIndexByName("Ralentissement"); 
-    if(indexSpellRal != null){ await this.game.currentPlayer.useCard(indexSpellRal); }
+    const indexSpellRal = this.currentPlayer.getSpellIndexByName("Ralentissement"); 
+    if(indexSpellRal != null){ await this.currentPlayer.useCard(indexSpellRal); }
 
-    const indexSpellRepul = this.game.currentPlayer.getSpellIndexByName("Répulsion"); 
-    if(indexSpellRepul != null){ await this.game.currentPlayer.useCard(indexSpellRepul); }
-  
+    const indexSpellRepul = this.currentPlayer.getSpellIndexByName("Répulsion"); 
+    if(indexSpellRepul != null){ await this.currentPlayer.useCard(indexSpellRepul); }
   }
 
-  spellOrderCast() {
-  
-  // On recupère la main du joueur et test si elle est valide
-  const hand = this.game.currentPlayer.getHand(); 
+  /* spellOrderCast() {
+  const hand = this.currentPlayer.getHand(); 
   if (!hand || hand.length === 0) return;
 
   // On filtre chaque sort et on les places dans leur catégorie type respective
@@ -67,20 +73,20 @@ export class IA{
 
     // Si le sort est bien présent dans la main, on le lance
     if (currentIndex !== -1) {
-      this.game.currentPlayer.useCard(currentIndex);
+      this.currentPlayer.useCard(currentIndex);
     }
   }
-}
+} */
 
   modelIAFullMove(){
     this.move(1, true);
   }
  
-  async move(dir, repeat) {   
-    if(repeat === true){ this.game.currentPlayer.forceMove = this.game.currentPlayer.getPm()}      
-    else { this.game.currentPlayer.forceMove = 1; }
+  async move(dir, repeat) { 
+    if(repeat === true){ this.currentPlayer.forceMove = this.currentPlayer.pm }      
+    else { this.currentPlayer.forceMove = 1; }
     
-    await this.game.currentPlayer.move(dir);
+    await this.currentPlayer.move(dir);
   }
 
   async wait(ms) {

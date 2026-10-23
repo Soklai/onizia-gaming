@@ -1,152 +1,142 @@
 // Import 
 import { Player } from './player.js';
 import { UIManager } from './uiManager.js';
-import { Map } from './map.js';
 import { IA } from './ia.js';
+import { Map } from './map.js';
 
 export class GameManager{
   constructor(){
-    // Variable first 
-    this.startPosPathAllPlayer = [1, 1];
-    this.startPosTileAllPlayer = [134, 226];
+    // Instance
+    this._map = new Map();
+    this._ui = new UIManager(this);
+    this._ia = new IA(this);
     
-    this.turnPlayerIndex = 0;
-    this.turn = 0;
-    this.turnPlayerFinish = [true, true];
-    this.currentTurnRespawnPlayer = [2, 2];
-    this.slotBase = [[false, false, false, false], [false, false, false, false]];
-    
-    // Instance first
-    this.map = new Map();
-    this.ui = new UIManager(this);
-    this.ia = new IA(this);
+    // Variable local
+    // Position
+    this._startPosPathAllPlayer = [1, 1];
+    this._startPosTileAllPlayer = [134, 226];
 
-    // Instance last
-    this.player1 = new Player(this, "Soklai", this.startPosPathAllPlayer[0], this.startPosTileAllPlayer[0], this.map.player1Path, false, this.ui.character0, this.ui.animEffect0);
-    this.player2 = new Player(this, "Joueur 2", this.startPosPathAllPlayer[1], this.startPosTileAllPlayer[1], this.map.player2Path, true, this.ui.character1, this.ui.animEffect1);
+    // Turn
+    this._turnPlayerIndex = 0;
+    this._turn = 0;
+    this._turnPlayerFinish = [true, true];
+    this._currentTurnRespawnPlayer = [2, 2];
 
-    // Variable last    
-    this.allPlayer = [this.player1, this.player2];
-    this.currentPlayer = this.player2;
-    this.opponentPlayer = this.player1;
+    // Other
+    this._slotBase = [[false, false, false, false], [false, false, false, false]];
+
+    // Player
+    this._player1 = new Player(this, "Soklai", this._startPosPathAllPlayer[0], this._startPosTileAllPlayer[0], this._map.player1Path, false, this._ui._character0, this._ui._animEffect0);
+    this._player2 = new Player(this, "Joueur 2", this._startPosPathAllPlayer[1], this._startPosTileAllPlayer[1], this._map.player2Path, true, this._ui._character1, this._ui._animEffect1);
+        
+    this._allPlayer = [this._player1, this._player2];
+    this._currentPlayer = this._player2;
+    this._opponentPlayer = this._player1;
   }
+
+  // Getter local
+  get slotBase() { return this._slotBase; }
+  get player1() { return this._player1; }
+  get player2() { return this._player2; }
+  
+  get allPlayer() { return this._allPlayer; }
+  get currentPlayer() { return this._currentPlayer; }
+  get opponentPlayer() { return this._opponentPlayer; }
+
+  get map(){ return this._map; }
+  get ui(){ return this._ui; }
+  get ia(){ return this._ia; } 
+
+  // Setter local
+  set allPlayer(value) { this._allPlayer = value }
+  set currentPlayer(value) { this._currentPlayer = value }
+  set opponentPlayer(value) { this._opponentPlayer = value }
+
+
+  // Getter externe
 
   loadGame(){ // Les pré-requis pour charger la partie    
     // Debug
-    //this.ui.debugWindow.style.display = "block";
+    //this._ui.debugWindow.style.display = "block";
+
+    // Map
+    this._map.loadMap();
     
     // UI
-    this.ui.loadEvent(); // Load all event element
-    this.ui.addTextLogFight(" commence !", this.opponentPlayer.name, ""); // On annonce qui commence
-    this.ui.addPlayersInfo(); // add / update Pseudo | PM Player
-    this.ui.victoryPlayer.classList.add("hidden"); // Hidden window Victory/ Game over
+    this._ui.loadUI();
     
-    // Map
-    this.map.initializeGrid(); // Initialise les grilles de la carte du jeu
-    this.map.addBackgroundTileGrid(); // Paint toute les tuiles des grille selon un tableau d'index
-
     // Game last
-    this.startSpawnPlayers(); // Spawn les joueurs sur la carte   
-  
-    this.turnManager(); // Appelle le manager pour la gestion des tours
+    this.startSpawnPlayers();  
+    this.turnManager();
   }
 
   // Turn manager
   turnManager(){  
-    if(this.currentPlayer === this.player2){
+    if(this._currentPlayer === this._player2){
       // Le joueur 1 joue
       this.respawnPlayer();
-      this.currentPlayer = this.player1;
-      this.opponentPlayer = this.player2;
-      this.turn++;
+      this._currentPlayer = this._player1;
+      this._opponentPlayer = this._player2;
+      this._turn++;
     }
     else{
       // Le joueur 2 joue
-      this.currentPlayer = this.player2;
-      this.opponentPlayer = this.player1;
-        
+      this._currentPlayer = this._player2;
+      this._opponentPlayer = this._player1;      
     }
     
-    // Le joueur pioche des cartes
-    this.currentPlayer.addCard();
+    this._currentPlayer.addCard();
+    this._currentPlayer.turnFinish = false;
     
-    // Partie 2 On autorise a jouer le joueur
-    this.currentPlayer.setTurnFinish(false);
-    
-    if(this.currentPlayer.getPlayerIA() === true) { this.ia.turnPlayerIA(); }
-  } // Manager des tours entre les joueurs 
+    if(this._currentPlayer.playerIA === true) { this._ia.turnPlayerIA(); }
+  }
 
   endTurnPlayer(){ 
-  // Partie 0 Remet les PM du joueur actuel au max
-  this.currentPlayer.setPm(this.currentPlayer.getPmMax());
-
-  // Partie 1 le tour du joueur est terminé
-  this.currentPlayer.setTurnFinish(true);
+    this._currentPlayer.pm = this._currentPlayer.pmMax;
+    this._currentPlayer.turnFinish = true;
     
-  // On met a jour le UI
-  this.currentPlayer.unBuff();
-  this.ui.updatePlayersInfo();
-  
-  // On passe le tour au prochain joueur
-  this.turnManager();
-  
-} // Gestion de la fin du tour des joueurs
+    this._ui.updatePlayersInfo();  
+    this.turnManager(); 
+}
 
   // IS
   isTilePlayer(posTileDirection){
-
-    // Parcour la position de tout les joueurs
-    for( let i= 0; i < this.allPlayer.length; i++){
-      // Vérifie si la nouvelle position correspond a celle d'un joueur
-      if(posTileDirection === this.allPlayer[i].getPosTile()) {
-  
-        // Retourne le joueur qui se trouve sur la même position
+    for( let i= 0; i < this._allPlayer.length; i++){
+      if(posTileDirection === this._allPlayer[i].posTile) {
         return i;
       }  
     }
-    // Retourne null si auncun joueur ne se trouve sur la même case
+
     return null;
   } 
 
   isTileWall(){
-    for(let i = 0; i < this.allPosWall.length; i++){
-      if(this.currentPlayer.getPosTile() === this.map.allPosWall[i]){
+    for(let i = 0; i < this._map.allPosWall.length; i++){
+      if(this._currentPlayer.posTile === this._map.allPosWall[i]){
         return true;
       }
     }
     return null;
   }
 
-  // Victory / Game over
-  victoryPlayer(positionTilePlayer){
-    if(positionTilePlayer === 180){
-      if(this.currentPlayer === this.player1){
-        this.ui.showVictory(0);
-      }
-      else{
-        this.ui.showVictory(1);
-      }
-      
-    }
+  victoryPlayer(posTilePlayer, player){
+    if(posTilePlayer === 180){ this._ui.showVictory(player); }
+  }
   
+  startSpawnPlayers(){
+    this._player1.goPos(this._player1.posTile);
+    this._player2.goPos(this._player2.posTile);
   }
 
-  // Spawn player
-  startSpawnPlayers(){
-    this.player1.goPos(this.player1.getPosTile());
-    this.player2.goPos(this.player2.getPosTile());
-
-  } // Fait apparaitre les joueurs sur le terrain
-
   respawnPlayer(){
-    for(let i=0; i< this.allPlayer.length; i++){
-      if(this.allPlayer[i].getDie() === true){
-        this.currentTurnRespawnPlayer[i] --;
+    for(let i = 0; i < this._allPlayer.length; i++){
+      if(this._allPlayer[i].die === true){
+        this._currentTurnRespawnPlayer[i] --;
       }
     }
 
-    for(let i=0; i< this.allPlayer.length; i++){
-      if(this.currentTurnRespawnPlayer[i] <= 0 && this.allPlayer[i].getDie() === true){
+    for(let i=0; i< this._allPlayer.length; i++){
+      if(this._currentTurnRespawnPlayer[i] <= 0 && this._allPlayer[i].die === true){
         this.revivePlayer(i);
       }       
     }   
@@ -154,11 +144,11 @@ export class GameManager{
 
   revivePlayer(playerIndex){
     if(playerIndex != null){
-      this.allPlayer[playerIndex].setDie(false);
+      this._allPlayer[playerIndex].die = false;
 
-      this.allPlayer[playerIndex].setPosPath(this.startPosPathAllPlayer[playerIndex]);
-      this.allPlayer[playerIndex].setPosTile(this.startPosTileAllPlayer[playerIndex]);
-      this.allPlayer[playerIndex].goPos(this.allPlayer[playerIndex].getPosTile());
+      this._allPlayer[playerIndex].posPath = this._startPosPathAllPlayer[playerIndex];
+      this._allPlayer[playerIndex].posTile = this._startPosTileAllPlayer[playerIndex];
+      this._allPlayer[playerIndex].goPos(this._allPlayer[playerIndex].posTile);
     }
   }
 
@@ -168,28 +158,22 @@ export class GameManager{
   }
 
   diePlayerGoToBase(indexPlayer){
-  
-    // On déclare que le joueur est mort
-    this.allPlayer[indexPlayer].setDie(true);
-    this.currentTurnRespawnPlayer[indexPlayer] = 3;
+    this._allPlayer[indexPlayer].die = true;
+    this._currentTurnRespawnPlayer[indexPlayer] = 3;
     
-    // On déplace le joueur dzns le slot
     this.goSlotBase(indexPlayer);
   }
 
   goSlotBase(indexPlayer){
-  // Trouver un slot disponible dans la base du joueur
     for( let slot = 0; slot < 4; slot++){
-      if (this.slotBase[indexPlayer][slot] === false ) {
+      if (this._slotBase[indexPlayer][slot] === false ) {
         
-        // Remplir le slot par true
-        this.slotBase[indexPlayer][slot] = true;
+        this._slotBase[indexPlayer][slot] = true;
         
-        // Met a jour la position Tile du joueur
-        this.allPlayer[indexPlayer].setPosTile(this.map.allPosSlotBasePlayer[indexPlayer][slot]);
-        this.allPlayer[indexPlayer].goPos(this.map.allPosSlotBasePlayer[indexPlayer][slot]);
+        this._allPlayer[indexPlayer].posTile = this._map.allPosSlotBasePlayer[indexPlayer][slot];
+        this._allPlayer[indexPlayer].goPos(this._map.allPosSlotBasePlayer[indexPlayer][slot]);
 
-        this.ui.addTextLogFight(" est mort !", this.allPlayer[indexPlayer].name, "");
+        this._ui.addTextLogFight(" est mort !", this._allPlayer[indexPlayer].name, "");
         break;
       }
     }

@@ -112,12 +112,7 @@ export class Map {
                                0, 0, 0, 0, 0, 0, 0, 0, 55, 55, 55, 0, 0, 0, 0, 0, 0, 0, 0,
                                0, 0, 0, 0, 0, 0, 0, 0, 55, 55, 55, 0, 0, 52, 0, 0, 52, 0, 0,
                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-
-
-
-    
+                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];    
     
     this.backgroundUrl = ["", "url('IMAGE/TILESET/land_1.png')", "url('IMAGE/TILESET/land_2.png')", "url('IMAGE/TILESET/land_3.png')", "url('IMAGE/TILESET/land_4.png')", "url('IMAGE/TILESET/land_5.png')", "url('IMAGE/TILESET/land_6.png')", "url('IMAGE/TILESET/land_7.png')", "url('IMAGE/TILESET/land_8.png')", "url('IMAGE/TILESET/land_9.png')", "url('IMAGE/TILESET/land_10.png')",
                           "url('IMAGE/TILESET/land_11.png')", "url('IMAGE/TILESET/land_12.png')", "url('IMAGE/TILESET/land_13.png')", "url('IMAGE/TILESET/land_14.png')", "url('IMAGE/TILESET/land_15.png')", "url('IMAGE/TILESET/land_16.png')", "url('IMAGE/TILESET/land_17.png')", "url('IMAGE/TILESET/land_18.png')", "url('IMAGE/TILESET/bg.png')", "url('IMAGE/TILESET/road_1.png')", "url('IMAGE/TILESET/road_2.png')", "url('IMAGE/TILESET/road_3.png')", "url('IMAGE/TILESET/road_4.png')", "url('IMAGE/TILESET/road_5.png')", "url('IMAGE/TILESET/road_6.png')", "url('IMAGE/TILESET/road_7.png')", "url('IMAGE/TILESET/road_8.png')", "url('IMAGE/TILESET/road_9.png')", "url('IMAGE/TILESET/road_10.png')",
@@ -145,7 +140,12 @@ export class Map {
     this.allPath = [...this.player1Path, ...this.player2Path];
   }
 
-  initializeGrid() {
+  loadMap() {
+    this.initialiseGrid();
+    this.addBackgroundTileGrid();
+  }
+
+  initialiseGrid() {
     this.gridTile.innerHTML = ""; // On vide la grille au départ
     
     // Vider les tableaux au cas où la fonction est relancée
@@ -171,14 +171,22 @@ export class Map {
       const tileDecoration = document.createElement("div");
       
       // Ajoute la class CSS sur les grilles
+      tileLevel0.classList.add("tileBase");
       tileLevel0.classList.add("tileLevel0");
+
+      tileLevel1.classList.add("tileBase");
       tileLevel1.classList.add("tileLevel1");
+
+      tileLevel2.classList.add("tileBase");
       tileLevel2.classList.add("tileLevel2");
+
+      tileLevel3.classList.add("tileBase");
       tileLevel3.classList.add("tileLevel3");
 
+      pathLevel.classList.add("tileBase");
       pathLevel.classList.add("pathLevel");
-      tilePlayer.classList.add("tilePlayer");
-      /*tileDecoration.classList.add("tileDecoration");*/
+
+      tileDecoration.classList.add("tileBase");
       
       // OBLIGATOIRE : Imbrique tout les level DANS le level 0
       tileLevel0.appendChild(tileLevel1);
@@ -194,7 +202,7 @@ export class Map {
       this.gridTileLevel2.push(tileLevel2);
       this.gridTileLevel3.push(tileLevel3);
       this.gridPathLevel.push(pathLevel);
-      this.gridPlayer.push(tilePlayer);
+      /*this.gridPlayer.push(tilePlayer);*/
       this.gridTileDecoration.push(tileDecoration);
       
       // Injection de la tuile de sol (qui contient déjà le niveau 1) dans la grille principale
@@ -234,7 +242,7 @@ export class Map {
     
     }
 
-    // Grid Decoration
+    // Grid Décoration
     for( let i= 0; i < this.gridTileDecoration.length; i++){
       
       if(this.backgroundIndexDecoration[i] >= 55 && this.backgroundIndexDecoration[i] <= 66){

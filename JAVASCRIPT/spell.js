@@ -30,11 +30,9 @@ export class Spell {
     0,
     "-pm",
     async (caster, target, spell) => { 
-      if(target.getDie() === false){
+      if(target.die === false){
         target.removePm(2);
         await caster.spellAnimation(spell);
-        //target.addDeBuff(spell.effect);
-
         
         return false;
       }
@@ -55,7 +53,6 @@ export class Spell {
     "+pm",
     async (caster, target, spell) => { 
       caster.addPm(2);
-      caster.addBuff(spell.effect);
 
       await caster.spellAnimation(spell);
       return false;
@@ -71,7 +68,7 @@ export class Spell {
     -1,
     "",
     async (caster, target, spell) => {
-      if(target.getDie() === false){
+      if(target.die === false){
         caster.spellAnimation(spell);
         await target.spellMove(-1, spell.force);
         return false;
@@ -91,7 +88,7 @@ export class Spell {
     1,
     "",
     async (caster, target, spell) => {
-      if(target.getDie() === false){
+      if(target.die === false){
         caster.spellAnimation(spell);
         await target.spellMove(1, spell.force);
         return false; 
@@ -112,8 +109,8 @@ export class Spell {
     "",
     async (caster, target, spell) => 
       {
-        for( let i=0; i < caster.game.map.allPosWall.length; i++){
-          if(caster.getPosTile() === caster.game.map.allPosWall[i]){
+        for( let i= 0; i < caster._game.map.allPosWall.length; i++){
+          if(caster.posTile === caster._game.map.allPosWall[i]){
             caster.spellAnimation(spell);
             await caster.spellMove(1, spell.force); 
             return false;
