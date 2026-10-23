@@ -1,131 +1,106 @@
 .game-container {
-    position: relative;
-    margin: 0 auto;
-    padding: 0;
-  
-    width: 95%;
-    max-width: 2000px;
-    height: 50dvh;
-  
-    max-height: 2000px;
-    aspect-ratio: 1 / 1;
-    box-sizing: border-box;
-    flex-shrink: 0;
+  /* Espace */
+  margin: 0 auto; /* Zéro marge et centrage */
+  padding: 0; /* Zéro marge intérieur */
+
+  /* Size */
+  width: clamp(95%, 95%, 2000px); /* Taille de la largeur */
+  height: clamp(50dvh, 50dvh, 2000px); /* Taille de la hauteur */
+  aspect-ratio: 1 / 1; /* Force l'aspect carré */
+
+  /* Others */
+  position: relative; /* Point de position de référencement pour les enfants */      
+  flex-shrink: 0; /* Rend la taille fixe contre les éléments extérieur */
 }
 
-.gridTile {
+.gridTile{
+  /* Others */
   position: relative; /* Point de référencement pour les éléments enfants */
-  display: grid; /* Affichage en grille */
-  
-  width: 100%; /* Largeur de la grille en % */
-  height: 100%; /* Hauteur de la grille */
-  
-  /* aspect-ratio: 1 / 1; */
-  
-  /* margin: 0 auto; */
-  padding: 0; /* Pas de marge a l'intérieur */
-  
+  background-color: rgb(205, 155, 85);
+
+  /* Display */
+  display: grid; /* Disposition en grille */
   grid-template-columns: repeat(19, 1fr); /* Créer 19 colonnes a taille égale */
   grid-template-rows: repeat(19, 1fr); /* Créer 19 lignes a taille égale */
   
-  box-sizing: border-box; /* Empêche les marges de modifier la taille */
-  flex-shrink: 0; /* Empêche le conteneur d'être écrasé par les parents flex */
-  background-color: rgb(205, 155, 85);
+  /* Size */
+  width: 100%; /* Largeur de la grille */
+  height: 100%; /* Hauteur de la grille */
+
+  /* Espace */
+  padding: 0; /* Pas de marge a l'intérieur */
 }
 
-.tileLevel0 {
-  position: relative; 
-  width: 100%;
-  height: 100%;
-  
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+.tileBase{
+  /* Size */
+  width: 100%; /* Taille de la largeur */
+  height: 100%; /* Taille de la hauteur */
+
+  /* Background */
+  background-size: 100% 100%; /* Taille de l'image */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
 }
 
-.tileLevel1 {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+.tileLevel0{
+  /* Position */
+  position: relative; /* Position de référence pour les éléments enfants */
+  z-index: 0; /* Niveau de supperposition */
 }
 
-.tileLevel2 {
-  position: absolute;
-  z-index: 2;
-  
-  width: 100%;
-  height: 100%;
-
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+.tileLevel1{
+  /* Position */
+  position: absolute; /* Position supperposer par rapport au élément de base */
+  z-index: 1; /* Niveau de supperposition */
 }
 
-.tileLevel3 {
-  position: absolute;
-  z-index: 3;
-
-  width: 100%;
-  height: 100%;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+.tileLevel2{
+  /* Position */
+  position: absolute; /* Position supperposer par rapport au élément de base */
+  z-index: 2; /* Niveau de supperposition */
 }
 
-.pathLevel {
-  position: absolute;
-  z-index: 4;
-  
-  width: 100%;
-  height: 100%;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+.tileLevel3{
+  /* Position */
+  position: absolute; /* Position supperposer par rapport au élément de base */
+  z-index: 3; /* Niveau de supperposition */
+}
+
+.pathLevel{
+  /* Position */
+  position: absolute; /* Position supperposer par rapport au élément de base */
+  z-index: 4; /* Niveau de supperposition */
 }
 
 .tileDecorationFat{
-  position: absolute;
-  z-index: 100;
-
-  bottom: 0%;
-  left: 50%;
+  /* Position */
+  position: absolute; /* Position supperposer par rapport au élément de base */
+  z-index: 100; /* Niveau de supperposition */
   
-  width: 200%;
-  height: 200%;
-
-  background-size: 100% 100%;
+  bottom: 0%; /* Position a partir du bas */
+  left: 50%; /* Position a partir de gauche */
   transform: translateX(-50%);
 
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: bottom center;
+  /* Size */
+  width: 200%; /* Taille de la largeur */
+  height: 200%; /* Taille de la hauteur */
+  
+  /* Background */
+  background-size: 100% 100%; /* Taille de l'image */
+  background-size: contain; /* L'intégralité de l'image reste visible */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+  background-position: bottom center; /* Point d'ancrage de l'image */
 }
 
 .tileDecorationLittle{
-  position: absolute;
-  z-index: 100;
+  /* Position */
+  position: absolute; /* Position supperposer par rapport au élément de base */
+  z-index: 100; /* Niveau de supperposition */
 
-  bottom: 25%;
-  left: 50%;
+  bottom: 25%; /* Position a partir du bas */
+  left: 50%; /* Position a partir de gauche */
+  transform: translateX(-50%); /* Positionne au centre de l'axe X */
   
-  width: 100%;
-  height: 100%;
-
-  background-size: 100% 100%;
-  transform: translateX(-50%);
-
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: bottom center;
-}
-
-.tilePlayer{
-  position: absolute;
-  z-index: 100;
-
-  width: 100%;
-  height: 100%;
-
-  background-size: 100% 100%;
-  transform: translateY(-50%);
+  /* Background */
+  background-size: contain; /* L'intégralité de l'image reste visible. */
+  background-position: bottom center; /* Point d'encrage de l'image */
 }

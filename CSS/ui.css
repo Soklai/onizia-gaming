@@ -208,7 +208,9 @@
   
   /* Size */
   width: 100%; /* Taille de la largeur */
-  height: 150px; /* Taille de la hauteur */
+  /* height: clamp(8dvh, 20%, 30%); Taille de la hauteur */
+  height: auto;
+  max-height: 300px;
 }
 
 .tileHand{
@@ -225,7 +227,8 @@
   background-repeat: no-repeat; /* Bloque la répètition de l'image */
   
   /* Size */
-  height: 100%; /* Taille de la hauteur */
+  height: clamp(50px, 10dvh, 300px); /* */
+  width: clamp(50px, 10dvh, 300px);  /* */
 }
 
 .contenairVictoryPlayer{

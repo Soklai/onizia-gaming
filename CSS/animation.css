@@ -1,66 +1,65 @@
 .character {
-  position: absolute;
-  width: 64px;
-  height: 64px;
+  /* Position */
+  position: absolute; /* Position supperposer par rapport au élément de base */
+  z-index: 1000; /* Niveau de supperposition */
 
-  z-index: 1000;
+  /* Size */
+  width: 64px; /* Taille de la largeur */
+  height: 64px; /* Taille de la hauteur */
   
-  background-image: url('../IMAGE/CHARACTER/character_walk.png');
-  background-repeat: no-repeat; 
-  /* On initialise la position sans fixer l'axe Y */
-  background-position-x: 0px;
-  
-  image-rendering: pixelated;
-  transition: left 0.4s linear, top 0.4s linear;
+  /* Background */
+  background-image: url('../IMAGE/CHARACTER/character_walk.png'); /* Localisation de l'image */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+  background-position-x: 0px; /* Positionne le long de l'axe X */
+
+  /* Animation */
+  transition: left 0.4s linear, top 0.4s linear; /* linear = Vitesse de l'animation constante */
 }
 
-/* 1. Décalage Y par direction (associé à l'ID #character pour être prioritaire) */
 .character.dir-up    { background-position-y: 0px; }
 .character.dir-left  { background-position-y: -64px; }
 .character.dir-down  { background-position-y: -128px; }
 .character.dir-right { background-position-y: -192px; }
 
-/* 2. Animation de marche (ajustée à 0.4s pour coller au déplacement) */
 .character.is-walking {
-  animation: walk-animation 0.4s steps(8) infinite;
+  animation: walk-animation 0.4s steps(8) infinite; /* Animation, durée, Nombre d'image, en boucle ? */
 }
 
-@keyframes walk-animation {
-  from { background-position-x: 0px; }
-  to   { background-position-x: -512px; } /* 8 frames * 64px = 512px */
+@keyframes walk-animation { /* 512 pixel de largeur / 8 frames = 64 pixel */
+  0% { background-position-x: 0px; } /* Départ de la position X de l'animation */
+  100% { background-position-x: -512px; } /* Fin de la position X de l'animation */
 }
 
 .animEffect {
-  display: none;
-  position: absolute;
-  
-  width: 64px;
-  height: 64px;
-  z-index: 1000;
+  /* Display */
+  display: none; /* Cache l'élément */
 
-  top: 64px;
-  left: 0%;
+  /* Position */
+  position: absolute; /* Survole les élément de base */
+  z-index: 1000; /* Niveau de supperposition */
+
+  top: 64px; /* Position a partie du haut */
+  left: 0%; /* Position a partir de gauche */
+
+  transform: scale(3); /* Augmente la taille de l'élément */
+  transform-origin: bottom center; /* Point d'ancrage de l'image */
+
+  /* Size */
+  width: 64px; /* Taille de la largeur */
+  height: 64px; /* Taille de la hauteur */
   
-  background-repeat: no-repeat; 
-  background-position: 0px 0px; 
-  
-  transform: scale(3);
-  transform-origin: bottom center; 
-  
-  image-rendering: pixelated;
-  overflow: hidden;
+  /* Background */
+  background-repeat: no-repeat; /* Bloque la répètition de l'image */
+
+  /* Other */
+  overflow: hidden; /* Cache une partie de l'animation si elle dépasse du parent */
 }
 
 .animEffect.is-spell {
-  animation: spell-animation 0.6s steps(4) infinite;
+  animation: spell-animation 0.6s steps(4) infinite; /* Animation, durée, nombre frame, boucle ? */
 }
 
 @keyframes spell-animation {
-  0% { 
-    background-position: 0px 0px; 
-  }
-  100% { 
-    /* On décale uniquement sur la hauteur pour parcourir les 4 lignes (-256px) */
-    background-position: 0px -256px; 
-  }
+  0% { background-position-y: 0px; } /* Départ de la position Y de l'animation */
+  100% { background-position-y: -256px; } /* Fin de la position Y de l'animation */
 }

@@ -27,6 +27,7 @@ html, body {
   touch-action: manipulation; /* Empêche les mouvements de zoom, etc.. */
 
   position: relative; /* Point de référencement pour les éléments enfants */
+  image-rendering: pixelated;
 }
 
 /* DEBUG */
