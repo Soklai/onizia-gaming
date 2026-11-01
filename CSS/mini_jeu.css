@@ -31,7 +31,7 @@ html, body {
 }
 
 /* DEBUG */
-#debugWindow{  
+.debugWindow{  
   position: absolute;
   left: 0%;
   top: 0%;
@@ -44,15 +44,17 @@ html, body {
   width: auto;
   
   font-size: 2em;
-  background-color: white;
+  
+  /* Border */
+  border: 1px black solid; /* Taille, Couleur, Type de la bordure */
+  border-radius: 4px; /* Taille de l'épaisseur arrondie de la bordure */
+
+  /* Background */
+  background: rgba(255, 255, 255, 0.4); /* Couleur du background + oppacité */ 
+
 }
 
-#debugButton{
-  height: 60px;
-  width: 80px;
-}
-
-#debugText{
+.debugText{
   height: auto;
   width: auto;
 }

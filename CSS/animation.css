@@ -1,4 +1,8 @@
 .character {
+  /* Display */
+  display: block;
+  opacity: 1;
+  
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
   z-index: 1000; /* Niveau de supperposition */
@@ -8,12 +12,11 @@
   height: 64px; /* Taille de la hauteur */
   
   /* Background */
-  background-image: url('../IMAGE/CHARACTER/character_walk.png'); /* Localisation de l'image */
+  /* background-image: url('../IMAGE/CHARACTER/character_walk.png'); Localisation de l'image */
   background-repeat: no-repeat; /* Bloque la répètition de l'image */
-  background-position-x: 0px; /* Positionne le long de l'axe X */
-
+  
   /* Animation */
-  transition: left 0.4s linear, top 0.4s linear; /* linear = Vitesse de l'animation constante */
+  transition: left 0.4s linear, top 0.4s linear, opacity 1s ease-in-out; /* linear = Vitesse de l'animation constante */
 }
 
 .character.dir-up    { background-position-y: 0px; }
@@ -21,13 +24,50 @@
 .character.dir-down  { background-position-y: -128px; }
 .character.dir-right { background-position-y: -192px; }
 
+.character.is-idle {
+  background-image: url('../IMAGE/CHARACTER/character_walk.png'); /* Localisation de l'image */
+  background-position-x: 0px; /* Positionne le long de l'axe X */
+}
 .character.is-walking {
+  background-image: url('../IMAGE/CHARACTER/character_walk.png'); /* Localisation de l'image */
+  background-position-x: 0px; /* Positionne le long de l'axe X */
+  
   animation: walk-animation 0.4s steps(8) infinite; /* Animation, durée, Nombre d'image, en boucle ? */
 }
 
 @keyframes walk-animation { /* 512 pixel de largeur / 8 frames = 64 pixel */
   0% { background-position-x: 0px; } /* Départ de la position X de l'animation */
   100% { background-position-x: -512px; } /* Fin de la position X de l'animation */
+}
+
+.character.is-die {
+  background-image: url('../IMAGE/CHARACTER/character_die.png'); /* Localisation de l'image */
+  background-position-y: 0px;
+    
+  animation: die-animation 0.5s steps(5) 1 forwards; /* Animation, durée, Nombre d'image, en boucle ? */
+}
+
+@keyframes die-animation { 
+  0% { background-position-x: 0px; } /* Départ de la position X de l'animation */
+  100% { background-position-x: -320px; } /* Fin de la position X de l'animation */
+}
+
+.character.is-invisible{
+  opacity: 0;
+}
+
+.isTarget{
+  /* Size */
+  width: 32px;
+  height: 48px;
+
+  /* Espace */
+  margin: 14px auto;
+
+  /* Border */
+  outline: 2px dashed #ffcc00; /* Une couleur bien visible comme du doré */
+  outline-offset: 0px;       /* Resserre légèrement le contour vers l'intérieur du sprite */
+  border-radius: 4px;
 }
 
 .animEffect {
@@ -62,4 +102,154 @@
 @keyframes spell-animation {
   0% { background-position-y: 0px; } /* Départ de la position Y de l'animation */
   100% { background-position-y: -256px; } /* Fin de la position Y de l'animation */
+}
+
+/* ########## WEATHER ########## */
+.weather-rain {
+  display: flex;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../IMAGE/WEATHER/rain.png');
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 5000;
+
+  /* 1. Force le rendu sur le GPU et stabilise la couche */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  /* 3. Utiliser un timing 'linear' avec une durée propre */
+  animation: fallRain 2s linear 1 forwards;
+}
+
+@keyframes fallRain {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* Déplacement exact de 1024px (ou -512px 512px) pour boucler sans micro-saut */
+    background-position: -512px 512px;
+  }
+}
+
+.weather-snow {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../IMAGE/WEATHER/snow_far.png');
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 5000;
+
+  /* 1. Force le rendu sur le GPU et stabilise la couche */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  /* 3. Utiliser un timing 'linear' avec une durée propre */
+  animation: fallSnow 2s linear 1 forwards;
+}
+
+@keyframes fallSnow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* Déplacement exact de 1024px (ou -512px 512px) pour boucler sans micro-saut */
+    background-position: -512px 512px;
+  }
+}
+
+.weather-fog {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../IMAGE/WEATHER/fog.png');
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 5000;
+
+  /* 1. Force le rendu sur le GPU et stabilise la couche */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  /* 3. Utiliser un timing 'linear' avec une durée propre */
+  animation: fallFog 2s linear 1 forwards;
+}
+
+@keyframes fallFog {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* Déplacement exact de 1024px (ou -512px 512px) pour boucler sans micro-saut */
+    background-position: -512px 512px;
+  }
+}
+
+.weather-wind {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-image: url('../IMAGE/WEATHER/wind.png');
+  background-repeat: no-repeat;
+  background-size: cover; 
+  
+  pointer-events: none;
+  z-index: 5000;
+
+  /* Optimisations GPU */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  
+  /* Animation par étapes (steps) : change le '6' si tu as un nombre différent de frames sur ton image */
+  /*animation: playWindSheet 2s steps(6) 1 forwards;*/
+  animation: wind-animation 2s linear 1 forwards;
+}
+
+@keyframes wind-animation {
+  0% {
+    background-position-x: 0%;
+  }
+  100% {
+    /* Fait défiler toute la largeur de la bande d'images d'un coup */
+    background-position-x: 100%;
+  }
 }
