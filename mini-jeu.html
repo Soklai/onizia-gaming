@@ -18,17 +18,17 @@
 
   <body>
 
-      <div id="debugWindow">
-        <div id="debugText">DEBUG WINDOW</div>
-        <button id="debugButton">Debug</button>
+      <div id="debugWindow" class="debugWindow">
+        <div class="debugText">Debug</div>
+        <button id="debugButton" class="buttonBase">Debug</button>
       </div>
     
-      <div id="victoryPlayer" class="contenairVictoryPlayer">
-        <div id="textVictory"> Le gagnant est TRICHEUR ! </div>
+      <div id="containerVictory" class="containerVictory">
+        <div class="textVictory"> Le gagnant est TRICHEUR ! </div>
         
-        <div class="contenairButtonVictory">
-          <button id="buttonRestart">Restart</button>
-          <button id="buttonQuit">Quit</button>
+        <div class="containerButtonVictory">
+          <button id="buttonRestart" class="buttonBase">Restart</button>
+          <button id="buttonQuit" class="buttonBase">Quit</button>
         </div>
             
       </div>
@@ -37,40 +37,43 @@
         
         <div id="gridTile" class="gridTile"></div>
     
-        <div id="character0" class="character">
-          <div id="animEffect0" class="animEffect"></div>
+        <div id="character0" class="character is-idle">
+          <div class="animEffect"></div>
+          
+          <div class="containerInfo">
+            <div class="elemInfoText"></div>
+          </div>
+
+          <div class="containerTarget"></div>
+          
         </div>
     
-        <div id="character1" class="character">
-          <div id="animEffect1" class="animEffect"></div>
+        <div id="character1" class="character is-idle">
+          <div class="animEffect"></div>
+          
+          <div class="containerInfo">
+            <div class="elemInfoText"></div> 
+          </div>
+
+          <div class="containerTarget"></div>
+          
         </div>
-        
+
+        <div id="weather"></div>
       </div>
     
       <!-- <div id="animEffectProject0"></div> -->
       
       <div class="containerUI">
 
-        <div class="containerInfoPlayer">
-          <div class="containerInfoPlayerLeft">
-            <div class="infoPlayerLeftCharacter"></div>
-            <div id="infoPlayerLeftText"></div>     
-          </div>
-           
-          <div class="containerInfoPlayerRight">
-            <div id="infoPlayerRightText"></div> 
-            <div class="infoPlayerRightCharacter"></div>                 
-          </div>
-        </div>
+      <div id="logFight" class="logFight"></div>
 
-      <div id="logFight"></div>
-
-      <div class="contenairAction">
-        <button id="buttonMove" class="buttonAction">Move</button>
-        <button id="buttonEnd" class="buttonAction">Pass</button>
+      <div class="containerAction">
+        <button id="buttonMove" class="buttonBase">Move</button>
+        <button id="buttonPass" class="buttonBase">Pass</button>
       </div>
 
-      <div class="contenairHand">
+      <div class="containerHand">
         <div id="tileHandSlot0" class="tileHand"></div>
         <div id="tileHandSlot1" class="tileHand"></div>
         <div id="tileHandSlot2" class="tileHand"></div>
