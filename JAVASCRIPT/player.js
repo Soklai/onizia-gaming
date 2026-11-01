@@ -515,7 +515,7 @@ export class Player{
     
     // Calcul de la position CIBLE centrée sur la tuile
     const targetX = (tile.left - grid.left) + (tile.width / 2) - (this._sizeCharacterWidth / 2);
-    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this._sizeCharacterHeight / 2) - 25;
+    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this._sizeCharacterHeight / 2) - 40;
     
     // Déplacement CSS
     this._character.style.left = `${targetX}px`;
@@ -576,7 +576,7 @@ export class Player{
     else if(this._game.selectedPlayer === this){
       this._game.selectedPlayer = null;
       
-      this._contInfoPlayer.style.display = "none";   
+      if(this._game._currentPlayer != this) this._contInfoPlayer.style.display = "none";   
     }
       // Si la selection n'est pas = null & this
     else{

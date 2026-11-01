@@ -13,8 +13,8 @@ export class GameManager{
     
     // Variable local
     // Position
-    this._startPosPathAllPlayer = [1, 1];/* 34 test die */
-    this._startPosTileAllPlayer = [134, 226]; /* 226 tile start */
+    this._startPosPathAllPlayer = [1, 1];/* [ 34 test die ] [ 70 test victory ] */
+    this._startPosTileAllPlayer = [134, 226]; /*[ 134 | 226 tile start ] [ 179 | 181 tile victory] */
     this._slotBase = [ [null, null, null, null], [null, null, null, null] ];
     
     this._orderPlayer = [];
@@ -293,7 +293,7 @@ export class GameManager{
   // Other
   victoryPlayer(posTilePlayer, player){
     if(posTilePlayer === 180){ 
-      this._endGame === false;
+      this._endGame === true;
       this._ui.showVictory(player);
     }
   }

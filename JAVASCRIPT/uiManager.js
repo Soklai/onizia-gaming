@@ -154,7 +154,7 @@ export class UIManager{
 
   // Other
   showVictory(player){
-    this._victoryPlayer.style.display = "flex";
+    this._containerVictory.style.display = "flex";
     
     if(player === this._game.player1){ this._textVictory.textContent = "Winner " + player.name + " !" }
     else{ this._textVictory.textContent = "Game over " + player.name + " !" }
