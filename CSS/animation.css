@@ -1,7 +1,8 @@
 .character {
   /* Display */
   display: block;
-  opacity: 1;
+  opacity: 1;  
+  image-rendering: pixelated;
   
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
@@ -10,9 +11,9 @@
   /* Size */
   width: 64px; /* Taille de la largeur */
   height: 64px; /* Taille de la hauteur */
+  transform: scale(1.5);
   
   /* Background */
-  /* background-image: url('../IMAGE/CHARACTER/character_walk.png'); Localisation de l'image */
   background-repeat: no-repeat; /* Bloque la répètition de l'image */
   
   /* Animation */
