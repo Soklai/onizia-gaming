@@ -1,19 +1,18 @@
 export class Spell {
-  constructor(name, description, icone, animation, targetAnim, force, direction, effect, attack){
-    this.name = name;
-    this.description = description;
-    this.icone = icone;
-    this.animation = animation;
-    this.targetAnim = targetAnim;
-    this.force = force;
-    this.direction = direction;
-    this.effect = effect;
-    this.attack = attack;
+  constructor(Name, Description, Icon, Animation, Force, Direction, TargetCondition, Attack){
+    this._name = Name;
+    this._description = Description;
+    this._icon = Icon;
+    this._animation = Animation;
+    this._force = Force;
+    this._direction = Direction;
+    this._targetCondition = TargetCondition;
+    this._attack = Attack;
   }
 
   cast(caster, target){
-    if (typeof this.attack === "function") {
-      return this.attack(caster, target, this);
+    if (typeof this._attack === "function") {
+      return this._attack(caster, target, this);
     }
     return false;
   }
@@ -25,15 +24,14 @@ export class Spell {
     "Retire 2 point de mouvement a la cible pendant 1 tour.",
     "url('IMAGE/SPELL/background_spell_ralentissement.jpg')",
     "url('IMAGE/SPELL/slow_effect.png')",
-    "Opponent",
-    -2,
+    2,
     0,
-    "-pm",
+    "libre",
     async (caster, target, spell) => { 
       if(target.die === false){
-        target.removePm(2);
-        await caster.spellAnimation(spell);
         
+        target.removePm(spell._force);
+        await target.spellAnimation(spell); 
         return false;
       }
       else{
@@ -47,14 +45,13 @@ export class Spell {
     "Ajoute 2 point de mouvement a la cible pendant 1 tour.",
     "url('IMAGE/SPELL/background_spell_celerite.jpg')",
     "url('IMAGE/SPELL/haste_effect.png')",
-    "Current",
     2,
     0,
-    "+pm",
+    "libre",
     async (caster, target, spell) => { 
-      caster.addPm(2);
-
-      await caster.spellAnimation(spell);
+      
+      target.addPm(spell._force);
+      await target.spellAnimation(spell);
       return false;
     } );
   
@@ -63,14 +60,14 @@ export class Spell {
     "La cible recule de 2 cases.",
     "url('IMAGE/SPELL/background_spell_attraction.jpg')",
     "url('IMAGE/SPELL/fear_effect.png')",
-    "Opponent",
     2,
     -1,
-    "",
+    "libre",
     async (caster, target, spell) => {
       if(target.die === false){
-        caster.spellAnimation(spell);
-        await target.spellMove(-1, spell.force);
+        
+        target.spellAnimation(spell);    
+        await target.spellMove(spell._direction, spell._force);
         return false;
       }
       else{
@@ -83,14 +80,14 @@ export class Spell {
     "Avance la cible de 2 cases.",
     "url('IMAGE/SPELL/background_spell_repulsion.jpg')",
     "url('IMAGE/SPELL/shock_effect.png')",
-    "Opponent",
     2,
     1,
-    "",
+    "libre",
     async (caster, target, spell) => {
       if(target.die === false){
-        caster.spellAnimation(spell);
-        await target.spellMove(1, spell.force);
+        
+        target.spellAnimation(spell);
+        await target.spellMove(spell._direction, spell._force);
         return false; 
       }
       else{
@@ -103,16 +100,16 @@ export class Spell {
     "S'appuie contre un mur ou un joueur pour avancer de 5 cases.",
     "url('IMAGE/SPELL/background_spell_appuie.jpg')",
     "url('IMAGE/SPELL/haste_effect.png')",
-    "Current",
     5,
     1,
-    "",
+    "current",
     async (caster, target, spell) => 
       {
         for( let i= 0; i < caster._game.map.allPosWall.length; i++){
           if(caster.posTile === caster._game.map.allPosWall[i]){
+            
             caster.spellAnimation(spell);
-            await caster.spellMove(1, spell.force); 
+            await caster.spellMove(spell._direction, spell._force); 
             return false;
           }
         }

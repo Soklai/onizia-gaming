@@ -2,7 +2,7 @@ import { Spell } from './spell.js';
 
 export class Player{
   
-  constructor(GameInstance, Name, PosPath, PosTile, Path, PlayerIA, Character, AnimEffect){
+  constructor(GameInstance, Name, PosPath, PosTile, Path, PlayerIA, Character){
     // Instance
     this._game = GameInstance;
     
@@ -15,6 +15,12 @@ export class Player{
     this._die = false;
 
     // Position
+    this._startPosPath = PosPath;
+    this._respawnPosPath = PosPath;
+
+    this._startPosTile = PosTile;
+    this._respawnPosTile = PosTile;
+    
     this._posPath = PosPath;
     this._posTile = PosTile;
 
@@ -31,7 +37,10 @@ export class Player{
     
     // Sprite / Animation
     this._character = Character;
-    this._animEffect = AnimEffect;
+    this._animEffect = this._character.querySelector(".animEffect");
+    this._contInfoPlayer = this._character.querySelector(".containerInfo");
+    this._elemInfoText = this._contInfoPlayer.querySelector(".elemInfoText");
+    this._contTarget = this._character.querySelector(".containerTarget");
     
     this._sizeCharacterHeight = 64;
     this._sizeCharacterWidth = 64; 
@@ -44,32 +53,70 @@ export class Player{
     this._playerIA = PlayerIA;
     this._turnFinish = true;
     
+    this._currentTurnRespawn = -1;
+    
     this._isCast = false;
-    /*this._nodePath = [];*/
-    /*this._spellQueue = [];*/
+    this._isDie = false;
+    this._isRevive = false;
+    
     this._forceMove = 0;
+
+    this.loadObject();
   }
 
   // Getter Setter local
 
   // Name
   get name(){ return this._name; }
-  set name(value){ this._name = value; }
+  set name(value){
+    this._name = value;
+    this._game.ui.updatePlayersInfo();
+  }
 
   // PM
   get pm(){ return this._pm; }
-  set pm(value){ this._pm = value; }
+  set pm(value){
+    this._pm = value;
+    
+    if(this._die === false) this.infoPlayer();
+  }
   
-  addPm(value){ this._pm += value; }
-  removePm(value){ this._pm -= value; }
+  addPm(value){
+    this._pm += value;
+    if(this.die === false) this.infoPlayer();
+  }
+  removePm(value){ 
+    this._pm -= value;
+    
+    if(this._pm < 0) this._pm = 0;
+    if(this.die === false) this.infoPlayer();
+  }
 
   get pmMax(){ return this._pmMax; }
 
   // Die
   get die(){ return this._die; }
-  set die(value){ this._die = value; }
+  set die(value){
+    this._die = value;
 
-  // Pos path
+    if(this._die === true){
+      this.isDie();
+    }
+  }
+
+  // Pos Tile & Path
+  get startPosPath(){ return this._startPosPath; }
+  set startPosPath(value){ this._startPosPath = value; }
+  
+  get respawnPosPath(){ return this._respawnPosPath; }
+  set respawnPosPath(value){ this._respawnPosPath = value; }
+
+  get startPosTile(){ return this._startPosTile; }
+  set startPosTile(value){ this._startPosTile = value; }
+  
+  get respawnPosTile(){ return this._respawnPosTile; }
+  set respawnPosTile(value){ this._respawnPosTile = value; }
+
   get posPath(){ return this._posPath; }
   set posPath(value){ this._posPath = value; }
 
@@ -91,10 +138,19 @@ export class Player{
 
   // Hand
   get hand(){ return this._hand; }
-  set hand(value){ this._hand = value; }
+  set hand(value){ 
+    this._hand = value;
+    if(this._playerIA === false) this._game.ui.updateHand();
+  }
 
-  addCardHand(index){ this._hand.push(this._deck[index]); }
-  removeCardHand(index){ this._hand.splice(index, 1); }
+  addCardHand(index){
+    this._hand.push(this._deck[index]);
+    if(this._playerIA === false) this._game.ui.updateHand();
+  }
+  removeCardHand(index){
+    this._hand.splice(index, 1);
+    if(this._playerIA === false) this._game.ui.updateHand();
+  }
 
   // Deck
   get deck(){ return this._deck; }
@@ -105,7 +161,22 @@ export class Player{
 
   // Turn
   get turnFinish(){ return this._turnFinish; }
-  set turnFinish(value){ this._turnFinish = value; }
+  set turnFinish(value){ 
+    this._turnFinish = value;
+
+    if(this._turnFinish === true){
+      this._game.ui.addTextLog(this._name + " a terminé sont tour !");
+      this.pm = this.pmMax;
+      if(this._die === false) this._contInfoPlayer.style.display = "none";   
+    }
+    else{
+      this._game.ui.addTextLog(this._name + " commence sont tour !");
+      this._contInfoPlayer.style.display = "flex";
+      this.addCard();
+    }
+
+    if(this._die === false) this.infoPlayer();
+  }
 
   // Force move
   get forceMove(){ return this._forceMove; }
@@ -114,10 +185,6 @@ export class Player{
   // isWalking
   get isWalking(){ return this._isWalking; }
   set isWalking(value){ this._isWalking = value; }
-
-  // isCast
-  get isCast(){ return this._isCast; }
-  set isCast(value){ this._isCast = value; }
 
   // PlayerIA
   get playerIA(){ return this._playerIA; }
@@ -130,11 +197,32 @@ export class Player{
   // Character
   get character(){ return this._character; }
   set character(value){ this._character = value; }
+
+  // Turn respawn
+  get currentTurnRespawn(){ return this._currentTurnRespawn; }
+  set currentTurnRespawn(value){ 
+    this._currentTurnRespawn = value;
+    if(this._currentTurnRespawn < 0) this._currentTurnRespawn = 0;
+    this.isCurrentTurnRespawn();
+  }
+
+  // Container CSS
+  get contInfoPlayer(){ return this._contInfoPlayer; }
+  get contTarget(){ return this._contTarget; }
+
+  // Is
+  get isCast(){ return this._isCast; }
+  set isCast(value){ this._isCast = value; }
+
+  get isDie() { return this._isDie; }
+  set isDie(value) { return this._isDie = value; }
+
+  get isRevive() { return this._isRevive; }
+  set isRevive(value) { return this._isRevive = value; }
   
   // Other
-  get posTileBase(){ return this._posTileBase; }
+  get posBase(){ return this._posBase; }
   
-  // Getter Setter complexe
   getPosTileDirection(direction){
     let posPathDirection = this._posPath + direction;
     let posTileDirection = this._path[posPathDirection];
@@ -149,8 +237,12 @@ export class Player{
     return this._path[this._posPath];
   }
 
+  getPosTileToPosPath(){
+    
+  }
+
   getPosXY(posTile){
-    return this.map.gridTileLevel0[posTile].getBoundingClientRect();
+    return this._game.map.gridTileLevel0[posTile].getBoundingClientRect();
   }
 
   getPosXYDirection(dir){
@@ -161,21 +253,88 @@ export class Player{
 
   getSpellIndexByName(name){   
     for(let i = 0; i < this._hand.length; i++){
-      if(this._hand[i].name === name) { return i; }
+      if(this._hand[i]._name === name) { return i; }
     }
     
     return null;
   }
 
-  // Getter externe
-  get map(){ return this._game.map; }
-  get ui(){ return this._game.ui; }
-  
-  get currentPlayer(){ return this._game.currentPlayer; }
-  get opponentPlayer(){ return this._game.opponentPlayer; }
-  
-
   // Function
+  async revive(){
+    this._character.style.animation = '';
+    
+    // Rend invisible le joueur avant la pos
+    this._character.classList.add(`is-invisible`);
+    await this.waitTransition(this._character);
+    
+    // Déplacement du joueur
+    this._posPath = this._respawnPosPath;
+    this._posTile = this._respawnPosTile;    
+    this.teleportPosTile(this._posTile);
+      
+    this.characterDirection(1);
+    this._character.style.backgroundPositionX = `0px`;
+
+    // Rend visible et active idle
+    this._character.classList.remove(`is-die`);
+    this._character.classList.add(`is-idle`);
+
+    this._die = false;
+    this.infoPlayer(); // Last
+    this._game.removePlayerBase(this);
+    
+    this._character.classList.remove(`is-invisible`); 
+    await this.waitTransition(this._character);
+
+    this._game.ui.addTextLog(this._name + " est ressucité !");
+  }
+
+  async isDie(){   
+    // Reset les class
+    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`, `is-walking`, `is-idle`);
+
+    // Active l'anim de mort
+    this._character.classList.add(`is-die`);
+    await this.waitAnimation(this._character);
+
+    //Rend invisible
+    this._character.classList.add(`is-invisible`);
+    await this.waitTransition(this._character);
+    
+    this._game.goSlotBase(this);
+    this.currentTurnRespawn = 3;
+    
+    this._character.classList.remove(`is-invisible`);
+    await this.waitTransition(this._character);
+    
+    this.infoPlayer();
+    this._contInfoPlayer.style.display = "flex";
+      
+  }
+
+  isCurrentTurnRespawn(){
+    // Tour 0
+    if(this._currentTurnRespawn === 0){
+      this._currentTurnRespawn = 0;
+      this.choiceFrame(this._character, 0);
+    }
+    // Tour 1
+    else if(this._currentTurnRespawn === 1){
+      this.choiceFrame(this._character, 2);
+    }
+    // Tour 2
+    else if(this._currentTurnRespawn === 2){
+      this.choiceFrame(this._character, 4);
+    }
+    // Tour 3
+    else if(this._currentTurnRespawn === 3){
+      this.choiceFrame(this._character, 6);
+    }
+
+    // Mise a jour des informations du joueur
+    this.infoPlayer();    
+  }
+  
   addCard(){
     let drawCardNumber = this._limitCardHand - this._hand.length;
   
@@ -185,102 +344,61 @@ export class Player{
       this.addCardHand(randomIndex);
       this.removeCardDeck(randomIndex);
     }
-    
-    if (this._playerIA === false ) { this.ui.updateHand(); }
   }
   
   async useCard(index){
-    if(this._isCast === false && this._isWalking === false){
+    const spell = this._hand[index];
+    
+    if(spell._targetCondition === "current" && this._game.selectedPlayer === null) this._game.selectedPlayer = this._game.currentPlayer;
+    
+    if(this._isCast === false &&
+       this._isWalking === false &&
+       this._game.selectedPlayer != null ){
       
       this._isCast = true;
-      const spell = this._hand[index];
-      let echecSpell = await spell.cast(this.currentPlayer, this.opponentPlayer, this._game);
+      let echecSpell = await spell.cast(this._game.currentPlayer, this._game.selectedPlayer);
       
-      if(echecSpell === false){
-        this.ui.addTextLogFight(" lance [" + spell.name + "]", this._name, "");
-        this.ui.updatePlayersInfo();
-
-        /*this._spellQueue.splice(0, 1);*/
-        this.deleteCard(index);
-        this._isCast = false;
-
-        return false;
-      }
-      else{
-        this.ui.addTextLogFight(" echec du sort [" + spell.name + "]", this.currentPlayer.name, "");
-        this.ui.updatePlayersInfo();
-
-        /*this._spellQueue.splice(0, 1);*/
-        this.deleteCard(index);
-        this._isCast = false;
-        
-        return true;
-      }      
+      if(echecSpell === false){ this._game.ui.addTextLogFight(" lance [" + spell._name + "]", this._name, ""); }
+      else{ this._game.ui.addTextLogFight(" echec du sort [" + spell._name + "]", this._game.currentPlayer.name, ""); }
+      
+      this.deleteCard(index);
+      this._isCast = false;
+    }
+    else{
+      this._game.ui.addTextLog(spell._name + ": Aucune cible selectionné !");
     }
   }
   
   deleteCard(index) {
     const card = this._hand[index];
     
-    if (card) {
-      this.addCardDeck(card);      // Ajoute le vrai objet Spell dans le deck
-      this.removeCardHand(index);   // Supprime de la main
-    }
-  
-    if (this._playerIA === false) { 
-      this.ui.updateHand(); 
-    }
+    this.addCardDeck(card);      // Ajoute le vrai objet Spell dans le deck
+    this.removeCardHand(index);   // Supprime de la main
   }
 
   //Partie autre
   
   getRandomIndexDeck(){ return Math.floor(Math.random() * this._deck.length); }
 
-  /*addNodePath(direction){
-    if(this._nodePath.length < this.getPm()){
-      if(this._nodePath.length === 0){
-        this._nodePath.push(this.getPosTileDirection(direction)); }
-      else{
-        this._nodePath.push( this.getPosTileDirection(direction + this._nodePath.length) );
-      }
-    }
-  } */
-
-  /* addSpellQueue(index){
-    this._spellQueue.push(index);
-  } */
-
-  /* async useSpellQueue(){
-    this.useCard(this._spellQueue[0]);
-    
-    await this.wait(1000); 
-  } */
-
-  async wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  async move(direction){
+  async move(direction){   
     for(let i = 0; i < this._forceMove; i++){
       if(this._pm > 0 && this._isWalking === false && this._isCast === false){
         this._isWalking = true;
-      
-        let newPosPath = this._posPath + direction;
-        let newPosTile = this._path[newPosPath];
-        let tile = this.map.gridPlayer[this._posTile];
-        let indexPlayer = this._game.isTilePlayer(this.getPosTileDirection(direction));
-      
-        // Sur la case suivante, vérifier si il y a un joueur
-        if(indexPlayer != null) { this._game.diePlayerGoToBase(indexPlayer); }    
-      
-        // Met a jour la nouvelle position du joueur
+
+        // On check la case d'arriver
+        this._game.isTilePlayer(this.getPosTileDirection(direction));
+        
+        // On lance l'animation de marche vers la position
         await this.moveAnimation(direction);
         
-        this._posPath = this.getPosPathDirection(direction);
-        this.removePm(1);
-        
-        this.ui.updatePlayersInfo();
-        this._game.victoryPlayer(this._posTile, this);
+        if(this._die === false) {
+          // On met a jour la position
+          this._posTile = this.getPosTileDirection(direction);
+          this._posPath = this.getPosPathDirection(direction);          
+
+          this.removePm(1);
+          this._game.victoryPlayer(this._posTile, this);
+        }
         
         this._character.style.zIndex = 99 + this._posTile;
         this._isWalking = false;   
@@ -288,46 +406,38 @@ export class Player{
     }
     
     this._character.classList.remove(`is-walking`);
+    this._character.classList.add(`is-idle`);
     this._forceMove = 0;
   }
 
   async spellMove(direction, force){
     for(let i = 0; i < force; i++){
       if(this._posPath + direction >= 0){
-        let newPosPath = this._posPath + direction;
-        let newPosTile = this._path[newPosPath];
-        let tile = this.map.gridPlayer[this._posTile];
-        let indexPlayer = this._game.isTilePlayer(this.getPosTileDirection(direction));
-          
-        if(indexPlayer != null) { this._game.diePlayerGoToBase(indexPlayer); }    
         
-        await this.spellMoveAnimation(direction);
-  
-        this.ui.updatePlayersInfo();
-        this._game.victoryPlayer(this._posTile, this);   
+        await this.moveAnimation(direction);   
+        this._game.isTilePlayer(this.getPosTileDirection(direction));
+        
+        if(this._die === false) {
+          // On met a jour la position
+          this._posTile = this.getPosTileDirection(direction);
+          this._posPath = this.getPosPathDirection(direction);          
+
+          this._game.victoryPlayer(this._posTile, this);
+        }
       }
       this._character.style.zIndex = 99 + this._posTile;
       this._character.classList.remove(`is-walking`);
+      this._character.classList.add(`is-idle`);    
     }
-  }
-  
-  async spellMoveAnimation(direction) {
-    this.characterDirection(direction);
-    this._character.classList.add(`is-walking`);
-
-    this.goPos(this.getPosTileDirection(direction));
-    this._posPath = this.getPosPathDirection(direction);
-      
-    await this.wait(400);
   }
 
   async spellAnimation(spell){
-    let targetAnim;
+    let targetAnim = null;
     
-    if(spell.targetAnim === "Current"){ targetAnim = this._animEffect; }
-    else{ targetAnim = this.opponentPlayer.animEffect; }
+    if(spell._targetCondition === "current"){ targetAnim = this._animEffect; }
+    else{ targetAnim = this._game.selectedPlayer.animEffect; }
     
-    targetAnim.style.backgroundImage = spell.animation;
+    targetAnim.style.backgroundImage = spell._animation;
     targetAnim.style.display = "block";
     
     targetAnim.classList.add(`is-spell`);
@@ -341,12 +451,24 @@ export class Player{
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  waitAnimation(element) {
+  return new Promise(resolve => {
+    element.addEventListener('animationend', resolve, { once: true });
+  });
+  }
+
+  waitTransition(element) {
+  return new Promise(resolve => {
+    element.addEventListener('transitionend', resolve, { once: true });
+  });
+  }
+
   characterDirection(direction){
     let dir = ``;
     const currentTile = this._posTile;
     const nextTile = this.getPosTileDirection(direction);
 
-    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`);
+    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`, `is-die`);
 
     if (currentTile - 19 === nextTile)  dir = 'up';
     if (currentTile + 19 === nextTile)  dir = 'down';
@@ -356,17 +478,39 @@ export class Player{
     this._character.classList.add(`dir-${dir}`);
   }
 
-  async moveAnimation(direction) {
-    this.characterDirection(direction);
-    this._character.classList.add(`is-walking`);
-
-    this.goPos(this.getPosTileDirection(direction));
-    
-    await this.wait(400);  
+  characterDirectionForced(dirForced){
+    let dir = `${dirForced}`;
+    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`);
+    this._character.classList.add(`dir-${dir}`);
   }
 
-  goPos(posTile){
-    const grid = this.map.gridTile.getBoundingClientRect();
+  async moveAnimation(direction) { console.log("AVANT nettoyage :", this._character.className);
+
+    this._character.classList.remove('is-idle', 'is-die', 'is-invisible');
+    void this._character.offsetHeight;
+    this._character.classList.add(`is-walking`);
+    
+    this.characterDirection(direction);
+    this.goPosTile(this.getPosTileDirection(direction), direction);
+    
+    await this.wait(400);
+  }
+
+  choiceFrame(element, numeroFrame, largeurTotale = 320, nombreFrames = 5) {
+    if (numeroFrame < 1) numeroFrame = 1;
+    if (numeroFrame > nombreFrames) numeroFrame = nombreFrames;
+
+    const largeurFrame = largeurTotale / nombreFrames;
+
+    const decalageX = -(numeroFrame - 1) * largeurFrame;
+
+    element.style.animation = "none";
+
+    element.style.backgroundPositionX = `${decalageX}px`;
+  }
+
+  goPosTile(posTile, direction){
+    const grid = this._game.map.gridTile.getBoundingClientRect();
     const tile = this.getPosXY(posTile); 
     
     // Calcul de la position CIBLE centrée sur la tuile
@@ -375,12 +519,11 @@ export class Player{
     
     // Déplacement CSS
     this._character.style.left = `${targetX}px`;
-    this._character.style.top = `${targetY}px`;
-    this._posTile = posTile;
+    this._character.style.top = `${targetY}px`; 
   }
 
-  goPosElem(posTile, element){
-    const grid = this.map.gridTile.getBoundingClientRect();
+  goPosTileElem(posTile, element){
+    const grid = this._game.map.gridTile.getBoundingClientRect();
     const tile = this.getPosXY(posTile); 
     
     // Calcul de la position CIBLE centrée sur la tuile
@@ -390,5 +533,66 @@ export class Player{
     // Déplacement CSS
     element.style.left = `${targetX}px`;
     element.style.top = `${targetY + 128}px`;
+  }
+
+  teleportPosTile(posTile/*, isPath*/){
+    const grid = this._game.map.gridTile.getBoundingClientRect();
+    const tile = this.getPosXY(posTile); 
+    
+    const targetX = (tile.left - grid.left) + (tile.width / 2) - (this._sizeCharacterWidth / 2);
+    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this._sizeCharacterHeight / 2) - 25;
+
+    this._character.style.transition = 'none';
+
+    this._character.style.left = `${targetX}px`;
+    this._character.style.top = `${targetY}px`; 
+
+    void this._character.offsetWidth;
+    this._character.style.transition = '';
+    
+    this._posTile = posTile;
+    this._posPath = 1;          
+  }
+
+  infoPlayer(){
+    if(this._die === true){
+      this._elemInfoText.textContent = this.currentTurnRespawn + " tour";
+    }
+    else{
+      this._elemInfoText.textContent = this._name + ": " + this.pm + " pm";
+    }
+  }
+
+  targetCharacter(){
+    //Si aucun joueur est selectionné
+    if(this._game.selectedPlayer === null){ 
+      this._game.selectedPlayer = this;
+      this._contTarget.classList.add("isTarget");
+    
+      this.infoPlayer();
+      this._contInfoPlayer.style.display = "flex";         
+    }
+    // Si je rappuie sur le joueur
+    else if(this._game.selectedPlayer === this){
+      this._game.selectedPlayer = null;
+      
+      this._contInfoPlayer.style.display = "none";   
+    }
+      // Si la selection n'est pas = null & this
+    else{
+      this._game.selectedPlayer._contInfoPlayer.style.display = "none";         
+      this._game.selectedPlayer = null;
+      this._game.selectedPlayer = this;
+      this._contTarget.classList.add("isTarget");
+
+      this.infoPlayer();
+      this._contInfoPlayer.style.display = "flex";         
+    }
+  }
+
+  loadObject(){
+    this._character.addEventListener("click", () => { this.targetCharacter(); }); 
+    this.goPosTile(this.startPosTile);
+    this.characterDirection(1);
   }
 }

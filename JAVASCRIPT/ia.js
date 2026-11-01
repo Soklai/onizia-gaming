@@ -2,93 +2,73 @@ export class IA{
   constructor(GameInstance){
     // Instance
     this._game = GameInstance;
-    
-    // Variable
-    this._isEndTurn = false;
-    this._phase = "";
   }
 
-  // Getter Setter local
-
-  // Getter Externe
-  get player1(){ return this._game.player1; }
-  get player2() { return this._game.player2; }
-  get currentPlayer() { return this._game.currentPlayer; }
-  get opponentPlayer() { return this._game.opponentPlayer; }
-
+  // Turn
   async turnPlayerIA() {
-    if (this.currentPlayer.die === false) {
+    if (this._game.currentPlayer.die === false) {
       await this.modelIAEasy();
     }
     
     this._game.endTurnPlayer();     
   }
   
+  // Model IA
   async modelIAEasy(){ 
     await this.spellPrioCast(); 
     await this.move(1, true);
   }
 
+  async modelIAFullMove(){
+    await this.move(1, true);
+  }
+
+  // Spell
   async spellPrioCast(){
     let isAppuie = true;
-    let posCaster = this.currentPlayer.posTile;
-    let posTargetAttract = this.opponentPlayer.getPosTileDirection(-2);
     
-    //this.currentPlayer.spellQueue.length = 0;
+    this._game.selectedPlayer = this._game.player1;
+    let posCaster = this._game.currentPlayer.posTile;
+    let posTargetAttract = this._game.selectedPlayer.getPosTileDirection(-2);
     
-    // Before Appuie
-    const indexSpellSpeed = this.currentPlayer.getSpellIndexByName("Célérité");
-    if(indexSpellSpeed != null){ await this.currentPlayer.useCard(indexSpellSpeed); }
+    // Auto cible => Speed
+    this._game.selectedPlayer = this._game.currentPlayer;
     
-    const indexSpellAttract = this.currentPlayer.getSpellIndexByName("Attraction"); 
-    if(indexSpellAttract != null && this.opponentPlayer.die === false && posTargetAttract !== posCaster){ await this.currentPlayer.useCard(indexSpellAttract); }
+    const indexSpellSpeed = this._game.currentPlayer.getSpellIndexByName("Célérité");
+    if(indexSpellSpeed != null){ await this._game.currentPlayer.useCard(indexSpellSpeed); }
+    
+    // Auto cible => Repulsion
+    const indexSpellRepul = this._game.currentPlayer.getSpellIndexByName("Répulsion"); 
+    if(indexSpellRepul != null && this._game.selectedPlayer.die === false){ await this._game.currentPlayer.useCard(indexSpellRepul); }
 
-    const indexSpellAppuie = this.currentPlayer.getSpellIndexByName("Appuie"); 
-    if(indexSpellAppuie != null){ await this.currentPlayer.useCard(indexSpellAppuie); }
+    // Target opponent => Attraction
+    this._game.selectedPlayer = this._game.player1;
     
-    // After Appuie
-    const indexSpellRal = this.currentPlayer.getSpellIndexByName("Ralentissement"); 
-    if(indexSpellRal != null){ await this.currentPlayer.useCard(indexSpellRal); }
-
-    const indexSpellRepul = this.currentPlayer.getSpellIndexByName("Répulsion"); 
-    if(indexSpellRepul != null){ await this.currentPlayer.useCard(indexSpellRepul); }
+    const indexSpellAttract = this._game.currentPlayer.getSpellIndexByName("Attraction"); 
+    if(indexSpellAttract != null && this._game.selectedPlayer.die === false && posTargetAttract !== posCaster){ await this._game.currentPlayer.useCard(indexSpellAttract); }
+    
+    // Auto cible => Appuie
+    this._game.selectedPlayer = this._game.currentPlayer;
+    
+    const indexSpellAppuie = this._game.currentPlayer.getSpellIndexByName("Appuie"); 
+    if(indexSpellAppuie != null){ await this._game.currentPlayer.useCard(indexSpellAppuie); }
+    
+    // Target opponent => Slow
+    this._game.selectedPlayer = this._game.player1;
+    
+    const indexSpellRal = this._game.currentPlayer.getSpellIndexByName("Ralentissement"); 
+    if(indexSpellRal != null && this._game.selectedPlayer.die === false){ await this._game.currentPlayer.useCard(indexSpellRal); }
   }
-
-  /* spellOrderCast() {
-  const hand = this.currentPlayer.getHand(); 
-  if (!hand || hand.length === 0) return;
-
-  // On filtre chaque sort et on les places dans leur catégorie type respective
-  const buffs = hand.filter(spell => spell?.type === "buff");
-  const debuffs = hand.filter(spell => spell?.type === "debuff");
-  const moves = hand.filter(spell => spell?.type === "move");
-
-  // On fusionne les cartes dans l'ordre d'attaque souhaité
-  const orderSpell = [...buffs, ...debuffs, ...moves];
- 
-  // On lance chaque sort en recherchant son index actuel
-  for (const spell of orderSpell) {
-    // On cherche l'index exact du sort dans la main AU MOMENT OÙ ON LE JOUE
-    const currentIndex = hand.indexOf(spell);
-
-    // Si le sort est bien présent dans la main, on le lance
-    if (currentIndex !== -1) {
-      this.currentPlayer.useCard(currentIndex);
-    }
-  }
-} */
-
-  modelIAFullMove(){
-    this.move(1, true);
-  }
- 
+  
+  // Move
   async move(dir, repeat) { 
-    if(repeat === true){ this.currentPlayer.forceMove = this.currentPlayer.pm }      
-    else { this.currentPlayer.forceMove = 1; }
+    if(repeat === true){ this._game.currentPlayer.forceMove = this._game.currentPlayer.pm }      
+    else { this._game.currentPlayer.forceMove = 1; }
     
-    await this.currentPlayer.move(dir);
+    await this._game.currentPlayer.move(dir, false);
   }
-
+  
+  // Wait
   async wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
