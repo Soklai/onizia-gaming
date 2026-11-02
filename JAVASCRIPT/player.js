@@ -399,7 +399,8 @@ export class Player{
           this.removePm(1);
           this._game.victoryPlayer(this._posTile, this);
         }
-        
+
+        this.posContainerInfo();
         this._character.style.zIndex = 99 + this._posTile;
         this._isWalking = false;   
       }  
@@ -425,6 +426,8 @@ export class Player{
           this._game.victoryPlayer(this._posTile, this);
         }
       }
+
+      this.posContainerInfo();
       this._character.style.zIndex = 99 + this._posTile;
       this._character.classList.remove(`is-walking`);
       this._character.classList.add(`is-idle`);    
@@ -578,9 +581,9 @@ export class Player{
       
       if(this._game._currentPlayer != this) this._contInfoPlayer.style.display = "none";   
     }
-      // Si la selection n'est pas = null & this
+      // Si la selection est un autre joueur
     else{
-      this._game.selectedPlayer._contInfoPlayer.style.display = "none";         
+      if(this._game._currentPlayer === this) this._game.selectedPlayer._contInfoPlayer.style.display = "none";         
       this._game.selectedPlayer = null;
       this._game.selectedPlayer = this;
       this._contTarget.classList.add("isTarget");
@@ -594,5 +597,10 @@ export class Player{
     this._character.addEventListener("click", () => { this.targetCharacter(); }); 
     this.goPosTile(this.startPosTile);
     this.characterDirection(1);
+  }
+
+  posContainerInfo(){
+    if(this._posTile >= 0 && this._posTile <= 76) this._contInfoPlayer.classList.add(`bottom`);
+    else this._contInfoPlayer.classList.remove(`bottom`);      
   }
 }
