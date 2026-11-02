@@ -214,6 +214,13 @@
   border-radius: 3px;
 }
 
+.containerInfo.bottom{
+  /* Espace & Marge */
+  left: 50%;
+  top: 105%;
+  transform: translateX(-50%);
+}
+
 .elemInfoText{  
   /* Size */
   height: 100%;
