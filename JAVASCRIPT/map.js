@@ -1,6 +1,6 @@
 export class Map {
   constructor(){
-    this._gridTile = document.querySelector(".gridTile");
+    this._gridTile = null;
     this._gridTileLevel0 = []; // Tableau tile sol
     this._gridTileLevel1 = []; // Tableau tile niveau 1
     this._gridTileLevel2 = []; // Tableau tile niveau 2
@@ -136,9 +136,6 @@ export class Map {
     this._player1Path = [153, 134, 135, 136, 137, 138, 139, 140, 121, 102, 83, 64, 45, 26, 27, 28, 29, 30, 49, 68, 87, 106, 125, 144, 145, 146, 147, 148, 149, 150, 169, 188, 207, 226, 225, 224, 223, 222, 221, 220, 239 ,258 ,277, 296, 315, 334, 333, 332, 331, 330, 311, 292, 273, 254, 235, 216, 215, 214, 213, 212, 211, 210, 191, 172, 173, 174, 175, 176, 177, 178, 179, 180];
     this._player2Path = [207, 226, 225, 224, 223, 222, 221, 220, 239 ,258 ,277, 296, 315, 334, 333, 332, 331, 330, 311, 292, 273, 254, 235, 216, 215, 214, 213, 212, 211, 210, 191, 172, 153, 134, 135, 136, 137, 138, 139, 140, 121, 102, 83, 64, 45, 26, 27, 28, 29, 30, 49, 68, 87, 106, 125, 144, 145, 146, 147, 148, 149, 150, 169, 188, 187, 186, 185, 184, 183, 182, 181, 180];   
     this._allPath = [...this.player1Path, ...this.player2Path];
-
-    // load
-    this.loadMap();
   }
 
   // Getter Setter
@@ -185,12 +182,19 @@ export class Map {
   }
     
   // Function
-  loadMap() {
-    this.initialiseGrid();
+  async load() {
+    this.loadDoc();
+    this.loadGrid();
     this.addBackgroundTileGrid();
   }
-
-  initialiseGrid() {
+  loadDoc(){
+    this._gridTile = document.querySelector(".gridTile");
+    if (!this._gridTile) {
+      console.error("Erreur : L'élément .gridTile est introuvable dans le HTML !");
+      return;
+    }
+  }
+  loadGrid() {
     this.gridTile.innerHTML = ""; // On vide la grille au départ
     
     // Vider les tableaux au cas où la fonction est relancée

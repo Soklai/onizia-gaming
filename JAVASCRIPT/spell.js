@@ -21,17 +21,17 @@ export class Spell {
 
   static attackSlow = new Spell(
     "Ralentissement",
-    "Retire 2 point de mouvement a la cible pendant 1 tour.",
+    "Retire 1 point de mouvement a la cible pendant 1 tour.",
     "url('IMAGE/SPELL/background_spell_ralentissement.jpg')",
     "url('IMAGE/SPELL/slow_effect.png')",
-    2,
+    1,
     0,
     "libre",
     async (caster, target, spell) => { 
-      if(target.die === false){
+      if(!target.isDie){
         
         target.removePm(spell._force);
-        await target.spellAnimation(spell); 
+        await target.spellAnimation(spell, target);
         return false;
       }
       else{
@@ -49,10 +49,14 @@ export class Spell {
     0,
     "libre",
     async (caster, target, spell) => { 
-      
-      target.addPm(spell._force);
-      await target.spellAnimation(spell);
-      return false;
+      if(!target.isDie){
+        target.addPm(spell._force);
+        await target.spellAnimation(spell, target);
+        return false;
+      }
+      else{
+        return true;
+      }
     } );
   
   static attackAttract = new Spell(
@@ -64,9 +68,9 @@ export class Spell {
     -1,
     "libre",
     async (caster, target, spell) => {
-      if(target.die === false){
+      if(!target.isDie){
         
-        target.spellAnimation(spell);    
+        target.spellAnimation(spell, target);    
         await target.spellMove(spell._direction, spell._force);
         return false;
       }
@@ -84,9 +88,9 @@ export class Spell {
     1,
     "libre",
     async (caster, target, spell) => {
-      if(target.die === false){
+      if(!target.isDie){
         
-        target.spellAnimation(spell);
+        target.spellAnimation(spell, target);
         await target.spellMove(spell._direction, spell._force);
         return false; 
       }
@@ -103,21 +107,20 @@ export class Spell {
     5,
     1,
     "current",
-    async (caster, target, spell) => 
-      {
-        for( let i= 0; i < caster._game.map.allPosWall.length; i++){
+    async (caster, target, spell) => {
+      if(!caster.isDie){
+        for( let i = 0; i < caster._game.map.allPosWall.length; i++){
           if(caster.posTile === caster._game.map.allPosWall[i]){
-            
-            caster.spellAnimation(spell);
+            caster.spellAnimation(spell, caster);
             await caster.spellMove(spell._direction, spell._force); 
             return false;
           }
-        }
+        }        
+      }
+      else{
         return true;
       }
-    ); 
-
-  
-
+    }
+  ); 
 } // End Spell
   

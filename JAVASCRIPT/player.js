@@ -1,18 +1,17 @@
 import { Spell } from './spell.js';
 
-export class Player{
-  
-  constructor(GameInstance, Name, PosPath, PosTile, Path, PlayerIA, Character){
-    // Instance
+export class Player{  
+  constructor(GameInstance, Name, PosPath, PosTile, Path, IsPlayerIA, Character, TeamIndex, PlayerIndex, Race){
+    // Instance 
     this._game = GameInstance;
     
     // Variable
+    //Name
     this._name = Name;
 
     // PM
-    this._pm = 3;
-    this._pmMax = 3;
-    this._die = false;
+    this._pm = 4;
+    this._pmMax = 4;
 
     // Position
     this._startPosPath = PosPath;
@@ -35,194 +34,261 @@ export class Player{
     this._deck = [Spell.attackSlow, Spell.buffSpeed, Spell.attackAttract, Spell.attackRepulse, Spell.buffAppuie];
     this._limitCardHand = 3;
     
-    // Sprite / Animation
+    // Sprite & Animation
     this._character = Character;
-    this._animEffect = this._character.querySelector(".animEffect");
-    this._contInfoPlayer = this._character.querySelector(".containerInfo");
-    this._elemInfoText = this._contInfoPlayer.querySelector(".elemInfoText");
-    this._contTarget = this._character.querySelector(".containerTarget");
+    this._animEffect = null;
     
     this._sizeCharacterHeight = 64;
     this._sizeCharacterWidth = 64; 
 
-    this._backgroundImage = ["url('IMAGE/CHARACTER/character_top.png')", "url('IMAGE/CHARACTER/character_right.png')", "url('IMAGE/CHARACTER/character_down.png')", "url('IMAGE/CHARACTER/character_left.png')"];
-    this._isWalking = false;
-    
-    // Other
-    this._timer = 0;
-    this._playerIA = PlayerIA;
-    this._turnFinish = true;
-    
-    this._currentTurnRespawn = -1;
-    
+    // Is
     this._isCast = false;
+    this._isWalking = false;
     this._isDie = false;
-    this._isRevive = false;
     
-    this._forceMove = 0;
+    this._isTurnFinish = true;
+    this._isPlayerIA = IsPlayerIA;
 
-    this.loadObject();
+    // Other
+    this._currentTurnRespawn = -1;
+    this._forceMove = 0;
+    this._teamIndex = TeamIndex;
+    this._playerIndex = PlayerIndex;
+    this._race = Race;
   }
 
   // Getter Setter local
 
   // Name
-  get name(){ return this._name; }
+  get name(){
+    return this._name;
+  }
   set name(value){
     this._name = value;
-    this._game.ui.updatePlayersInfo();
   }
 
   // PM
-  get pm(){ return this._pm; }
+  get pm(){
+    return this._pm;
+  }
   set pm(value){
     this._pm = value;
-    
-    if(this._die === false) this.infoPlayer();
+
+    if(this._pm < 0) this._pm = 0;
+    if(this._game.currentPlayer === this || this._game.selectedPlayer === this) this._game.ui.targetInfoPlayer();
   }
   
   addPm(value){
     this._pm += value;
-    if(this.die === false) this.infoPlayer();
-  }
+    if(this._game.currentPlayer === this || this._game.selectedPlayer === this) this._game.ui.targetInfoPlayer();
+   }
   removePm(value){ 
     this._pm -= value;
     
     if(this._pm < 0) this._pm = 0;
-    if(this.die === false) this.infoPlayer();
+    if(this._game.currentPlayer === this || this._game.selectedPlayer === this) this._game.ui.targetInfoPlayer();
+ }
+
+  get pmMax(){
+    return this._pmMax;
+  }
+  set pmMax(value){
+    this._pmMax = value;
   }
 
-  get pmMax(){ return this._pmMax; }
+  // Is
+  get isDie(){
+    return this._isDie;
+  }
+  set isDie(value){
+    this._isDie = value;
+  }
 
-  // Die
-  get die(){ return this._die; }
-  set die(value){
-    this._die = value;
+  get isWalking(){
+    return this._isWalking;
+  }
+  set isWalking(value){
+    this._isWalking = value;
+  }
 
-    if(this._die === true){
-      this.isDie();
-    }
+  get isPlayerIA(){
+    return this._isPlayerIA;
+  }
+  set isPlayerIA(value){
+    this._isPlayerIA = value;
+  }
+
+  get isTurnFinish(){
+    return this._isTurnFinish; 
+  }
+  set isTurnFinish(value){ 
+    this._isTurnFinish = value;
+  }
+
+  get isCast(){
+    return this._isCast;
+  }
+  set isCast(value){
+    this._isCast = value;
   }
 
   // Pos Tile & Path
-  get startPosPath(){ return this._startPosPath; }
-  set startPosPath(value){ this._startPosPath = value; }
+  get startPosPath(){
+    return this._startPosPath;
+  }
+  set startPosPath(value){
+    this._startPosPath = value;
+
+    if(this._startPosPath < 0) this._startPosPath = 0;
+  }
   
-  get respawnPosPath(){ return this._respawnPosPath; }
-  set respawnPosPath(value){ this._respawnPosPath = value; }
+  get respawnPosPath(){
+    return this._respawnPosPath;
+  }
+  set respawnPosPath(value){
+    this._respawnPosPath = value;
 
-  get startPosTile(){ return this._startPosTile; }
-  set startPosTile(value){ this._startPosTile = value; }
+    if(this._respawnPosPath < 0) this._respawnPosPath = 0;
+  }
+
+  get startPosTile(){
+    return this._startPosTile;
+  }
+  set startPosTile(value){
+    this._startPosTile = value;
+
+    if(this._startPosTile < 0) this._startPosTile = 0;
+  }
   
-  get respawnPosTile(){ return this._respawnPosTile; }
-  set respawnPosTile(value){ this._respawnPosTile = value; }
+  get respawnPosTile(){
+    return this._respawnPosTile;
+  }
+  set respawnPosTile(value){
+    this._respawnPosTile = value;
 
-  get posPath(){ return this._posPath; }
-  set posPath(value){ this._posPath = value; }
+    if(this._respawnPosTile < 0) this._respawnPosTile = 0;
+  }
 
-  get posX(){ return this._posX; }
-  set posX(value){ this._posX = value; }
+  get posPath(){
+    return this._posPath;
+  }
+  set posPath(value){
+    this._posPath = value;
+    
+    if(this._posPath < 0) this._posPath = 0;
+  }
 
-  get posY(){ return this._posY; }
-  set posY(value){ this._posY = value; }
+  get posX(){
+    return this._posX;
+  }
+  set posX(value){
+    this._posX = value;
 
-  get path(){ return this._path; }
+    if(this._posX < 0) this._posX = 0;
+  }
+
+  get posY(){
+    return this._posY;
+  }
+  set posY(value){
+    this._posY = value;
+
+    if(this._posY < 0) this._posY = 0;
+  }
+
+  get path(){
+    return this._path;
+  }
 
   // Pos tile
-  get posTile(){ return this._posTile; }
-  set posTile(value){ this._posTile = value; }
+  get posTile(){
+    return this._posTile;
+  }
+  set posTile(value){
+    this._posTile = value;
 
-  // Background
-  getBackgroundImage(index){ return this._backgroundImage[index]; }
-  setBackgroundImage(index, value){ this._backgroundImage[index] = value; }
+    if(this._posTile < 0) this._posTile = 0;
+  }
 
   // Hand
-  get hand(){ return this._hand; }
+  get hand(){
+    return this._hand;
+  }
   set hand(value){ 
     this._hand = value;
-    if(this._playerIA === false) this._game.ui.updateHand();
   }
 
   addCardHand(index){
     this._hand.push(this._deck[index]);
-    if(this._playerIA === false) this._game.ui.updateHand();
   }
   removeCardHand(index){
     this._hand.splice(index, 1);
-    if(this._playerIA === false) this._game.ui.updateHand();
   }
 
   // Deck
-  get deck(){ return this._deck; }
-  set deck(value){ this._deck = value; }
+  get deck(){
+    return this._deck;
+  }
+  set deck(value){
+    this._deck = value;
+  }
 
-  addCardDeck(card) { this._deck.push(card); }
-  removeCardDeck(index){ this._deck.splice(index, 1); }
-
-  // Turn
-  get turnFinish(){ return this._turnFinish; }
-  set turnFinish(value){ 
-    this._turnFinish = value;
-
-    if(this._turnFinish === true){
-      this._game.ui.addTextLog(this._name + " a terminé sont tour !");
-      this.pm = this.pmMax;
-      if(this._die === false) this._contInfoPlayer.style.display = "none";   
-    }
-    else{
-      this._game.ui.addTextLog(this._name + " commence sont tour !");
-      this._contInfoPlayer.style.display = "flex";
-      this.addCard();
-    }
-
-    if(this._die === false) this.infoPlayer();
+  addCardDeck(card) {
+    this._deck.push(card);
+  }
+  removeCardDeck(index){ 
+    this._deck.splice(index, 1);
   }
 
   // Force move
-  get forceMove(){ return this._forceMove; }
-  set forceMove(value){ this._forceMove = value; }
+  get forceMove(){
+    return this._forceMove;
+  }
+  set forceMove(value){
+    this._forceMove = value;
 
-  // isWalking
-  get isWalking(){ return this._isWalking; }
-  set isWalking(value){ this._isWalking = value; }
-
-  // PlayerIA
-  get playerIA(){ return this._playerIA; }
-  set playerIA(value){ this._playerIA = value; }
+    if(this._forceMove < 0) this._forceMove = 0;
+  }
 
   // Animation
-  get animEffect(){ return this._animEffect; }
-  set animEffect(value){ this._animEffect = value; }
+  get animEffect(){
+    return this._animEffect;
+  }
+  set animEffect(value){
+    this._animEffect = value;
+  }
   
   // Character
-  get character(){ return this._character; }
-  set character(value){ this._character = value; }
+  get character(){
+    return this._character;
+  }
+  set character(value){
+    this._character = value;
+  }
 
   // Turn respawn
-  get currentTurnRespawn(){ return this._currentTurnRespawn; }
+  get currentTurnRespawn(){
+    return this._currentTurnRespawn;
+  }
   set currentTurnRespawn(value){ 
     this._currentTurnRespawn = value;
+    
     if(this._currentTurnRespawn < 0) this._currentTurnRespawn = 0;
     this.isCurrentTurnRespawn();
   }
 
-  // Container CSS
-  get contInfoPlayer(){ return this._contInfoPlayer; }
-  get contTarget(){ return this._contTarget; }
-
-  // Is
-  get isCast(){ return this._isCast; }
-  set isCast(value){ this._isCast = value; }
-
-  get isDie() { return this._isDie; }
-  set isDie(value) { return this._isDie = value; }
-
-  get isRevive() { return this._isRevive; }
-  set isRevive(value) { return this._isRevive = value; }
+  // Id
+  get teamIndex(){
+    return this._teamIndex;
+  }
+  get playerIndex(){
+    return this._playerIndex;
+  }
+  get race(){
+    return this._race;
+  }
   
-  // Other
-  get posBase(){ return this._posBase; }
-  
+  // Get position
   getPosTileDirection(direction){
     let posPathDirection = this._posPath + direction;
     let posTileDirection = this._path[posPathDirection];
@@ -251,6 +317,7 @@ export class Player{
     return newPos;   
   }
 
+  // Get other
   getSpellIndexByName(name){   
     for(let i = 0; i < this._hand.length; i++){
       if(this._hand[i]._name === name) { return i; }
@@ -260,79 +327,116 @@ export class Player{
   }
 
   // Function
-  async revive(){
-    this._character.style.animation = '';
+  load(){
+    this.loadDoc();
+    this.loadEvent();
+    this._character.classList.add(`is-${this.getRace()}-idle`);
+  }
+  loadDoc(){
+    this._animEffect = this._character.querySelector(".animEffect");
+  }
+  loadEvent(){
+    this._character.addEventListener("click", () => { this.targetCharacter(); }); 
+  } 
+  loadStartBase(){
+    this._isDie = true;
     
-    // Rend invisible le joueur avant la pos
-    this._character.classList.add(`is-invisible`);
-    await this.waitTransition(this._character);
+    // Reset les class
+    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`, `is-${this.getRace()}-idle`, `is-${this.getRace()}-walk`);
+    this._character.classList.add(`is-${this.getRace()}-die`);
     
-    // Déplacement du joueur
-    this._posPath = this._respawnPosPath;
-    this._posTile = this._respawnPosTile;    
-    this.teleportPosTile(this._posTile);
-      
+    const slot = this._game.goSlotBase(this);
+    this.currentTurnRespawn = 3 * (slot + 1);
+  }
+  loadStartPos(){
+    this.goPosTile(this._startPosTile);
     this.characterDirection(1);
-    this._character.style.backgroundPositionX = `0px`;
-
-    // Rend visible et active idle
-    this._character.classList.remove(`is-die`);
-    this._character.classList.add(`is-idle`);
-
-    this._die = false;
-    this.infoPlayer(); // Last
-    this._game.removePlayerBase(this);
+  }
+  
+  async revive(){
+    const isTeamPlayer =  this._game.isTileTeamPlayer(this._respawnPosTile, this);
     
-    this._character.classList.remove(`is-invisible`); 
-    await this.waitTransition(this._character);
-
-    this._game.ui.addTextLog(this._name + " est ressucité !");
+    // Si le joueur sur la case de spawn n'est pas dans la même équipe ou null
+    if(!isTeamPlayer){
+      // Réactive les animations du perso
+      this._character.style.animation = '';
+      
+      // Rend invisible le joueur
+      this._character.classList.add(`is-invisible`);
+      await this.waitTransition(this._character);
+      
+      // Déplacement du joueur
+      this._posPath = this._respawnPosPath;
+      this._posTile = this._respawnPosTile;    
+      this.teleportPosTile(this._posTile);
+  
+      // Change la direction du perso et reset la pos de l'animation
+      this.characterDirection(1);
+      this._character.style.backgroundPositionX = `0px`;
+  
+      // Rend visible et active idle
+      this._character.classList.remove(`is-${this.getRace()}-die`);
+      this._character.classList.add(`is-${this.getRace()}-idle`);
+  
+      // Supprime dans la base le joueur et le rend visible
+      this._game.removePlayerBase(this);   
+      this._character.classList.remove(`is-invisible`); 
+      await this.waitTransition(this._character);
+  
+      // Déclare le joueur ressucité
+      this._isDie = false;
+      this._game.ui.addTextLog(this._name + " est ressucité !");    
+    }
+    // Si le joueur sur la case d'arrivé est dans la même équipe
+    else{
+      this._game._ui.addTextLog(`Un allié bloque la case de résurection`);
+    }
   }
 
-  async isDie(){   
+  async die(){
+    this._isDie = true;
+    this._game._ui.addTextLog(this._name + " est mort !");
+       
     // Reset les class
-    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`, `is-walking`, `is-idle`);
-
-    // Active l'anim de mort
-    this._character.classList.add(`is-die`);
+    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`, `is-${this.getRace()}-idle`, `is-${this.getRace()}-walk`);
+    
+    // Active l'animation de mort
+    this._character.classList.add(`is-${this.getRace()}-die`);
     await this.waitAnimation(this._character);
-
+    
     //Rend invisible
     this._character.classList.add(`is-invisible`);
     await this.waitTransition(this._character);
     
+    // Ajoute le joueur dans ça base et met a jour le nombre de tour pour revivre 
     this._game.goSlotBase(this);
     this.currentTurnRespawn = 3;
     
+    // Rend le joueur visible
     this._character.classList.remove(`is-invisible`);
     await this.waitTransition(this._character);
-    
-    this.infoPlayer();
-    this._contInfoPlayer.style.display = "flex";
-      
   }
 
   isCurrentTurnRespawn(){
-    // Tour 0
-    if(this._currentTurnRespawn === 0){
-      this._currentTurnRespawn = 0;
-      this.choiceFrame(this._character, 0);
+    if(this._isDie){
+      // Tour 0
+      if(this._currentTurnRespawn === 0){
+        this._currentTurnRespawn = 0;
+        this.choiceFrame(this._character, 0);
+      }
+      // Tour 1
+      else if(this._currentTurnRespawn === 1){
+        this.choiceFrame(this._character, 2);
+      } 
+      // Tour 2
+      else if(this._currentTurnRespawn === 2){
+        this.choiceFrame(this._character, 4);
+      }
+      // Tour 3
+      else if(this._currentTurnRespawn >= 3){
+        this.choiceFrame(this._character, 6);
+      }       
     }
-    // Tour 1
-    else if(this._currentTurnRespawn === 1){
-      this.choiceFrame(this._character, 2);
-    }
-    // Tour 2
-    else if(this._currentTurnRespawn === 2){
-      this.choiceFrame(this._character, 4);
-    }
-    // Tour 3
-    else if(this._currentTurnRespawn === 3){
-      this.choiceFrame(this._character, 6);
-    }
-
-    // Mise a jour des informations du joueur
-    this.infoPlayer();    
   }
   
   addCard(){
@@ -344,29 +448,49 @@ export class Player{
       this.addCardHand(randomIndex);
       this.removeCardDeck(randomIndex);
     }
+    
+    if(!this._isPlayerIA) this._game.ui.updateHand();
   }
   
-  async useCard(index){
+  async useCard(index, target) {
     const spell = this._hand[index];
+    const caster = this._game.currentPlayer;
     
-    if(spell._targetCondition === "current" && this._game.selectedPlayer === null) this._game.selectedPlayer = this._game.currentPlayer;
-    
-    if(this._isCast === false &&
-       this._isWalking === false &&
-       this._game.selectedPlayer != null ){
+    // Si pas de sort en cour ou de marche active  
+    if (target != null){
+      // Si pas de cast en cour
+      if(!this._isCast){
+        // Si pas de marche en cour
+        if(!this._isWalking){
+          this._isCast = true;
+          let echecSpell = await spell.cast(caster, target);
       
-      this._isCast = true;
-      let echecSpell = await spell.cast(this._game.currentPlayer, this._game.selectedPlayer);
-      
-      if(echecSpell === false){ this._game.ui.addTextLogFight(" lance [" + spell._name + "]", this._name, ""); }
-      else{ this._game.ui.addTextLogFight(" echec du sort [" + spell._name + "]", this._game.currentPlayer.name, ""); }
-      
-      this.deleteCard(index);
-      this._isCast = false;
+          // Si le sort réussie
+          if (!echecSpell) {
+            this._game.ui.addTextLog(`${caster.name} lance ${spell._name}`); 
+            this.deleteCard(index);
+          }
+          // Si le sort échoue
+          else { 
+            this._game.ui.addTextLog(`[${spell._name}]: Le sort a échouer`); 
+          }
+          
+          this._isCast = false;
+        }
+        // Si le perso marche
+        else{
+          this._game.ui.addTextLog(`[${spell._name}]: Impossible de lancer de sort en marchant`); 
+        }
+      }
+      // Si le perso cast
+      else{
+        this._game.ui.addTextLog(`[${spell._name}]: Lancer de sort déjà actif`); 
+      }      
     }
-    else{
-      this._game.ui.addTextLog(spell._name + ": Aucune cible selectionné !");
-    }
+    // Si aucune cible
+    else {
+      this._game.ui.addTextLog(`[${spell._name}]: Aucune cible sélectionnée`);
+    } 
   }
   
   deleteCard(index) {
@@ -374,40 +498,49 @@ export class Player{
     
     this.addCardDeck(card);      // Ajoute le vrai objet Spell dans le deck
     this.removeCardHand(index);   // Supprime de la main
+    
+    if(!this._isPlayerIA) this._game.ui.updateHand();
   }
 
   //Partie autre
   
-  getRandomIndexDeck(){ return Math.floor(Math.random() * this._deck.length); }
+  getRandomIndexDeck(){
+    return Math.floor(Math.random() * this._deck.length);
+  }
 
   async move(direction){   
     for(let i = 0; i < this._forceMove; i++){
-      if(this._pm > 0 && this._isWalking === false && this._isCast === false){
+      if(this._pm > 0 && !this._isWalking && !this._isCast){
         this._isWalking = true;
 
         // On check la case d'arriver
-        this._game.isTilePlayer(this.getPosTileDirection(direction));
+        const isTilePlayer = this._game.isTilePlayer(this.getPosTileDirection(direction), this);
+        if(isTilePlayer){
+          await isTilePlayer.die();
+        }
         
         // On lance l'animation de marche vers la position
         await this.moveAnimation(direction);
         
-        if(this._die === false) {
+        if(!this._isDie) {
           // On met a jour la position
           this._posTile = this.getPosTileDirection(direction);
           this._posPath = this.getPosPathDirection(direction);          
-
+          
           this.removePm(1);
+          this._game.selectedPlayer = this;
+          
+          this._game._ui.targetInfoPlayer();
           this._game.victoryPlayer(this._posTile, this);
         }
 
-        this.posContainerInfo();
         this._character.style.zIndex = 99 + this._posTile;
         this._isWalking = false;   
       }  
     }
     
-    this._character.classList.remove(`is-walking`);
-    this._character.classList.add(`is-idle`);
+    this._character.classList.remove(`is-${this.getRace()}-walk`);
+    this._character.classList.add(`is-${this.getRace()}-idle`);
     this._forceMove = 0;
   }
 
@@ -415,10 +548,15 @@ export class Player{
     for(let i = 0; i < force; i++){
       if(this._posPath + direction >= 0){
         
-        await this.moveAnimation(direction);   
-        this._game.isTilePlayer(this.getPosTileDirection(direction));
+        // On check la case d'arriver
+        const isTilePlayer = this._game.isTilePlayer(this.getPosTileDirection(direction), this);
+        if(isTilePlayer){
+          await isTilePlayer.die();
+        }
         
-        if(this._die === false) {
+        await this.moveAnimation(direction);   
+        
+        if(!this._isDie) {
           // On met a jour la position
           this._posTile = this.getPosTileDirection(direction);
           this._posPath = this.getPosPathDirection(direction);          
@@ -427,18 +565,14 @@ export class Player{
         }
       }
 
-      this.posContainerInfo();
       this._character.style.zIndex = 99 + this._posTile;
-      this._character.classList.remove(`is-walking`);
-      this._character.classList.add(`is-idle`);    
+      this._character.classList.remove(`is-${this.getRace()}-walk`);
+      this._character.classList.add(`is-${this.getRace()}-idle`);    
     }
   }
 
-  async spellAnimation(spell){
-    let targetAnim = null;
-    
-    if(spell._targetCondition === "current"){ targetAnim = this._animEffect; }
-    else{ targetAnim = this._game.selectedPlayer.animEffect; }
+  async spellAnimation(spell, target){
+    const targetAnim = target._animEffect;
     
     targetAnim.style.backgroundImage = spell._animation;
     targetAnim.style.display = "block";
@@ -447,7 +581,7 @@ export class Player{
     await this.wait(1600);
     
     targetAnim.classList.remove(`is-spell`);
-    targetAnim.style.display = "none";            
+    targetAnim.style.display = "none";
   }
 
   async wait(ms) {
@@ -471,7 +605,7 @@ export class Player{
     const currentTile = this._posTile;
     const nextTile = this.getPosTileDirection(direction);
 
-    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`, `is-die`);
+    this._character.classList.remove(`dir-up`, `dir-right`, `dir-down`, `dir-left`, `is-${this.getRace()}-die`);
 
     if (currentTile - 19 === nextTile)  dir = 'up';
     if (currentTile + 19 === nextTile)  dir = 'down';
@@ -487,11 +621,11 @@ export class Player{
     this._character.classList.add(`dir-${dir}`);
   }
 
-  async moveAnimation(direction) { console.log("AVANT nettoyage :", this._character.className);
+  async moveAnimation(direction) {
 
-    this._character.classList.remove('is-idle', 'is-die', 'is-invisible');
+    this._character.classList.remove(`is-${this.getRace()}-idle`, `is-${this.getRace()}-die`, 'is-invisible');
     void this._character.offsetHeight;
-    this._character.classList.add(`is-walking`);
+    this._character.classList.add(`is-${this.getRace()}-walk`);
     
     this.characterDirection(direction);
     this.goPosTile(this.getPosTileDirection(direction), direction);
@@ -543,7 +677,7 @@ export class Player{
     const tile = this.getPosXY(posTile); 
     
     const targetX = (tile.left - grid.left) + (tile.width / 2) - (this._sizeCharacterWidth / 2);
-    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this._sizeCharacterHeight / 2) - 25;
+    const targetY = (tile.top - grid.top) + (tile.height / 2) - (this._sizeCharacterHeight / 2) - 40;
 
     this._character.style.transition = 'none';
 
@@ -557,50 +691,58 @@ export class Player{
     this._posPath = 1;          
   }
 
-  infoPlayer(){
-    if(this._die === true){
-      this._elemInfoText.textContent = this.currentTurnRespawn + " tour";
-    }
-    else{
-      this._elemInfoText.textContent = this._name + ": " + this.pm + " pm";
-    }
-  }
-
-  targetCharacter(){
-    //Si aucun joueur est selectionné
-    if(this._game.selectedPlayer === null){ 
+  targetCharacter() {
+    // 1. Si aucun joueur n'est actuellement sélectionné
+    if (this._game.selectedPlayer === null) {
       this._game.selectedPlayer = this;
-      this._contTarget.classList.add("isTarget");
-    
-      this.infoPlayer();
-      this._contInfoPlayer.style.display = "flex";         
+      this._character.classList.remove("isTurnPlay");
+      this._character.classList.add("isTarget");                   
     }
-    // Si je rappuie sur le joueur
-    else if(this._game.selectedPlayer === this){
+    // 2. Si je re-clique sur le même joueur (on désélectionne)
+    else if (this._game.selectedPlayer === this) {
+      this._character.classList.remove("isTarget");
       this._game.selectedPlayer = null;
       
-      if(this._game._currentPlayer != this) this._contInfoPlayer.style.display = "none";   
+      // Si c'est le joueur dont c'est le tour, on remet son indicateur de tour
+      if (this._game.currentPlayer === this) {
+        this._character.classList.add("isTurnPlay");
+      }
     }
-      // Si la selection est un autre joueur
-    else{
-      if(this._game._currentPlayer === this) this._game.selectedPlayer._contInfoPlayer.style.display = "none";         
-      this._game.selectedPlayer = null;
+    // 3. Si je clique sur un AUTRE joueur
+    else {
+      // Nettoyer l'ancien joueur sélectionné pour enlever sa classe "isTarget"
+      if (this._game.selectedPlayer && this._game.selectedPlayer._character) {
+        this._game.selectedPlayer._character.classList.remove("isTarget");
+        
+        // S'il était aussi le joueur du tour, on lui remet son indicateur "isTurnPlay"
+        if (this._game.currentPlayer === this._game.selectedPlayer) {
+          this._game.selectedPlayer._character.classList.add("isTurnPlay");
+        }
+      }
+
+      // Assigner le nouveau joueur sélectionné
       this._game.selectedPlayer = this;
-      this._contTarget.classList.add("isTarget");
-
-      this.infoPlayer();
-      this._contInfoPlayer.style.display = "flex";         
+      this._character.classList.remove("isTurnPlay");
+      this._character.classList.add("isTarget");
     }
+
+    // Mise à jour de l'interface utilisateur
+    this._game.ui.targetInfoPlayer();
   }
 
-  loadObject(){
-    this._character.addEventListener("click", () => { this.targetCharacter(); }); 
-    this.goPosTile(this.startPosTile);
-    this.characterDirection(1);
-  }
+  getRace(){  
+    switch(this._race){
+        
+      case 0: /* Human */
+        return "human";
+        break;
+        
+      case 1: /* Orc */
+        return "orc";
+        break;
 
-  posContainerInfo(){
-    if(this._posTile >= 0 && this._posTile <= 76) this._contInfoPlayer.classList.add(`bottom`);
-    else this._contInfoPlayer.classList.remove(`bottom`);      
+      default:
+        return "human";
+    }
   }
 }

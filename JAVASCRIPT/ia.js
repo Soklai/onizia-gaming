@@ -6,7 +6,7 @@ export class IA{
 
   // Turn
   async turnPlayerIA() {
-    if (this._game.currentPlayer.die === false) {
+    if (!this._game.currentPlayer.isDie) {
       await this.modelIAEasy();
     }
     
@@ -14,8 +14,8 @@ export class IA{
   }
   
   // Model IA
-  async modelIAEasy(){ 
-    await this.spellPrioCast(); 
+  async modelIAEasy(){
+    await this.spellPrioCast();
     await this.move(1, true);
   }
 
@@ -27,42 +27,47 @@ export class IA{
   async spellPrioCast(){
     let isAppuie = true;
     
-    this._game.selectedPlayer = this._game.player1;
+    let target = this._game.player1;
+    if(target.isDie) this._game.player3;
+    
+    /* Futur fonction qui vise l'ennemie le plus proche de la victoire */
     let posCaster = this._game.currentPlayer.posTile;
-    let posTargetAttract = this._game.selectedPlayer.getPosTileDirection(-2);
+    let posTargetAttract = target.getPosTileDirection(-2);
     
     // Auto cible => Speed
-    this._game.selectedPlayer = this._game.currentPlayer;
+    target = this._game.currentPlayer;
     
     const indexSpellSpeed = this._game.currentPlayer.getSpellIndexByName("Célérité");
-    if(indexSpellSpeed != null){ await this._game.currentPlayer.useCard(indexSpellSpeed); }
+    if(indexSpellSpeed != null){ await this._game.currentPlayer.useCard(indexSpellSpeed, target); }
     
     // Auto cible => Repulsion
     const indexSpellRepul = this._game.currentPlayer.getSpellIndexByName("Répulsion"); 
-    if(indexSpellRepul != null && this._game.selectedPlayer.die === false){ await this._game.currentPlayer.useCard(indexSpellRepul); }
-
+    if(indexSpellRepul != null && !target.isDie){ await this._game.currentPlayer.useCard(indexSpellRepul, target); }
+    
     // Target opponent => Attraction
-    this._game.selectedPlayer = this._game.player1;
+    target = this._game.player1;
+    if(target.isDie) this._game.player3;
     
     const indexSpellAttract = this._game.currentPlayer.getSpellIndexByName("Attraction"); 
-    if(indexSpellAttract != null && this._game.selectedPlayer.die === false && posTargetAttract !== posCaster){ await this._game.currentPlayer.useCard(indexSpellAttract); }
+    if(indexSpellAttract != null && !target.isDie && posTargetAttract !== posCaster){ await this._game.currentPlayer.useCard(indexSpellAttract, target); }
     
     // Auto cible => Appuie
-    this._game.selectedPlayer = this._game.currentPlayer;
+    target = this._game.currentPlayer;
     
     const indexSpellAppuie = this._game.currentPlayer.getSpellIndexByName("Appuie"); 
-    if(indexSpellAppuie != null){ await this._game.currentPlayer.useCard(indexSpellAppuie); }
-    
+    if(indexSpellAppuie != null){ await this._game.currentPlayer.useCard(indexSpellAppuie, target); }
+  
     // Target opponent => Slow
-    this._game.selectedPlayer = this._game.player1;
+    target = this._game.player1;
+    if(target.isDie) this._game.player3;
     
     const indexSpellRal = this._game.currentPlayer.getSpellIndexByName("Ralentissement"); 
-    if(indexSpellRal != null && this._game.selectedPlayer.die === false){ await this._game.currentPlayer.useCard(indexSpellRal); }
+    if(indexSpellRal != null && !target.isDie){ await this._game.currentPlayer.useCard(indexSpellRal, target); }
   }
   
   // Move
   async move(dir, repeat) { 
-    if(repeat === true){ this._game.currentPlayer.forceMove = this._game.currentPlayer.pm }      
+    if(repeat){ this._game.currentPlayer.forceMove = this._game.currentPlayer.pm }      
     else { this._game.currentPlayer.forceMove = 1; }
     
     await this._game.currentPlayer.move(dir, false);
