@@ -30,6 +30,39 @@ html, body {
   image-rendering: pixelated;
 }
 
+.hiddenGame{
+  /* Display */
+  display: flex;
+  opacity: 1;
+  
+  /* Position */
+  position: absolute;
+  z-index: 100000;
+
+  /* Background */
+  background-color: black;
+  
+  /* Size */
+  height: 100%;
+  width: 100%;
+
+  /* Center */
+  justify-content: center;
+  align-items: center;
+
+  /* Transition */
+  transition: opacity 1s ease-in-out;
+}
+
+.textHiddenGame{
+  /* Text */
+  color: white;  
+}
+
+.hiddenGame.is-invisible{
+  opacity: 0;
+}
+
 /* DEBUG */
 .debugWindow{  
   position: absolute;

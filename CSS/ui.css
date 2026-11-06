@@ -35,10 +35,9 @@
 
   /* Size */
   width: 78%; /* Taille de la largeur */
-  height: 35%; /* Taile de la hauteur */
+  height: 25%; /* Taile de la hauteur */
 
   /* Espace */
-  margin-top: 10%; /* Zéro marge */
   padding: 10px;
 
   /* Border */
@@ -189,49 +188,35 @@
   text-align: center; /* Alignement du texte */
 }
 
-.containerInfo{
+.contInfoPlayer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7%;
+  
+  height: 10%;
+  width: 78%;
+  gap: 10px;
+}
+
+.elemCharacterInfoPlayer{
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  height: 100%;
+  width: 10%;
+}
+
+.elemTextInfoPlayer{
   /* Display */
-  display: none;
-  position: absolute;
-  z-index: 2000;
+  display: flex;
+  align-items: center;
 
-  /* Size */
-  height: fit-content;
-  width: fit-content;
-
-  /* Background */
-  background-color: black;
-  background: rgba(0, 0, 0, 0.4); /* Couleur du background + oppacité */ 
-
-
-  /* Espace & Marge */
-  left: 50%;
-  top: -30%;
-  transform: translateX(-50%);
-
-  /* Border */
-  border: 1px black solid;
-  border-radius: 3px;
-}
-
-.containerInfo.bottom{
-  /* Espace & Marge */
-  left: 50%;
-  top: 105%;
-  transform: translateX(-50%);
-}
-
-.elemInfoText{  
   /* Size */
   height: 100%;
+  width: 90%;
 
   /* Text */
-  font-size: 1em;
-  color: white;
-  text-align: center;
-
-  /* Espace & Marge */
-  padding: 5px;
-
-  white-space: nowrap;
+  font-size: 3em;
+  text-align: left;
 }

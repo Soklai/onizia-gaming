@@ -1,110 +1,3 @@
-.character {
-  /* Display */
-  display: block;
-  opacity: 1;  
-  image-rendering: pixelated;
-  
-  /* Position */
-  position: absolute; /* Position supperposer par rapport au élément de base */
-  z-index: 1000; /* Niveau de supperposition */
-
-  /* Size */
-  width: 64px; /* Taille de la largeur */
-  height: 64px; /* Taille de la hauteur */
-  transform: scale(1.5);
-  
-  /* Background */
-  background-repeat: no-repeat; /* Bloque la répètition de l'image */
-  
-  /* Animation */
-  transition: left 0.4s linear, top 0.4s linear, opacity 1s ease-in-out; /* linear = Vitesse de l'animation constante */
-}
-
-.character.dir-up    { background-position-y: 0px; }
-.character.dir-left  { background-position-y: -64px; }
-.character.dir-down  { background-position-y: -128px; }
-.character.dir-right { background-position-y: -192px; }
-
-.character.is-idle {
-  background-image: url('../IMAGE/CHARACTER/character_walk.png'); /* Localisation de l'image */
-  background-position-x: 0px; /* Positionne le long de l'axe X */
-}
-.character.is-walking {
-  background-image: url('../IMAGE/CHARACTER/character_walk.png'); /* Localisation de l'image */
-  background-position-x: 0px; /* Positionne le long de l'axe X */
-  
-  animation: walk-animation 0.4s steps(8) infinite; /* Animation, durée, Nombre d'image, en boucle ? */
-}
-
-@keyframes walk-animation { /* 512 pixel de largeur / 8 frames = 64 pixel */
-  0% { background-position-x: 0px; } /* Départ de la position X de l'animation */
-  100% { background-position-x: -512px; } /* Fin de la position X de l'animation */
-}
-
-.character.is-die {
-  background-image: url('../IMAGE/CHARACTER/character_die.png'); /* Localisation de l'image */
-  background-position-y: 0px;
-    
-  animation: die-animation 0.5s steps(5) 1 forwards; /* Animation, durée, Nombre d'image, en boucle ? */
-}
-
-@keyframes die-animation { 
-  0% { background-position-x: 0px; } /* Départ de la position X de l'animation */
-  100% { background-position-x: -320px; } /* Fin de la position X de l'animation */
-}
-
-.character.is-invisible{
-  opacity: 0;
-}
-
-.isTarget{
-  /* Size */
-  width: 32px;
-  height: 48px;
-
-  /* Espace */
-  margin: 14px auto;
-
-  /* Border */
-  outline: 2px dashed #ffcc00; /* Une couleur bien visible comme du doré */
-  outline-offset: 0px;       /* Resserre légèrement le contour vers l'intérieur du sprite */
-  border-radius: 4px;
-}
-
-.animEffect {
-  /* Display */
-  display: none; /* Cache l'élément */
-
-  /* Position */
-  position: absolute; /* Survole les élément de base */
-  z-index: 1000; /* Niveau de supperposition */
-
-  top: 64px; /* Position a partie du haut */
-  left: 0%; /* Position a partir de gauche */
-
-  transform: scale(3); /* Augmente la taille de l'élément */
-  transform-origin: bottom center; /* Point d'ancrage de l'image */
-
-  /* Size */
-  width: 64px; /* Taille de la largeur */
-  height: 64px; /* Taille de la hauteur */
-  
-  /* Background */
-  background-repeat: no-repeat; /* Bloque la répètition de l'image */
-
-  /* Other */
-  overflow: hidden; /* Cache une partie de l'animation si elle dépasse du parent */
-}
-
-.animEffect.is-spell {
-  animation: spell-animation 0.6s steps(4) infinite; /* Animation, durée, nombre frame, boucle ? */
-}
-
-@keyframes spell-animation {
-  0% { background-position-y: 0px; } /* Départ de la position Y de l'animation */
-  100% { background-position-y: -256px; } /* Fin de la position Y de l'animation */
-}
-
 /* ########## WEATHER ########## */
 .weather-rain {
   display: flex;
@@ -242,7 +135,7 @@
   
   /* Animation par étapes (steps) : change le '6' si tu as un nombre différent de frames sur ton image */
   /*animation: playWindSheet 2s steps(6) 1 forwards;*/
-  animation: wind-animation 2s linear 1 forwards;
+  animation: wind-animation 2s linear infinite;
 }
 
 @keyframes wind-animation {
