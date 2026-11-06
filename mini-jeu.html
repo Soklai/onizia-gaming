@@ -7,9 +7,10 @@
     <link href="CSS/animation.css" rel="stylesheet">
     <link href="CSS/grid.css" rel="stylesheet">
     <link href="CSS/ui.css" rel="stylesheet">
+    <link href="CSS/character.css" rel="stylesheet">
     
     
-        <script type="module" src="JAVASCRIPT/main.js"></script>
+        <script type="module" src="./JAVASCRIPT/main.js"></script>
 
     <Title>Onizia Gaming></Title>
     
@@ -17,54 +18,55 @@
   
 
   <body>
+    <div id="hiddenGame" class="hiddenGame">
+      <div class="textHiddenGame"></div>
+    </div>
 
-      <div id="debugWindow" class="debugWindow">
-        <div class="debugText">Debug</div>
-        <button id="debugButton" class="buttonBase">Debug</button>
+    <div id="debugWindow" class="debugWindow">
+      <div class="debugText">Debug</div>
+      <button id="debugButton" class="buttonBase">Debug</button>
+    </div>
+    
+    <div id="containerVictory" class="containerVictory">
+      <div class="textVictory"> Le gagnant est TRICHEUR ! </div>       
+      <div class="containerButtonVictory">
+        <button id="buttonRestart" class="buttonBase">Restart</button>
+        <button id="buttonQuit" class="buttonBase">Quit</button>
+      </div>            
+    </div>
+
+    <div class="game-container">    
+      <div id="gridTile" class="gridTile"></div>
+    
+      <div id="character0" class="character">
+        <div class="animEffect"></div>
+        <div class="containerTarget"></div>         
       </div>
     
-      <div id="containerVictory" class="containerVictory">
-        <div class="textVictory"> Le gagnant est TRICHEUR ! </div>
-        
-        <div class="containerButtonVictory">
-          <button id="buttonRestart" class="buttonBase">Restart</button>
-          <button id="buttonQuit" class="buttonBase">Quit</button>
-        </div>
-            
+      <div id="character1" class="character">
+        <div class="animEffect"></div>
+        <div class="containerTarget"></div>          
       </div>
 
-      <div class="game-container">
-        
-        <div id="gridTile" class="gridTile"></div>
-    
-        <div id="character0" class="character is-idle">
-          <div class="animEffect"></div>
-          
-          <div class="containerInfo">
-            <div class="elemInfoText"></div>
-          </div>
-
-          <div class="containerTarget"></div>
-          
-        </div>
-    
-        <div id="character1" class="character is-idle">
-          <div class="animEffect"></div>
-          
-          <div class="containerInfo">
-            <div class="elemInfoText"></div> 
-          </div>
-
-          <div class="containerTarget"></div>
-          
-        </div>
-
-        <div id="weather"></div>
+      <div id="character2" class="character">
+        <div class="animEffect"></div>
+        <div class="containerTarget"></div>        
       </div>
-    
-      <!-- <div id="animEffectProject0"></div> -->
+
+      <div id="character3" class="character">
+        <div class="animEffect"></div>
+        <div class="containerTarget"></div>         
+      </div>
+
+      <div id="elemWeather"></div>
+    </div>
       
-      <div class="containerUI">
+    <div class="containerUI">
+      
+      <div class="contInfoPlayer">
+        <div class="elemCharacterInfoPlayer"></div>
+        <div class="elemTextInfoPlayer"></div>
+      </div>
 
       <div id="logFight" class="logFight"></div>
 
