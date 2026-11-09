@@ -23,13 +23,12 @@ h1 {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-
 p {
   font-size: 1em;
   text-align: center;
 }
 
-/* All Buttons */
+/* Button */
 .button {
   display: grid;
   background-color: skyblue;

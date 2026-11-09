@@ -1,3 +1,4 @@
+/* Class */
 .containerUI {
   /* Display */
   display: flex; /* Les éléments sont fléxible */
@@ -25,6 +26,7 @@
   flex-shrink: 0; /* 0= Rend la taille fixe contre les éléments extérieur */
 }
 
+/* Log Fight */
 .logFight{ /* JS */
   /* Display */
   display: block; /* Rend fléxible les élements enfants et aligne horizontalement */
@@ -52,6 +54,7 @@
   white-space: pre-line; /* Permet d'afficher les saut de ligne */
 }
 
+/* Action */
 .containerAction{
   /* Display */
   display: flex; /* Aligne les enfants horizontalement de base (row) */
@@ -67,7 +70,6 @@
   /* Espace */
   gap: 20px; 
 }
-
 .buttonBase{
   /* Display & Centrage du texte à l'intérieur */
   display: flex;
@@ -95,12 +97,12 @@
   -webkit-tap-highlight-color: transparent; 
   user-select: none;
 }
-
 .buttonBase.pressed{
   /* Background */
   background-image: url('../IMAGE/ICON/background_button_down.png');
 }
 
+/* Hand */
 .containerHand{
   /* Display */
   display: flex; /* Rend les éléments fléxibles et aligne horizontalement */
@@ -116,7 +118,6 @@
   /* Espace & Marge */
   margin-bottom: 10%;
 }
-
 .tileHand{
   /* Display */
   display: none;
@@ -136,6 +137,7 @@
   width: clamp(50px, 10dvh, 300px);  /* */
 }
 
+/* Window Victory */
 .containerVictory{
   /* Display */
   display: none; /* Rend les éléments fléxibles et aligné horizontalement */
@@ -163,7 +165,6 @@
   /* Others */
   z-index: 9999; /* Niveau de supperposition */
 }
-
 .containerButtonVictory{
   /* Display */
   display: flex; /* Rend les éléments fléxible et aligne horizontalement */
@@ -178,7 +179,6 @@
   /* Others */
   z-index: 9999; /* Niveau de supperposition */
 }
-
 .textVictory{
   /* Espace */
   margin-bottom: 30px; /* La taille de la marge en partant du bas */
@@ -188,6 +188,7 @@
   text-align: center; /* Alignement du texte */
 }
 
+/* Information Player */
 .contInfoPlayer{
   display: flex;
   align-items: center;
@@ -198,7 +199,6 @@
   width: 78%;
   gap: 10px;
 }
-
 .elemCharacterInfoPlayer{
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -206,7 +206,6 @@
   height: 100%;
   width: 10%;
 }
-
 .elemTextInfoPlayer{
   /* Display */
   display: flex;

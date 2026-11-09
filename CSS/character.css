@@ -1,6 +1,4 @@
-/* CLASS */
-
-/* Character Base */
+/* Class */
 .character {
   /* Display */
   display: block;
@@ -29,8 +27,7 @@
 .character.dir-down  { background-position-y: -128px; }
 .character.dir-right { background-position-y: -192px; }
 
-/* Character Animation */
-/* Race */
+/* Character Race Animation */
 
 /* Idle */
 .character.is-human-idle{
@@ -70,6 +67,7 @@
   animation: die-animation 0.5s steps(5) 1 forwards; /* Animation, durée, Nombre d'image, en boucle ? */
 }
 
+/* Other */
 .character.is-invisible{
   opacity: 0;
 }
@@ -80,7 +78,7 @@
   filter: drop-shadow(0px 0px 6px rgb(1, 255, 68));
 }
 
-/* Spell Animation Base */
+/* Spell Animation */
 .animEffect {
   /* Display */
   display: none; /* Cache l'élément */
@@ -105,11 +103,23 @@
   /* Other */
   overflow: hidden; /* Cache une partie de l'animation si elle dépasse du parent */
 }
-.animEffect.is-spell {
-  animation: spell-animation 0.6s steps(4) infinite; /* Animation, durée, nombre frame, boucle ? */
+.animEffect.is-Ralentissement {
+  animation: spell-animation 0.5s steps(4) 3 forwards; /* Animation, durée, nombre frame, boucle ? */
+}
+.animEffect.is-Célérité {
+  animation: spell-animation 0.5s steps(4) 3 forwards; /* Animation, durée, nombre frame, boucle ? */
+}
+.animEffect.is-Attraction {
+  animation: spell-animation 0.5s steps(4) 2 forwards; /* Animation, durée, nombre frame, boucle ? */
+}
+.animEffect.is-Répulsion {
+  animation: spell-animation 0.5s steps(4) 2 forwards; /* Animation, durée, nombre frame, boucle ? */
+}
+.animEffect.is-Appuie {
+  animation: spell-animation 0.5s steps(4) 4 forwards; /* Animation, durée, nombre frame, boucle ? */
 }
 
-/* KEYFRAMES */
+/* Key Frame */
 
 /* Character Animation */
 @keyframes walk-animation { /* 512 pixel de largeur / 8 frames = 64 pixel */

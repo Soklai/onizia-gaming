@@ -1,3 +1,4 @@
+/* Class */
 .game-container {
   /* Espace */
   margin: 0 auto; /* Zéro marge et centrage */
@@ -13,6 +14,7 @@
   flex-shrink: 0; /* Rend la taille fixe contre les éléments extérieur */
 }
 
+/* Grid */
 .gridTile{
   /* Others */
   position: relative; /* Point de référencement pour les éléments enfants */
@@ -31,6 +33,7 @@
   padding: 0; /* Pas de marge a l'intérieur */
 }
 
+/* Tile */
 .tileBase{
   /* Size */
   width: 100%; /* Taille de la largeur */
@@ -40,37 +43,33 @@
   background-size: 100% 100%; /* Taille de l'image */
   background-repeat: no-repeat; /* Bloque la répètition de l'image */
 }
-
 .tileLevel0{
   /* Position */
   position: relative; /* Position de référence pour les éléments enfants */
   z-index: 0; /* Niveau de supperposition */
 }
-
 .tileLevel1{
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
   z-index: 1; /* Niveau de supperposition */
 }
-
 .tileLevel2{
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
   z-index: 2; /* Niveau de supperposition */
 }
-
 .tileLevel3{
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
   z-index: 3; /* Niveau de supperposition */
 }
-
 .pathLevel{
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
   z-index: 4; /* Niveau de supperposition */
 }
 
+/* Décoration */
 .tileDecorationFat{
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
@@ -90,7 +89,6 @@
   background-repeat: no-repeat; /* Bloque la répètition de l'image */
   background-position: bottom center; /* Point d'ancrage de l'image */
 }
-
 .tileDecorationLittle{
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */

@@ -1,7 +1,7 @@
+/* Class */
 *, *::before, *::after {
   box-sizing: border-box;
 }
-
 html, body {
   /* Display */
   display: flex; /* Rend les éléments fléxibles */
@@ -30,6 +30,7 @@ html, body {
   image-rendering: pixelated;
 }
 
+/* Load Page */
 .hiddenGame{
   /* Display */
   display: flex;
@@ -53,12 +54,10 @@ html, body {
   /* Transition */
   transition: opacity 1s ease-in-out;
 }
-
 .textHiddenGame{
   /* Text */
   color: white;  
 }
-
 .hiddenGame.is-invisible{
   opacity: 0;
 }
@@ -86,7 +85,6 @@ html, body {
   background: rgba(255, 255, 255, 0.4); /* Couleur du background + oppacité */ 
 
 }
-
 .debugText{
   height: auto;
   width: auto;

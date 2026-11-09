@@ -1,0 +1,144 @@
+/* Class */
+.weather-rain {
+  display: flex;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../IMAGE/WEATHER/rain.png');
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 5000;
+
+  /* 1. Force le rendu sur le GPU et stabilise la couche */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  /* 3. Utiliser un timing 'linear' avec une durée propre */
+  animation: fallRain 2s linear 1 forwards;
+}
+.weather-snow {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../IMAGE/WEATHER/snow_far.png');
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 5000;
+
+  /* 1. Force le rendu sur le GPU et stabilise la couche */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  /* 3. Utiliser un timing 'linear' avec une durée propre */
+  animation: fallSnow 2s linear 1 forwards;
+}
+.weather-fog {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../IMAGE/WEATHER/fog.png');
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 5000;
+
+  /* 1. Force le rendu sur le GPU et stabilise la couche */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  /* 3. Utiliser un timing 'linear' avec une durée propre */
+  animation: fallFog 2s linear 1 forwards;
+}
+.weather-wind {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-image: url('../IMAGE/WEATHER/wind.png');
+  background-repeat: no-repeat;
+  background-size: cover; 
+  
+  pointer-events: none;
+  z-index: 5000;
+
+  /* Optimisations GPU */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: background-position;
+
+  /* 2. Désactive le lissage flou pour garder les traits nets (évite les calculs de sous-pixels bizarres) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  
+  /* Animation par étapes (steps) : change le '6' si tu as un nombre différent de frames sur ton image */
+  /*animation: playWindSheet 2s steps(6) 1 forwards;*/
+  animation: wind-animation 2s linear infinite;
+}
+
+/* Key Frame */
+@keyframes fallRain {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* Déplacement exact de 1024px (ou -512px 512px) pour boucler sans micro-saut */
+    background-position: -512px 512px;
+  }
+}
+@keyframes fallSnow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* Déplacement exact de 1024px (ou -512px 512px) pour boucler sans micro-saut */
+    background-position: -512px 512px;
+  }
+}
+@keyframes fallFog {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* Déplacement exact de 1024px (ou -512px 512px) pour boucler sans micro-saut */
+    background-position: -512px 512px;
+  }
+}
+@keyframes wind-animation {
+  0% {
+    background-position-x: 0%;
+  }
+  100% {
+    /* Fait défiler toute la largeur de la bande d'images d'un coup */
+    background-position-x: 100%;
+  }
+}
