@@ -106,7 +106,7 @@ export class GameManager{
     await this.loadPlayer();
     
     // Debug
-    this._ui.debugWindow.style.display = "block";
+    //this._ui.debugWindow.style.display = "block";
       
     this._ui.hiddenGame.classList.add("is-invisible");
     await this.waitTransition(this._ui.hiddenGame);
