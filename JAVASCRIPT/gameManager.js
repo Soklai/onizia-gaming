@@ -99,15 +99,14 @@ export class GameManager{
 
   // Load game
   async load(){
-    // Debug
-    //this._ui.debugWindow.style.display = "block";
-    
     // Load
     await this._map.load();
     await this._ui.load();
     
     await this.loadPlayer();
     
+    // Debug
+    this._ui.debugWindow.style.display = "block";
       
     this._ui.hiddenGame.classList.add("is-invisible");
     await this.waitTransition(this._ui.hiddenGame);
@@ -187,6 +186,7 @@ export class GameManager{
 
   endTurnPlayer(){
     this._currentPlayer.pm = this._currentPlayer.pmMax;
+    this._currentPlayer._posNodePath.length = 0;
     this._currentPlayer.character.classList.remove("isTurnPlay");
     
     this.selectedPlayer = null;

@@ -55,6 +55,7 @@ export class Player{
     this._teamIndex = TeamIndex;
     this._playerIndex = PlayerIndex;
     this._race = Race;
+    this._posNodePath = [];
   }
 
   // Getter Setter local
@@ -294,11 +295,9 @@ export class Player{
     let posTileDirection = this._path[posPathDirection];
     return posTileDirection;
   }
-
   getPosPathDirection(direction){
     return this._posPath + direction;
   }
-  
   getPosPathToPosTile(){
     return this._path[this._posPath];
   }
@@ -306,11 +305,9 @@ export class Player{
   getPosTileToPosPath(){
     
   }
-
   getPosXY(posTile){
     return this._game.map.gridTileLevel0[posTile].getBoundingClientRect();
   }
-
   getPosXYDirection(dir){
     const newTileDir = this.posTileDirection(dir);
     const newPos = newTileDir.getBoundingClientRect();
@@ -325,8 +322,20 @@ export class Player{
     
     return null;
   }
+  addNodePath(count, direction){
+    if(this._posNodePath.length < this._pm){
+      for(let i = 0; i < count; i++){
+        this._posNodePath.push(this.getPosTileDirection(this._posNodePath.length + direction));
+        this._game.ui.paintTileElement(this._game.map.gridPathLevel[this._posNodePath[this._posNodePath.length - 1]], "white");
+      }
+    }
+  }
+  removeNodePath(){
+    this._game.ui.paintTileElement(this._game.map.gridPathLevel[this._posNodePath[0]], "");
+    this._posNodePath.shift();
+  }
 
-  // Function
+  // Load
   load(){
     this.loadDoc();
     this.loadEvent();
@@ -337,7 +346,8 @@ export class Player{
   }
   loadEvent(){
     this._character.addEventListener("click", () => { this.targetCharacter(); }); 
-  } 
+  }
+  
   loadStartBase(){
     this._isDie = true;
     
@@ -357,10 +367,7 @@ export class Player{
     const isTeamPlayer =  this._game.isTileTeamPlayer(this._respawnPosTile, this);
     
     // Si le joueur sur la case de spawn n'est pas dans la même équipe ou null
-    if(!isTeamPlayer){
-      // Réactive les animations du perso
-      this._character.style.animation = '';
-      
+    if(!isTeamPlayer){      
       // Rend invisible le joueur
       this._character.classList.add(`is-invisible`);
       await this.waitTransition(this._character);
@@ -384,6 +391,7 @@ export class Player{
       await this.waitTransition(this._character);
   
       // Déclare le joueur ressucité
+      this._character.style.animation = '';
       this._isDie = false;
       this._game.ui.addTextLog(this._name + " est ressucité !");    
     }
@@ -392,7 +400,6 @@ export class Player{
       this._game._ui.addTextLog(`Un allié bloque la case de résurection`);
     }
   }
-
   async die(){
     this._isDie = true;
     this._game._ui.addTextLog(this._name + " est mort !");
@@ -415,6 +422,8 @@ export class Player{
     // Rend le joueur visible
     this._character.classList.remove(`is-invisible`);
     await this.waitTransition(this._character);
+
+    if(this._game.currentPlayer === this) this._game.endTurnPlayer();
   }
 
   isCurrentTurnRespawn(){
@@ -456,41 +465,28 @@ export class Player{
     const spell = this._hand[index];
     const caster = this._game.currentPlayer;
     
-    // Si pas de sort en cour ou de marche active  
-    if (target != null){
-      // Si pas de cast en cour
-      if(!this._isCast){
-        // Si pas de marche en cour
-        if(!this._isWalking){
-          this._isCast = true;
-          let echecSpell = await spell.cast(caster, target);
+    // Si pas de sort en cour ou de marche active ou aucune cible  
+    if (target != null && !this._isCast && !this._isWalking){
+      this._isCast = true;
+      let echecSpell = await spell.cast(caster, target);
       
-          // Si le sort réussie
-          if (!echecSpell) {
-            this._game.ui.addTextLog(`${caster.name} lance ${spell._name}`); 
-            this.deleteCard(index);
-          }
-          // Si le sort échoue
-          else { 
-            this._game.ui.addTextLog(`[${spell._name}]: Le sort a échouer`); 
-          }
-          
-          this._isCast = false;
-        }
-        // Si le perso marche
-        else{
-          this._game.ui.addTextLog(`[${spell._name}]: Impossible de lancer de sort en marchant`); 
-        }
+      // Si le sort réussie
+      if (!echecSpell) {
+        this._game.ui.addTextLog(`${caster.name} lance ${spell._name}`); 
+        this.deleteCard(index);
       }
-      // Si le perso cast
-      else{
-        this._game.ui.addTextLog(`[${spell._name}]: Lancer de sort déjà actif`); 
-      }      
+      // Si le sort échoue
+      else { 
+        this._game.ui.addTextLog(`[${spell._name}]: Le sort a échouer`); 
+      }
+          
+      this._isCast = false;
     }
-    // Si aucune cible
-    else {
-      this._game.ui.addTextLog(`[${spell._name}]: Aucune cible sélectionnée`);
-    } 
+    else{
+      if(this.isWalking) this._game.ui.addTextLog(`[${spell._name}]: Impossible de lancer de sort en marchant`); 
+      if(this.isCast) this._game.ui.addTextLog(`[${spell._name}]: Lancer de sort déjà actif`); 
+      if(this.target === null) this._game.ui.addTextLog(`[${spell._name}]: Aucune cible sélectionnée`);
+    }
   }
   
   deleteCard(index) {
@@ -509,13 +505,17 @@ export class Player{
   }
 
   async move(direction){   
-    for(let i = 0; i < this._forceMove; i++){
+    while(this._posNodePath.length > 0){
       if(this._pm > 0 && !this._isWalking && !this._isCast){
         this._isWalking = true;
 
         // On check la case d'arriver
         const isTilePlayer = this._game.isTilePlayer(this.getPosTileDirection(direction), this);
         if(isTilePlayer){
+          // On reset pour eviter de marcher surplace
+          this._character.classList.remove(`is-${this.getRace()}-walk`);
+          this._character.classList.add(`is-${this.getRace()}-idle`);
+  
           await isTilePlayer.die();
         }
         
@@ -528,6 +528,7 @@ export class Player{
           this._posPath = this.getPosPathDirection(direction);          
           
           this.removePm(1);
+          this.removeNodePath();
           this._game.selectedPlayer = this;
           
           this._game._ui.targetInfoPlayer();
@@ -541,7 +542,6 @@ export class Player{
     
     this._character.classList.remove(`is-${this.getRace()}-walk`);
     this._character.classList.add(`is-${this.getRace()}-idle`);
-    this._forceMove = 0;
   }
 
   async spellMove(direction, force){
@@ -563,9 +563,10 @@ export class Player{
 
           this._game.victoryPlayer(this._posTile, this);
         }
-      }
 
-      this._character.style.zIndex = 99 + this._posTile;
+        this._character.style.zIndex = 99 + this._posTile;
+      }
+      
       this._character.classList.remove(`is-${this.getRace()}-walk`);
       this._character.classList.add(`is-${this.getRace()}-idle`);    
     }
@@ -577,10 +578,10 @@ export class Player{
     targetAnim.style.backgroundImage = spell._animation;
     targetAnim.style.display = "block";
     
-    targetAnim.classList.add(`is-spell`);
-    await this.wait(1600);
+    targetAnim.classList.add(`is-${spell._name}`);
+    await this.waitAnimation(this._animEffect);
     
-    targetAnim.classList.remove(`is-spell`);
+    targetAnim.classList.remove(`is-${spell._name}`);
     targetAnim.style.display = "none";
   }
 

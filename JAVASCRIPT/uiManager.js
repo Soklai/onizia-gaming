@@ -56,7 +56,7 @@ export class UIManager{
     this._debugText.textContent = value;
   }
   debugFunction(){
-    this._game.player3.revive();
+    this._game.player1.die();
   }
 
   // Other
@@ -140,7 +140,7 @@ export class UIManager{
 
   async clickTileHandSlot(index){    
     if(!this._game.currentPlayer.isPlayerIA && !this._game.currentPlayer.isTurnFinish &&
-       !this._game.currentPlayer.isCast && !this._game.currentPlayer.isDie){
+       !this._game.currentPlayer.isCast && !this._game.currentPlayer.isDie && !this._game.currentPlayer.isWalking){
       
       await this._game.currentPlayer.useCard(index, this._game.selectedPlayer);
     }
@@ -149,16 +149,16 @@ export class UIManager{
   // Action
   async clickMoveButton(){    
     if(!this._game.currentPlayer.isPlayerIA && !this._game.currentPlayer.isTurnFinish &&
-      this._game.currentPlayer.forceMove < this._game.currentPlayer.pm &&
-      !this._game.currentPlayer.isDie){
+      this._game.currentPlayer.pm > 0 && !this._game.currentPlayer.isDie){
         
-      this._game.currentPlayer.forceMove++;
+      this._game.currentPlayer.addNodePath(1, 1);
         
-      if(!this._game.currentPlayer.isWalking){ await this._game.currentPlayer.move(1, false); }
+      if(!this._game.currentPlayer.isWalking){ await this._game.currentPlayer.move(1); }
     }    
   }
   clickPassButton(){    
-    if(!this._game.currentPlayer.isPlayerIA && !this._game.currentPlayer.isTurnFinish){
+    if(!this._game.currentPlayer.isPlayerIA && !this._game.currentPlayer.isTurnFinish &&
+      !this._game.currentPlayer.isWalking){
       this._game.endTurnPlayer();
     }
   }
@@ -213,7 +213,6 @@ export class UIManager{
     const race = this._game.currentPlayer.getRace();    
     this._elemCharacterInfoPlayer.style.backgroundImage = `url('IMAGE/CHARACTER/${race}/profile.png')`;
   }
-
   profileSelectedPlayer(){
     const race = this._game.selectedPlayer.getRace();
     this._elemCharacterInfoPlayer.style.backgroundImage = `url('IMAGE/CHARACTER/${race}/profile.png')`;
@@ -233,6 +232,10 @@ export class UIManager{
       this.profileSelectedPlayer(); 
       this._elemTextInfoPlayer.textContent = this._game.selectedPlayer ? `${this._game.selectedPlayer.name}: ${this._game.selectedPlayer.pm} pm` : "";
     }
+  }
+
+  paintTileElement(element, color){
+    element.style.backgroundColor = color;
   }
 
   // Other

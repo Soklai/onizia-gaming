@@ -67,10 +67,14 @@ export class IA{
   
   // Move
   async move(dir, repeat) { 
-    if(repeat){ this._game.currentPlayer.forceMove = this._game.currentPlayer.pm }      
-    else { this._game.currentPlayer.forceMove = 1; }
+    if(repeat){
+      this._game.currentPlayer.addNodePath(this._game.currentPlayer.pm, dir);
+    }      
+    else {
+      this._game.currentPlayer.addNodePath(1, dir);
+    }
     
-    await this._game.currentPlayer.move(dir, false);
+    await this._game.currentPlayer.move(dir);
   }
   
   // Wait
