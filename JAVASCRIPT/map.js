@@ -283,14 +283,22 @@ export class Map {
       //this.gridTileLevel3[i].style.fontSize = "2em";
     }
     
-    // Grid Path
-    for( let i= 0; i < this.allPath.length; i++){
+    // Paint Grid Path & Wall
+    for( let i= 0; i < this._allPath.length; i++)
+    {
       this._gridPathLevel[this.allPath[i]].style.border = "0.5px black solid";
       //this.gridPathLevel[i].textContent = i;
-      //this.gridPathLevel[i].style.fontSize = "2em";
+      //this.gridPathLevel[i].style.fontSize = "2em";        
     
+      for( let j= 0; j < this._allPosWall.length; j++)
+      {  
+        if(this._allPath[i] === this._allPosWall[j])
+        {
+          this._gridPathLevel[this.allPath[i]].style.border = "0.5px #29ebff solid";
+        }
+      }      
     }
-
+    
     // Grid Décoration
     for( let i= 0; i < this._gridTileDecoration.length; i++){
       
