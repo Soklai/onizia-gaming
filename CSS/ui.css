@@ -190,32 +190,92 @@
 
 /* Information Player */
 .contInfoPlayer{
+  /* Flex */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 7%;
-  
+  flex-direction: horizontal;
+
+  /* Size */
   height: 10%;
   width: 78%;
+
+  /* Espace */
+  margin-top: 7%;
+}
+.contInfoPlayerLeft{
+  /* Flex */
+  display: flex;
+  flex: 1;
+  
+  /* Center */
+  align-items: center;
+  justify-content: center;
+
+  /* Size */
+  height: 100%;
+
+  /* Espace */
   gap: 10px;
 }
-.elemCharacterInfoPlayer{
+.elemCharacterInfoPlayerLeft{
+  /* Background */
   background-repeat: no-repeat;
   background-size: 100% 100%;
-
+  
+  /* Size */
   height: 100%;
   width: 10%;
 }
-.elemTextInfoPlayer{
-  /* Display */
+.elemTextInfoPlayerLeft{
+  /* Flex */
   display: flex;
+  
+  /* Size */
+  height: 100%;
+  width: 90%;
+
+  /* Text */
+  font-size: 2em;
+  text-align: left;
+
+  /* Alignement */
   align-items: center;
+}
+
+.contInfoPlayerRight{
+  /* Flex */
+  display: flex;
+  flex: 1;
+
+  /* Alignement */
+  align-items: center;
+  justify-content: center;
+
+  /* Size */
+  height: 100%;
+  gap: 10px;
+}
+.elemCharacterInfoPlayerRight{
+  /* Background */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  /* Size */
+  height: 100%;
+  width: 10%;
+}
+.elemTextInfoPlayerRight{
+  /* Flex */
+  display: flex;
+
+  /* Alignement */
+  align-items: center;
+  justify-content: flex-end;
 
   /* Size */
   height: 100%;
   width: 90%;
 
   /* Text */
-  font-size: 3em;
-  text-align: left;
+  font-size: 2em;
+  text-align: right;
 }

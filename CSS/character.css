@@ -7,7 +7,7 @@
   
   /* Position */
   position: absolute; /* Position supperposer par rapport au élément de base */
-  z-index: 1000; /* Niveau de supperposition */
+  z-index: 1000; /* Niveau de supperposition: 1000 = Character | Spell = 999 */
 
   /* Size */
   width: 64px; /* Taille de la largeur */
@@ -71,26 +71,33 @@
 .character.is-invisible{
   opacity: 0;
 }
-.character.isTarget{
-  filter: drop-shadow(0px 0px 6px rgb(255, 1, 1));
+.character .contTarget {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  width: 30px; /* plus petit car multiplié par 1.5 à l'écran (~42px) */
+  height: 50px;
+  transform: translate(-50%, -50%);
+  border: 2px dashed rgb(255, 1, 1);
+  box-sizing: border-box;
+  pointer-events: none;
 }
+
 .character.isTurnPlay{
   filter: drop-shadow(0px 0px 6px rgb(1, 255, 68));
 }
 
 /* Spell Animation */
-.animEffect {
+.animSpell {
   /* Display */
   display: none; /* Cache l'élément */
 
   /* Position */
   position: absolute; /* Survole les élément de base */
-  z-index: 1000; /* Niveau de supperposition */
+  z-index: 999; /* Niveau de supperposition: 1000 = Character | Spell = 999 */
 
-  top: 64px; /* Position a partie du haut */
   left: 0%; /* Position a partir de gauche */
-
-  transform: scale(3); /* Augmente la taille de l'élément */
   transform-origin: bottom center; /* Point d'ancrage de l'image */
 
   /* Size */
@@ -103,20 +110,47 @@
   /* Other */
   overflow: hidden; /* Cache une partie de l'animation si elle dépasse du parent */
 }
-.animEffect.is-Ralentissement {
+.animSpell.is-Ralentissement {
+  top: 64px; /* Position a partie du haut */
+  transform: scale(3); /* Augmente la taille de l'élément */
+  
   animation: spell-animation 0.5s steps(4) 3 forwards; /* Animation, durée, nombre frame, boucle ? */
 }
-.animEffect.is-Célérité {
+.animSpell.is-Célérité {
+  top: 55px; /* Position a partie du haut */
+  transform: scale(2); /* Augmente la taille de l'élément */
+  
   animation: spell-animation 0.5s steps(4) 3 forwards; /* Animation, durée, nombre frame, boucle ? */
 }
-.animEffect.is-Attraction {
+.animSpell.is-Recule {
+  top: 55px; /* Position a partie du haut */
+  transform: scale(2); /* Augmente la taille de l'élément */
+  
   animation: spell-animation 0.5s steps(4) 2 forwards; /* Animation, durée, nombre frame, boucle ? */
 }
-.animEffect.is-Répulsion {
+.animSpell.is-Avance {
+  top: 55px; /* Position a partie du haut */
+  transform: scale(2); /* Augmente la taille de l'élément */
+  
   animation: spell-animation 0.5s steps(4) 2 forwards; /* Animation, durée, nombre frame, boucle ? */
 }
-.animEffect.is-Appuie {
+.animSpell.is-Appuie {
+  top: 55px; /* Position a partie du haut */
+  transform: scale(2); /* Augmente la taille de l'élément */
+  
   animation: spell-animation 0.5s steps(4) 4 forwards; /* Animation, durée, nombre frame, boucle ? */
+}
+.animSpell.is-Silence {
+  top: 15px; /* Position a partie du haut */
+  transform: scale(1.25); /* Augmente la taille de l'élément */
+  
+  animation: spell-animation 0.5s steps(4) 3 forwards; /* Animation, durée, nombre frame, boucle ? */
+}
+.animSpell.is-Bouclier {
+  top: 25px; /* Position a partie du haut */
+  transform: scale(1); /* Augmente la taille de l'élément */
+  
+  animation: spell-animation 0.5s steps(4) 3 forwards; /* Animation, durée, nombre frame, boucle ? */
 }
 
 /* Key Frame */
