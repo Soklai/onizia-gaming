@@ -26,7 +26,7 @@ export class Spell {
       "Retire ${force} point de mouvement a la cible pendant ${turn} tour(s).",
       "Malus",
       "url('IMAGE/SPELL/ICON/ralentissement.jpg')",
-      "url('../IMAGE/SPELL/EFFECT/slow.png')",
+      "url('IMAGE/SPELL/EFFECT/slow.png')",
       force,
       turn,
       Effect.removePm(force, turn),
