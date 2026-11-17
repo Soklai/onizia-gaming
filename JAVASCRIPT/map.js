@@ -294,7 +294,7 @@ export class Map {
       {  
         if(this._allPath[i] === this._allPosWall[j])
         {
-          this._gridPathLevel[this.allPath[i]].style.border = "0.5px #29ebff solid";
+          this._gridPathLevel[this.allPath[i]].style.border = "2px #29ebff solid";
         }
       }      
     }
