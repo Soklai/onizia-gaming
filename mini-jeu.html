@@ -8,6 +8,8 @@
     <link href="CSS/grid.css" rel="stylesheet">
     <link href="CSS/ui.css" rel="stylesheet">
     <link href="CSS/character.css" rel="stylesheet">
+    <link href="CSS/effect.css" rel="stylesheet">
+    <link href="CSS/spell.css" rel="stylesheet">
     
     
         <script type="module" src="./JAVASCRIPT/main.js"></script>
@@ -39,33 +41,40 @@
       <div id="gridTile" class="gridTile"></div>
     
       <div id="character0" class="character">
-        <div class="animEffect"></div>
-        <div class="containerTarget"></div>         
+        <div class="animSpell"></div>
+        <div class="contTarget"></div>         
       </div>
     
       <div id="character1" class="character">
-        <div class="animEffect"></div>
-        <div class="containerTarget"></div>          
+        <div class="animSpell"></div>
+        <div class="contTarget"></div>          
       </div>
 
       <div id="character2" class="character">
-        <div class="animEffect"></div>
-        <div class="containerTarget"></div>        
+        <div class="animSpell"></div>
+        <div class="contTarget"></div>        
       </div>
 
       <div id="character3" class="character">
-        <div class="animEffect"></div>
-        <div class="containerTarget"></div>         
+        <div class="animSpell"></div>
+        <div class="contTarget"></div>         
       </div>
 
       <div id="elemWeather"></div>
     </div>
       
     <div class="containerUI">
-      
+
       <div class="contInfoPlayer">
-        <div class="elemCharacterInfoPlayer"></div>
-        <div class="elemTextInfoPlayer"></div>
+        <div class="contInfoPlayerLeft">
+          <div class="elemCharacterInfoPlayerLeft"></div>
+          <div class="elemTextInfoPlayerLeft"></div>
+        </div>
+
+        <div class="contInfoPlayerRight">
+          <div class="elemTextInfoPlayerRight"></div>
+          <div class="elemCharacterInfoPlayerRight"></div>
+        </div>        
       </div>
 
       <div id="logFight" class="logFight"></div>
